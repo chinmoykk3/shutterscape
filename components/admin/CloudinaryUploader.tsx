@@ -78,47 +78,93 @@ export function CloudinaryUploader({
       const signData = await signRes.json();
       setProgress(40);
 
-      // 2. Upload directly to Cloudinary
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('api_key', signData.apiKey);
-      formData.append('timestamp', String(signData.timestamp));
-      formData.append('signature', signData.signature);
-      formData.append('folder', signData.folder);
+      let newAsset: ImageAsset | null = null;
 
-      const cloudRes = await fetch(
-        `https://api.cloudinary.com/v1_1/${signData.cloudName}/image/upload`,
-        {
+      // If Cloudinary keys are placeholders or not configured, use server-side upload
+      if (!signData.isConfigured) {
+        const localForm = new FormData();
+        localForm.append('file', file);
+        localForm.append('folder', folder);
+
+        const serverRes = await fetch('/api/admin/upload', {
           method: 'POST',
-          body: formData,
-        }
-      );
+          body: localForm,
+        });
 
-      if (!cloudRes.ok) {
-        throw new Error('Cloudinary exposure upload failed.');
+        if (!serverRes.ok) {
+          throw new Error('Local darkroom upload failed.');
+        }
+
+        const serverData = await serverRes.json();
+        newAsset = serverData.asset;
+        setProgress(95);
+        toastSuccess(
+          serverData.message || 'Photo saved locally (set Cloudinary keys in .env.local for production).'
+        );
+      } else {
+        // Cloudinary is configured: attempt direct signed upload with server fallback
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('api_key', signData.apiKey);
+          formData.append('timestamp', String(signData.timestamp));
+          formData.append('signature', signData.signature);
+          formData.append('folder', signData.folder);
+
+          const cloudRes = await fetch(
+            `https://api.cloudinary.com/v1_1/${signData.cloudName}/image/upload`,
+            {
+              method: 'POST',
+              body: formData,
+            }
+          );
+
+          if (!cloudRes.ok) {
+            throw new Error('Direct upload returned an error status.');
+          }
+
+          const cloudData = await cloudRes.json();
+          setProgress(90);
+
+          const blurUrl = cloudData.secure_url.replace(
+            '/upload/',
+            '/upload/w_20,c_fill,e_blur:1000,f_auto,q_1/'
+          );
+
+          newAsset = {
+            url: cloudData.secure_url,
+            publicId: cloudData.public_id,
+            blurDataURL: blurUrl,
+            width: cloudData.width,
+            height: cloudData.height,
+          };
+          toastSuccess('Photograph exposed and saved to cloud storage.');
+        } catch (directErr) {
+          console.warn('Direct upload failed, relaying through server endpoint:', directErr);
+          const relayForm = new FormData();
+          relayForm.append('file', file);
+          relayForm.append('folder', folder);
+
+          const serverRes = await fetch('/api/admin/upload', {
+            method: 'POST',
+            body: relayForm,
+          });
+
+          if (!serverRes.ok) {
+            throw new Error('Image upload failed through both direct and server channels.');
+          }
+
+          const serverData = await serverRes.json();
+          newAsset = serverData.asset;
+          toastSuccess('Photograph exposed and saved to storage.');
+        }
       }
 
-      const cloudData = await cloudRes.json();
-      setProgress(90);
-
-      // 3. Generate dynamic tiny blur placeholder using Cloudinary transform
-      const blurUrl = cloudData.secure_url.replace(
-        '/upload/',
-        '/upload/w_20,c_fill,e_blur:1000,f_auto,q_1/'
-      );
-
-      const newAsset: ImageAsset = {
-        url: cloudData.secure_url,
-        publicId: cloudData.public_id,
-        blurDataURL: blurUrl,
-        width: cloudData.width,
-        height: cloudData.height,
-      };
-
-      onChange(newAsset);
-      toastSuccess('Photograph exposed and saved to cloud storage.');
+      if (newAsset) {
+        onChange(newAsset);
+      }
     } catch (err: unknown) {
-      console.error('Upload failed:', err);
+      console.warn('Upload notification:', err);
       const message = err instanceof Error ? err.message : 'Exposure processing failed.';
       toastError(message);
     } finally {

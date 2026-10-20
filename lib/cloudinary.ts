@@ -36,7 +36,32 @@ export function validateImageUpload(file: { type: string; size: number }): { val
   return { valid: true };
 }
 
+export function isCloudinaryConfigured(): boolean {
+  const name = process.env.CLOUDINARY_CLOUD_NAME;
+  const key = process.env.CLOUDINARY_API_KEY;
+  const secret = process.env.CLOUDINARY_API_SECRET;
+  return Boolean(
+    name &&
+    key &&
+    secret &&
+    name !== 'your_cloud_name' &&
+    key !== 'your_api_key' &&
+    secret !== 'your_api_secret'
+  );
+}
+
 export function getSignedUploadParams(folder: string = 'shutterscape') {
+  if (!isCloudinaryConfigured()) {
+    return {
+      isConfigured: false,
+      timestamp: 0,
+      signature: '',
+      apiKey: '',
+      cloudName: '',
+      folder,
+    };
+  }
+
   const timestamp = Math.round(new Date().getTime() / 1000);
   const signature = cloudinary.utils.api_sign_request(
     {
@@ -47,12 +72,39 @@ export function getSignedUploadParams(folder: string = 'shutterscape') {
   );
 
   return {
+    isConfigured: true,
     timestamp,
     signature,
     apiKey: process.env.CLOUDINARY_API_KEY,
     cloudName: process.env.CLOUDINARY_CLOUD_NAME,
     folder,
   };
+}
+
+export async function uploadBufferToCloudinary(
+  buffer: Buffer,
+  folder: string = 'shutterscape'
+): Promise<{ url: string; publicId: string; width: number; height: number }> {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        resource_type: 'image',
+      },
+      (error, result) => {
+        if (error || !result) {
+          return reject(error || new Error('Upload to Cloudinary failed.'));
+        }
+        resolve({
+          url: result.secure_url,
+          publicId: result.public_id,
+          width: result.width,
+          height: result.height,
+        });
+      }
+    );
+    uploadStream.end(buffer);
+  });
 }
 
 export function getOptimizedImageUrl(

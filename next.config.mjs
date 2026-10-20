@@ -5,7 +5,7 @@ const ContentSecurityPolicy = `
   style-src 'self' 'unsafe-inline';
   img-src 'self' blob: data: https://res.cloudinary.com https://images.unsplash.com;
   font-src 'self' data:;
-  connect-src 'self' https://res.cloudinary.com;
+  connect-src 'self' https://res.cloudinary.com https://api.cloudinary.com;
   frame-src 'self' https://www.google.com https://maps.google.com;
   object-src 'none';
   base-uri 'self';
