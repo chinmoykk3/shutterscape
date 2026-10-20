@@ -9,7 +9,6 @@ import {
   Camera,
   Info,
   MessageCircle,
-  Sliders,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -191,17 +190,6 @@ export function CameraDockBar({
           <MessageCircle className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
           <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber animate-pulse" />
         </a>
-
-        {/* --- Admin Studio Portal Quick Link --- */}
-        <Link
-          href="/admin/dashboard"
-          aria-label="The Editing Room // Admin Portal"
-          onMouseEnter={() => setHoveredIndex('The Editing Room // Admin Portal')}
-          onMouseLeave={() => setHoveredIndex(null)}
-          className="p-2 sm:p-2.5 rounded-full text-offwhite-dim hover:text-offwhite hover:bg-white/5 active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-amber"
-        >
-          <Sliders className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-        </Link>
       </div>
     </nav>
   );
