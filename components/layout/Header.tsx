@@ -3,10 +3,28 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Instagram, MessageCircle } from 'lucide-react';
+import { Menu, X, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { ShutterScapeLogo } from '@/components/ui/ShutterScapeLogo';
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+    </svg>
+  );
+}
 
 interface HeaderProps {
   instagramUrl?: string;
@@ -37,10 +55,11 @@ export function Header({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile drawer on route change
-  useEffect(() => {
+  const [prevPath, setPrevPath] = useState(pathname);
+  if (prevPath !== pathname) {
+    setPrevPath(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
   // Lock body scroll & listen for Escape key when mobile drawer is open
   useEffect(() => {
@@ -188,7 +207,7 @@ export function Header({
                 variant="secondary"
                 className="w-full justify-center gap-2"
               >
-                <Instagram className="w-4 h-4 text-amber" /> Instagram
+                <InstagramIcon className="w-4 h-4 text-amber" /> Instagram
               </Button>
               <Button
                 href={whatsappUrl}
