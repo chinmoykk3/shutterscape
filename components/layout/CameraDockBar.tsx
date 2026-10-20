@@ -1,0 +1,251 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import {
+  Home,
+  Film,
+  Camera,
+  Info,
+  MessageCircle,
+  Sliders,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface CameraDockBarProps {
+  whatsappUrl?: string;
+  instagramUrl?: string;
+}
+
+const DOCK_ITEMS = [
+  {
+    href: '/',
+    label: 'Home',
+    code: '01',
+    tooltip: 'Frame 01 // Prologue & Story',
+    icon: Home,
+  },
+  {
+    href: '/activities',
+    label: 'Activities',
+    code: '02',
+    tooltip: 'Frame 02 // 35mm Roll Manifest',
+    icon: Film,
+  },
+  {
+    href: '/gallery',
+    label: 'Gallery',
+    code: '03',
+    tooltip: 'Frame 03 // Darkroom Light Table',
+    icon: Camera,
+  },
+  {
+    href: '/about',
+    label: 'About',
+    code: '04',
+    tooltip: 'Frame 04 // Behind The Lens',
+    icon: Info,
+  },
+];
+
+export function CameraDockBar({
+  whatsappUrl = 'https://chat.whatsapp.com/Hs71BicR1Xj3PmOyPJ5wdc?s=sw&p=a&mlu=4&ilr=4',
+}: CameraDockBarProps) {
+  const pathname = usePathname();
+  const [hoveredIndex, setHoveredIndex] = useState<string | null>(null);
+
+  // Hide on admin routes to prevent overlapping with admin studio tools
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
+
+  const isDarkroom = pathname === '/gallery';
+
+  return (
+    <nav
+      aria-label="Floating Camera Dock"
+      className="fixed bottom-5 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 select-none transition-all duration-300"
+    >
+      {/* Active Tooltip Readout */}
+      {hoveredIndex && (
+        <div
+          role="tooltip"
+          className="absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 rounded-lg bg-black/95 border border-charcoal-border text-[11px] font-mono text-offwhite backdrop-blur-md shadow-2xl pointer-events-none animate-in fade-in zoom-in-95 duration-150 flex items-center gap-2"
+        >
+          <span
+            className={`w-1.5 h-1.5 rounded-full ${
+              isDarkroom ? 'bg-safelight' : 'bg-amber'
+            }`}
+          />
+          <span>{hoveredIndex}</span>
+        </div>
+      )}
+
+      {/* Floating Pill Chassis */}
+      <div
+        className={cn(
+          'relative rounded-full p-1.5 sm:p-2 backdrop-blur-2xl transition-all duration-500 flex items-center gap-1 sm:gap-2 border shadow-2xl',
+          isDarkroom
+            ? 'bg-black/85 border-safelight/40 shadow-[0_12px_45px_rgba(179,38,30,0.25)]'
+            : 'bg-black/85 border-charcoal-border/90 shadow-[0_12px_45px_rgba(0,0,0,0.85)]'
+        )}
+      >
+        {/* Subtle Ambient Film Glow inside dock */}
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-0 rounded-full opacity-30 blur-xl',
+            isDarkroom ? 'bg-safelight/20' : 'bg-amber/15'
+          )}
+        />
+
+        {/* --- Left Flank: Home & Activities --- */}
+        <DockButton
+          item={DOCK_ITEMS[0]}
+          pathname={pathname}
+          isDarkroom={isDarkroom}
+          onHover={setHoveredIndex}
+        />
+
+        <DockButton
+          item={DOCK_ITEMS[1]}
+          pathname={pathname}
+          isDarkroom={isDarkroom}
+          onHover={setHoveredIndex}
+        />
+
+        {/* --- Centerpiece: The Aperture Shutter Release Button --- */}
+        <Link
+          href="/"
+          aria-label="Release Shutter // Return to Origin"
+          onMouseEnter={() => setHoveredIndex('Shutter Release // Return to Origin')}
+          onMouseLeave={() => setHoveredIndex(null)}
+          className={cn(
+            'relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 mx-0.5 sm:mx-1 group hover:scale-110 active:scale-95 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber',
+            isDarkroom
+              ? 'bg-gradient-to-b from-[#260e0d] to-black border-2 border-safelight/80 text-safelight shadow-[0_0_20px_rgba(179,38,30,0.4)]'
+              : 'bg-gradient-to-b from-[#1f1e24] to-black border-2 border-amber/80 text-amber shadow-[0_0_20px_rgba(245,158,11,0.35)]'
+          )}
+        >
+          {/* Subtle spinning aperture ring on hover */}
+          <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 relative transition-transform duration-500 group-hover:rotate-45">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-full h-full"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="14.31" y1="8" x2="20.05" y2="17.94" />
+              <line x1="9.69" y1="8" x2="21.17" y2="8" />
+              <line x1="7.38" y1="12" x2="13.12" y2="2.06" />
+              <line x1="9.69" y1="16" x2="3.95" y2="6.06" />
+              <line x1="14.31" y1="16" x2="2.83" y2="16" />
+              <line x1="16.62" y1="12" x2="10.88" y2="21.94" />
+            </svg>
+          </div>
+
+          {/* Shutter Click Indicator Pulse */}
+          <span
+            className={cn(
+              'absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity animate-ping pointer-events-none',
+              isDarkroom ? 'bg-safelight/20' : 'bg-amber/20'
+            )}
+          />
+        </Link>
+
+        {/* --- Right Flank: Gallery & About --- */}
+        <DockButton
+          item={DOCK_ITEMS[2]}
+          pathname={pathname}
+          isDarkroom={isDarkroom}
+          onHover={setHoveredIndex}
+        />
+
+        <DockButton
+          item={DOCK_ITEMS[3]}
+          pathname={pathname}
+          isDarkroom={isDarkroom}
+          onHover={setHoveredIndex}
+        />
+
+        {/* Divider */}
+        <div className="w-[1px] h-6 bg-charcoal-border mx-0.5 sm:mx-1 shrink-0" />
+
+        {/* --- WhatsApp Community Guild Action Button --- */}
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Join WhatsApp Guild"
+          onMouseEnter={() => setHoveredIndex('Join WhatsApp Guild')}
+          onMouseLeave={() => setHoveredIndex(null)}
+          className={cn(
+            'p-2 sm:p-2.5 rounded-full transition-all duration-300 text-offwhite-dim hover:text-amber hover:bg-white/5 active:scale-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber',
+            'relative'
+          )}
+        >
+          <MessageCircle className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+          <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber animate-pulse" />
+        </a>
+
+        {/* --- Admin Studio Portal Quick Link --- */}
+        <Link
+          href="/admin/dashboard"
+          aria-label="The Editing Room // Admin Portal"
+          onMouseEnter={() => setHoveredIndex('The Editing Room // Admin Portal')}
+          onMouseLeave={() => setHoveredIndex(null)}
+          className="p-2 sm:p-2.5 rounded-full text-offwhite-dim hover:text-offwhite hover:bg-white/5 active:scale-95 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-amber"
+        >
+          <Sliders className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+        </Link>
+      </div>
+    </nav>
+  );
+}
+
+interface DockButtonProps {
+  item: (typeof DOCK_ITEMS)[0];
+  pathname: string;
+  isDarkroom: boolean;
+  onHover: (text: string | null) => void;
+}
+
+function DockButton({ item, pathname, isDarkroom, onHover }: DockButtonProps) {
+  const Icon = item.icon;
+  const isActive =
+    item.href === '/' ? pathname === '/' : pathname?.startsWith(item.href);
+
+  return (
+    <Link
+      href={item.href}
+      aria-label={item.label}
+      onMouseEnter={() => onHover(item.tooltip)}
+      onMouseLeave={() => onHover(null)}
+      className={cn(
+        'relative px-2.5 sm:px-3.5 py-2 rounded-full transition-all duration-300 flex items-center gap-1.5 text-xs font-mono tracking-wider focus:outline-none focus-visible:ring-2 focus-visible:ring-amber',
+        isActive
+          ? isDarkroom
+            ? 'bg-safelight text-white font-semibold shadow-md shadow-safelight/40 ring-1 ring-safelight/60'
+            : 'bg-amber text-black font-semibold shadow-md shadow-amber/40 ring-1 ring-amber/60'
+          : 'text-offwhite-dim hover:text-offwhite hover:bg-white/5'
+      )}
+    >
+      <Icon className="w-4 h-4 sm:w-4.5 sm:h-4.5 shrink-0" />
+      <span className="hidden md:inline-block">{item.label}</span>
+      {isActive && (
+        <span
+          className={cn(
+            'hidden lg:inline-block text-[9px] px-1.5 py-0.2 rounded-full',
+            isDarkroom ? 'bg-black/40 text-offwhite' : 'bg-black/30 text-black'
+          )}
+        >
+          {item.code}
+        </span>
+      )}
+    </Link>
+  );
+}

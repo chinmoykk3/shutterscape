@@ -113,7 +113,7 @@ export function CameraReadout({
       <aside
         aria-label="Camera exposure readout"
         className={cn(
-          'fixed left-4 bottom-5 z-40 hidden sm:inline-flex items-center gap-3 px-3.5 py-2 rounded-full bg-charcoal/90 border backdrop-blur-md text-[11px] font-mono select-none shadow-xl shadow-black/70 transition-colors duration-500',
+          'fixed left-6 bottom-6 z-40 hidden xl:inline-flex items-center gap-3 px-3.5 py-2 rounded-full bg-charcoal/90 border backdrop-blur-md text-[11px] font-mono select-none shadow-xl shadow-black/70 transition-colors duration-500',
           isSafelight ? 'border-safelight/40 text-offwhite-muted' : 'border-charcoal-border text-offwhite-muted',
           className
         )}

@@ -99,6 +99,8 @@ export async function DELETE(request: NextRequest) {
         success: true,
         message: 'Local asset removed from darkroom storage.',
       });
+    }
+
     // If Cloudinary is not configured with real keys, skip remote deletion
     if (!isCloudinaryConfigured()) {
       return NextResponse.json({

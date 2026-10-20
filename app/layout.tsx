@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { playfair, inter, jetbrainsMono } from '@/lib/fonts';
 import './globals.css';
 
-import { Header } from '@/components/layout/Header';
+import { MinimalTopBar } from '@/components/layout/MinimalTopBar';
+import { CameraDockBar } from '@/components/layout/CameraDockBar';
 import { Footer } from '@/components/layout/Footer';
 import { ShutterLoader } from '@/components/story/ShutterLoader';
 import { ShutterBlinkTransition } from '@/components/story/ShutterBlinkTransition';
@@ -132,21 +133,27 @@ export default async function RootLayout({
             Skip to main story
           </a>
 
-          {/* Global Sticky Header */}
-          <Header
+          {/* Minimal Floating Top Watermark Strip */}
+          <MinimalTopBar
             instagramUrl={settings.instagramUrl}
             whatsappUrl={settings.whatsappUrl}
           />
 
           {/* Main Story Content */}
-          <main id="main-story-content" className="flex-grow relative">
+          <main id="main-story-content" className="flex-grow relative pb-24">
             {children}
           </main>
 
-          {/* Persistent Bottom-Left Camera Exposure Readout HUD */}
+          {/* Floating Camera Island Dock Bar (Inspired by Codénix) */}
+          <CameraDockBar
+            whatsappUrl={settings.whatsappUrl}
+            instagramUrl={settings.instagramUrl}
+          />
+
+          {/* Persistent Bottom-Left Camera Exposure Readout HUD (XL screens) */}
           <CameraReadout floatingHud />
 
-          {/* Persistent Bottom-Right Film Counter Scroll HUD ("Frame 07/36") */}
+          {/* Persistent Bottom-Right Film Counter Scroll HUD (XL screens) */}
           <FilmCounterScroll />
 
           {/* Global "End Credits" Footer */}

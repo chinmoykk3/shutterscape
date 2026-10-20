@@ -41,7 +41,7 @@ export function FilmCounterScroll() {
   return (
     <aside
       aria-label={`Film roll scroll progress: Frame ${frame} of ${totalFrames}`}
-      className="fixed right-4 bottom-5 z-40 flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-charcoal/90 border border-charcoal-border backdrop-blur-md text-[11px] font-mono text-offwhite select-none shadow-xl shadow-black/70"
+      className="fixed right-6 bottom-6 z-40 hidden xl:flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-charcoal/90 border border-charcoal-border backdrop-blur-md text-[11px] font-mono text-offwhite select-none shadow-xl shadow-black/70"
     >
       <span
         className={`w-2 h-2 rounded-full animate-pulse ${isDarkroom ? 'bg-safelight shadow-[0_0_8px_#B3261E]' : 'bg-amber shadow-[0_0_8px_#F59E0B]'
