@@ -257,28 +257,40 @@ export function HomepageStoryEngine({
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top top',
-            end: 'bottom bottom',
+            end: '+=500%',
             pin: pinnedSectionRef.current,
-            scrub: 1,
+            scrub: 0.8,
             anticipatePin: 1,
+            invalidateOnRefresh: true,
           },
         });
 
-        // Set initial visibility
-        gsap.set(scene1Ref.current, { opacity: 1, pointerEvents: 'auto' });
-        gsap.set([scene2Ref.current, scene3Ref.current, scene4Ref.current, scene5Ref.current, scene6Ref.current], {
-          opacity: 0,
-          pointerEvents: 'none',
-        });
+        // Initialize all scenes cleanly using autoAlpha to prevent initial render bleed
+        gsap.set(scene1Ref.current, { autoAlpha: 1 });
+        gsap.set(
+          [
+            scene2Ref.current,
+            scene3Ref.current,
+            scene4Ref.current,
+            scene5Ref.current,
+            scene6Ref.current,
+          ],
+          { autoAlpha: 0 }
+        );
 
-        // --- SCENE 1: Iris-Open Intro (0.00 -> 0.16) ---
+        // -----------------------------------------------------------------------
+        // TIMELINE CHOREOGRAPHY (Total timeline duration: 12.0 units)
+        // Strictly mutually exclusive slices with buffers to prevent any overlapping.
+        // -----------------------------------------------------------------------
+
+        // --- SCENE 1: Iris-Open Intro (0.00 -> 1.80) ---
         masterTl
           .to(
             irisMaskRef.current,
             {
               clipPath: 'circle(150% at 50% 50%)',
               ease: 'power2.inOut',
-              duration: 1.5,
+              duration: 1.4,
             },
             0
           )
@@ -289,53 +301,53 @@ export function HomepageStoryEngine({
               scale: 2.2,
               opacity: 0,
               ease: 'power2.inOut',
-              duration: 1.5,
+              duration: 1.4,
             },
             0
           )
           .to(
             scene1Ref.current,
             {
-              opacity: 0,
+              autoAlpha: 0,
               scale: 0.95,
-              pointerEvents: 'none',
-              duration: 0.5,
+              duration: 0.4,
+              ease: 'power2.in',
             },
-            1.5
+            1.4
           );
 
-        // --- SCENE 2: Focus-Pull Title (1.6 -> 3.2) ---
+        // --- SCENE 2: Focus-Pull Title (2.00 -> 3.80) ---
         masterTl
-          .set(scene2Ref.current, { pointerEvents: 'auto' }, 1.6)
           .to(
             scene2Ref.current,
             {
-              opacity: 1,
+              autoAlpha: 1,
               duration: 0.4,
+              ease: 'power2.out',
             },
-            1.6
+            2.0
           )
           .fromTo(
             focusTargetRef.current,
-            { filter: 'blur(30px) brightness(1.6)', scale: 1.08 },
+            { filter: 'blur(26px) brightness(1.5)', scale: 1.06 },
             {
               filter: 'blur(0px) brightness(1)',
               scale: 1,
               duration: 1.2,
               ease: 'power2.out',
             },
-            1.7
+            2.1
           )
           .fromTo(
             focusScaleRef.current,
-            { x: -80, opacity: 0.4 },
+            { x: -60, opacity: 0.3 },
             {
               x: 0,
               opacity: 1,
               duration: 1.2,
               ease: 'power2.out',
             },
-            1.7
+            2.1
           )
           .to(
             focusLockRef.current,
@@ -344,67 +356,67 @@ export function HomepageStoryEngine({
               color: '#F59E0B',
               duration: 0.2,
             },
-            2.6
+            3.0
           )
           .to(
             scene2Ref.current,
             {
-              opacity: 0,
-              pointerEvents: 'none',
+              autoAlpha: 0,
               duration: 0.4,
+              ease: 'power2.in',
             },
-            3.0
+            3.4
           );
 
-        // --- SCENE 3: Viewfinder-Bracket Scene (3.2 -> 4.8) ---
+        // --- SCENE 3: Viewfinder-Bracket Scene (4.00 -> 5.80) ---
         masterTl
-          .set(scene3Ref.current, { pointerEvents: 'auto' }, 3.2)
           .to(
             scene3Ref.current,
             {
-              opacity: 1,
+              autoAlpha: 1,
               duration: 0.4,
+              ease: 'power2.out',
             },
-            3.2
+            4.0
           )
           .fromTo(
             bracketsRef.current,
-            { scale: 1.25, opacity: 0 },
+            { scale: 1.2, opacity: 0 },
             {
               scale: 1,
               opacity: 1,
               duration: 0.8,
               ease: 'back.out(1.4)',
             },
-            3.3
+            4.1
           )
           .to(
             scene3Ref.current,
             {
-              opacity: 0,
-              pointerEvents: 'none',
+              autoAlpha: 0,
               duration: 0.4,
+              ease: 'power2.in',
             },
-            4.6
+            5.4
           );
 
-        // --- SCENE 4: Horizontal Film Strip Driven by Vertical Scroll (4.8 -> 7.2) ---
+        // --- SCENE 4: Horizontal Film Strip Driven by Vertical Scroll (6.00 -> 8.40) ---
         masterTl
-          .set(scene4Ref.current, { pointerEvents: 'auto' }, 4.8)
           .to(
             scene4Ref.current,
             {
-              opacity: 1,
+              autoAlpha: 1,
               duration: 0.4,
+              ease: 'power2.out',
             },
-            4.8
+            6.0
           )
           .to(
             filmReelRef.current,
             {
-              xPercent: -58,
+              xPercent: -50,
               ease: 'none',
-              duration: 2.2,
+              duration: 2.0,
               onUpdate: function () {
                 const progress = this.progress();
                 const totalItems = displayGallery.length;
@@ -412,80 +424,80 @@ export function HomepageStoryEngine({
                 setActiveReelFrame(current);
               },
             },
-            5.0
+            6.2
           )
           .to(
             scene4Ref.current,
             {
-              opacity: 0,
-              pointerEvents: 'none',
+              autoAlpha: 0,
               duration: 0.4,
+              ease: 'power2.in',
             },
-            7.0
+            8.0
           );
 
-        // --- SCENE 5: Unexposed Next-Event Frame with Live Countdown (7.2 -> 8.8) ---
+        // --- SCENE 5: Unexposed Next-Event Frame with Live Countdown (8.60 -> 10.40) ---
         masterTl
-          .set(scene5Ref.current, { pointerEvents: 'auto' }, 7.2)
           .to(
             scene5Ref.current,
             {
-              opacity: 1,
+              autoAlpha: 1,
               duration: 0.4,
+              ease: 'power2.out',
             },
-            7.2
+            8.6
           )
           .fromTo(
             developingCardRef.current,
-            { filter: 'grayscale(100%) blur(14px) contrast(1.4)', scale: 0.96 },
+            { filter: 'grayscale(100%) blur(12px) contrast(1.3)', scale: 0.96 },
             {
               filter: 'grayscale(0%) blur(0px) contrast(1)',
               scale: 1,
-              duration: 1.2,
+              duration: 1.0,
               ease: 'power2.out',
-            },
-            7.4
-          )
-          .to(
-            scene5Ref.current,
-            {
-              opacity: 0,
-              pointerEvents: 'none',
-              duration: 0.4,
-            },
-            8.6
-          );
-
-        // --- SCENE 6: Flash-to-Join-Us Epilogue (8.8 -> 10.0) ---
-        masterTl
-          .set(scene6Ref.current, { pointerEvents: 'auto' }, 8.8)
-          // Camera Xenon Flash burst
-          .fromTo(
-            flashOverlayRef.current,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              duration: 0.15,
-              ease: 'power4.in',
             },
             8.8
           )
           .to(
+            scene5Ref.current,
+            {
+              autoAlpha: 0,
+              duration: 0.4,
+              ease: 'power2.in',
+            },
+            10.0
+          );
+
+        // --- SCENE 6: Flash-to-Join-Us Epilogue (10.60 -> 12.00) ---
+        masterTl
+          // Camera Xenon Flash burst
+          .fromTo(
+            flashOverlayRef.current,
+            { autoAlpha: 0 },
+            {
+              autoAlpha: 0.95,
+              duration: 0.12,
+              ease: 'power4.in',
+            },
+            10.6
+          )
+          .to(
             flashOverlayRef.current,
             {
-              opacity: 0,
-              duration: 0.45,
+              autoAlpha: 0,
+              duration: 0.35,
               ease: 'power2.out',
             },
-            8.95
+            10.72
           )
           .to(
             scene6Ref.current,
             {
-              opacity: 1,
+              autoAlpha: 1,
               duration: 0.5,
+              ease: 'power2.out',
             },
-            9.0
+            10.75
           );
       });
 
@@ -497,11 +509,11 @@ export function HomepageStoryEngine({
         mobileSections?.forEach((sec) => {
           gsap.fromTo(
             sec,
-            { opacity: 0, y: 35 },
+            { opacity: 0, y: 30 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.8,
+              duration: 0.7,
               ease: 'power2.out',
               scrollTrigger: {
                 trigger: sec,
@@ -517,7 +529,7 @@ export function HomepageStoryEngine({
       // 3. PREFERS-REDUCED-MOTION: STATIC ACCESSIBLE LAYOUT
       // =========================================================================
       mm.add('(prefers-reduced-motion: reduce)', () => {
-        // No animation, static state
+        // All elements are visible statically
       });
     }, containerRef);
 
@@ -528,36 +540,39 @@ export function HomepageStoryEngine({
     <div ref={containerRef} className="relative w-full">
       {/* =========================================================================
           DESKTOP PINNED VIEWPORT (Visible >= 1024px)
+          Strictly managed by ScrollTrigger's pin-spacer without conflicting CSS sticky
           ========================================================================= */}
-      <div className="hidden lg:block relative h-[600vh] w-full">
+      <div className="hidden lg:block relative w-full">
         <div
           ref={pinnedSectionRef}
-          className="sticky top-0 h-screen w-full overflow-hidden bg-black flex items-center justify-center select-none"
+          className="relative h-screen w-full overflow-hidden bg-black flex items-center justify-center select-none pt-20"
         >
-          {/* Subtle Viewfinder HUD Crosshair centered in viewport */}
+          {/* Viewfinder HUD Reticle centered in viewport */}
           <div className="pointer-events-none absolute inset-0 z-30">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 opacity-25">
               <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-white/70" />
               <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/70" />
             </div>
-            {/* Top Telemetry strip */}
-            <div className="absolute top-8 left-10 right-10 flex items-center justify-between font-mono text-[11px] text-offwhite-dim">
+
+            {/* Top Telemetry strip (Safely below sticky site header) */}
+            <div className="absolute top-20 left-10 right-10 flex items-center justify-between font-mono text-[11px] text-offwhite-dim">
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse" />
                 <span className="tracking-widest uppercase">ShutterScape Optical Engine</span>
               </div>
-              <div className="tracking-widest">
+              <div className="tracking-widest text-amber/80">
                 SCROLL TO ADVANCE SHUTTER
               </div>
             </div>
           </div>
 
           {/* ---------------------------------------------------------------------
-              SCENE 1: Iris-Open Intro
+              SCENE 1: Iris-Open Intro (Initially visible by default in CSS)
               --------------------------------------------------------------------- */}
           <div
             ref={scene1Ref}
-            className="absolute inset-0 z-20 flex items-center justify-center text-center p-8 bg-black transition-opacity"
+            style={{ opacity: 1, visibility: 'visible' }}
+            className="absolute inset-0 z-20 flex items-center justify-center text-center p-8 bg-black transition-opacity pt-20"
           >
             {/* Iris Mask Container */}
             <div
@@ -597,17 +612,18 @@ export function HomepageStoryEngine({
           </div>
 
           {/* ---------------------------------------------------------------------
-              SCENE 2: Focus-Pull Title
+              SCENE 2: Focus-Pull Title (Initially hidden by default in CSS)
               --------------------------------------------------------------------- */}
           <div
             ref={scene2Ref}
-            className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8 transition-opacity"
+            style={{ opacity: 0, visibility: 'hidden' }}
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8 pt-20"
           >
             <div ref={focusTargetRef} className="max-w-3xl space-y-6">
               <Badge variant="amber" className="mx-auto">
                 {'● SCENE 02 // RACKING FOCUS'}
               </Badge>
-              <h2 className="font-title text-6xl sm:text-8xl font-black text-offwhite tracking-tight leading-[1.05]">
+              <h2 className="font-title text-5xl sm:text-7xl font-black text-offwhite tracking-tight leading-[1.05]">
                 {scene1.headline}
               </h2>
               <p className="font-title text-2xl sm:text-3xl text-amber font-light max-w-2xl mx-auto leading-snug">
@@ -618,7 +634,7 @@ export function HomepageStoryEngine({
             {/* Optical Focus Distance Scale Indicator */}
             <div
               ref={focusScaleRef}
-              className="mt-12 flex flex-col items-center gap-3 bg-charcoal/80 border border-charcoal-border px-8 py-3 rounded-2xl backdrop-blur-md"
+              className="mt-10 flex flex-col items-center gap-3 bg-charcoal/90 border border-charcoal-border px-8 py-3 rounded-2xl backdrop-blur-md"
             >
               <div className="font-mono text-[10px] tracking-widest uppercase text-offwhite-dim flex items-center gap-2">
                 <Sliders className="w-3 h-3 text-amber" />
@@ -644,16 +660,17 @@ export function HomepageStoryEngine({
           </div>
 
           {/* ---------------------------------------------------------------------
-              SCENE 3: Viewfinder-Bracket Scene
+              SCENE 3: Viewfinder-Bracket Scene (Initially hidden by default in CSS)
               --------------------------------------------------------------------- */}
           <div
             ref={scene3Ref}
-            className="absolute inset-0 z-20 flex items-center justify-center p-8 transition-opacity"
+            style={{ opacity: 0, visibility: 'hidden' }}
+            className="absolute inset-0 z-20 flex items-center justify-center p-8 pt-20"
           >
             {/* Viewfinder Outer Frame with Clamping Brackets */}
             <div
               ref={bracketsRef}
-              className="relative max-w-4xl w-full aspect-[16/10] border border-white/10 rounded-2xl p-8 flex flex-col justify-between bg-charcoal/20 backdrop-blur-xs"
+              className="relative max-w-3xl w-full aspect-[16/10] border border-white/10 rounded-2xl p-6 sm:p-8 flex flex-col justify-between bg-charcoal/40 backdrop-blur-md"
             >
               {/* Corner Framing Brackets */}
               <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-amber" />
@@ -662,30 +679,30 @@ export function HomepageStoryEngine({
               <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-amber" />
 
               {/* Viewfinder Center Crosshairs */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10">
                 <div className="absolute top-1/2 left-0 right-0 h-[1.5px] bg-amber/80" />
                 <div className="absolute left-1/2 top-0 bottom-0 w-[1.5px] bg-amber/80" />
-                <div className="absolute inset-2 rounded-full border border-amber/40" />
+                <div className="absolute inset-1.5 rounded-full border border-amber/40" />
               </div>
 
               {/* Top Viewfinder Telemetry */}
               <div className="flex items-center justify-between font-mono text-xs text-offwhite-dim z-10">
                 <span className="text-amber font-bold">[AF-S TRACKING]</span>
-                <span className="bg-black/60 px-2 py-0.5 rounded border border-charcoal-border">
+                <span className="bg-black/70 px-2 py-0.5 rounded border border-charcoal-border">
                   EXP. COMP: +0.3 EV
                 </span>
                 <span className="text-offwhite font-bold">RAW + FINE</span>
               </div>
 
               {/* Scene 3 Narrative Content */}
-              <div className="text-center space-y-3 z-10 max-w-xl mx-auto">
+              <div className="text-center space-y-3 z-10 max-w-lg mx-auto">
                 <Badge variant="amber" className="mx-auto">
                   {'● SCENE 03 // THE COMPOSITION'}
                 </Badge>
-                <h2 className="font-title text-4xl sm:text-6xl font-black text-offwhite tracking-tight">
+                <h2 className="font-title text-4xl sm:text-5xl font-black text-offwhite tracking-tight">
                   {scene2.headline}
                 </h2>
-                <p className="font-title text-lg sm:text-xl text-offwhite-muted leading-relaxed">
+                <p className="font-title text-base sm:text-lg text-offwhite-muted leading-relaxed">
                   {scene2.bodyText}
                 </p>
               </div>
@@ -701,19 +718,20 @@ export function HomepageStoryEngine({
           </div>
 
           {/* ---------------------------------------------------------------------
-              SCENE 4: Horizontal Film Strip Driven by Vertical Scroll
+              SCENE 4: Horizontal Film Strip (Initially hidden by default in CSS)
               --------------------------------------------------------------------- */}
           <div
             ref={scene4Ref}
-            className="absolute inset-0 z-20 flex flex-col justify-center px-12 transition-opacity"
+            style={{ opacity: 0, visibility: 'hidden' }}
+            className="absolute inset-0 z-20 flex flex-col justify-center px-8 sm:px-12 pt-20"
           >
             {/* Header Readout Bar */}
-            <div className="max-w-6xl mx-auto w-full flex items-end justify-between mb-6 z-10">
+            <div className="max-w-6xl mx-auto w-full flex items-end justify-between mb-4 z-10">
               <div className="space-y-1">
                 <Badge variant="amber">
                   {'● SCENE 04 // 35MM CONTINUOUS STRIP'}
                 </Badge>
-                <h2 className="font-title text-3xl sm:text-5xl font-black text-offwhite">
+                <h2 className="font-title text-3xl sm:text-4xl font-black text-offwhite">
                   {scene3.headline}
                 </h2>
                 <p className="font-mono text-xs text-offwhite-muted">
@@ -733,18 +751,18 @@ export function HomepageStoryEngine({
             </div>
 
             {/* The Horizontal Film Reel Track */}
-            <div className="relative w-full overflow-visible py-4">
+            <div className="relative w-full overflow-hidden py-3">
               <div
                 ref={filmReelRef}
-                className="flex items-center gap-8 w-max will-change-transform pl-4"
+                className="flex items-center gap-6 w-max will-change-transform pl-4"
               >
                 {displayGallery.map((item, idx) => (
                   <div
                     key={item._id}
-                    className="relative w-[380px] shrink-0 bg-[#0c0c0e] border-2 border-charcoal-border rounded-xl p-3 shadow-2xl space-y-2 group"
+                    className="relative w-[320px] shrink-0 bg-[#0c0c0e] border border-charcoal-border rounded-xl p-3 shadow-2xl space-y-2 group"
                   >
                     {/* Top Sprocket Perforation Strip */}
-                    <div className="horizontal-film-track h-6 w-full opacity-60" />
+                    <div className="horizontal-film-track h-5 w-full opacity-60" />
 
                     {/* Film Frame Margin Indicators */}
                     <div className="flex items-center justify-between text-[10px] font-mono text-amber px-1">
@@ -772,7 +790,7 @@ export function HomepageStoryEngine({
 
                     {/* Frame Caption */}
                     <div className="p-1 space-y-0.5">
-                      <h4 className="font-title text-sm font-bold text-offwhite truncate">
+                      <h4 className="font-title text-xs sm:text-sm font-bold text-offwhite truncate">
                         {item.caption}
                       </h4>
                       {item.photographer && (
@@ -783,7 +801,7 @@ export function HomepageStoryEngine({
                     </div>
 
                     {/* Bottom Sprocket Perforation Strip */}
-                    <div className="horizontal-film-track h-6 w-full opacity-60" />
+                    <div className="horizontal-film-track h-5 w-full opacity-60" />
                   </div>
                 ))}
               </div>
@@ -791,21 +809,22 @@ export function HomepageStoryEngine({
           </div>
 
           {/* ---------------------------------------------------------------------
-              SCENE 5: Unexposed Next-Event Frame with Live Countdown
+              SCENE 5: Unexposed Next-Event Frame (Initially hidden by default in CSS)
               --------------------------------------------------------------------- */}
           <div
             ref={scene5Ref}
-            className="absolute inset-0 z-20 flex items-center justify-center p-8 transition-opacity"
+            style={{ opacity: 0, visibility: 'hidden' }}
+            className="absolute inset-0 z-20 flex items-center justify-center p-8 pt-20"
           >
-            <div className="max-w-4xl w-full space-y-6">
-              <div className="text-center space-y-2">
+            <div className="max-w-3xl w-full space-y-4">
+              <div className="text-center space-y-1">
                 <Badge variant="amber" className="mx-auto">
                   {'● SCENE 05 // THE LATENT NEGATIVE'}
                 </Badge>
-                <h2 className="font-title text-4xl sm:text-6xl font-black text-offwhite">
+                <h2 className="font-title text-3xl sm:text-5xl font-black text-offwhite">
                   {scene4.headline}
                 </h2>
-                <p className="font-mono text-xs sm:text-sm text-offwhite-muted">
+                <p className="font-mono text-xs text-offwhite-muted">
                   {scene4.bodyText}
                 </p>
               </div>
@@ -813,7 +832,7 @@ export function HomepageStoryEngine({
               {/* Developing Film Frame Card */}
               <div
                 ref={developingCardRef}
-                className="relative p-6 sm:p-8 rounded-3xl bg-charcoal border-2 border-amber/40 shadow-[0_0_60px_rgba(245,158,11,0.15)] will-change-transform"
+                className="relative p-6 sm:p-7 rounded-3xl bg-charcoal border-2 border-amber/40 shadow-[0_0_50px_rgba(245,158,11,0.12)] will-change-transform"
               >
                 {nextUpcomingEvent ? (
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
@@ -836,9 +855,9 @@ export function HomepageStoryEngine({
                     </div>
 
                     {/* Event Details & Live Countdown */}
-                    <div className="md:col-span-7 space-y-4">
+                    <div className="md:col-span-7 space-y-3">
                       <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-amber">
-                        <span className="flex items-center gap-1.5 bg-amber/10 px-2.5 py-1 rounded-full border border-amber/30">
+                        <span className="flex items-center gap-1.5 bg-amber/10 px-2.5 py-0.5 rounded-full border border-amber/30">
                           <Calendar className="w-3 h-3" />
                           {new Date(nextUpcomingEvent.date).toLocaleDateString('en-US', {
                             month: 'short',
@@ -847,25 +866,25 @@ export function HomepageStoryEngine({
                           })}
                         </span>
                         {nextUpcomingEvent.venue && (
-                          <span className="flex items-center gap-1.5 text-offwhite-dim bg-white/5 px-2.5 py-1 rounded-full border border-charcoal-border">
+                          <span className="flex items-center gap-1.5 text-offwhite-dim bg-white/5 px-2.5 py-0.5 rounded-full border border-charcoal-border">
                             <MapPin className="w-3 h-3" />
                             {nextUpcomingEvent.venue}
                           </span>
                         )}
                       </div>
 
-                      <h3 className="font-title text-2xl sm:text-3xl font-bold text-offwhite leading-tight">
+                      <h3 className="font-title text-xl sm:text-2xl font-bold text-offwhite leading-tight">
                         {nextUpcomingEvent.title}
                       </h3>
 
                       {nextUpcomingEvent.pullQuote && (
-                        <p className="text-xs sm:text-sm text-offwhite-muted italic border-l-2 border-amber pl-3 line-clamp-2">
+                        <p className="text-xs text-offwhite-muted italic border-l-2 border-amber pl-3 line-clamp-2">
                           &ldquo;{nextUpcomingEvent.pullQuote}&rdquo;
                         </p>
                       )}
 
                       {/* Live Intervalometer Countdown */}
-                      <div className="pt-2">
+                      <div className="pt-1">
                         <Countdown targetDate={nextUpcomingEvent.date} />
                       </div>
 
@@ -895,12 +914,12 @@ export function HomepageStoryEngine({
                   </div>
                 ) : (
                   /* Blank negative state if no upcoming activity */
-                  <div className="p-12 text-center space-y-4">
-                    <div className="w-12 h-12 rounded-full bg-black/60 border border-charcoal-border flex items-center justify-center mx-auto text-amber">
-                      <Calendar className="w-6 h-6" />
+                  <div className="p-8 text-center space-y-3">
+                    <div className="w-10 h-10 rounded-full bg-black/60 border border-charcoal-border flex items-center justify-center mx-auto text-amber">
+                      <Calendar className="w-5 h-5" />
                     </div>
                     <div className="space-y-1">
-                      <h3 className="font-title text-2xl font-bold text-offwhite">
+                      <h3 className="font-title text-xl font-bold text-offwhite">
                         Frame 36 is Waiting in the Canister
                       </h3>
                       <p className="font-mono text-xs text-offwhite-muted max-w-md mx-auto">
@@ -917,19 +936,21 @@ export function HomepageStoryEngine({
           </div>
 
           {/* ---------------------------------------------------------------------
-              SCENE 6: Flash-to-Join-Us Epilogue
+              SCENE 6: Flash-to-Join-Us Epilogue (Initially hidden by default in CSS)
               --------------------------------------------------------------------- */}
           <div
             ref={scene6Ref}
-            className="absolute inset-0 z-20 flex items-center justify-center p-8 transition-opacity text-center"
+            style={{ opacity: 0, visibility: 'hidden' }}
+            className="absolute inset-0 z-20 flex items-center justify-center p-8 pt-20 transition-opacity text-center"
           >
             {/* Xenon Strobe Flash Curtain */}
             <div
               ref={flashOverlayRef}
-              className="pointer-events-none fixed inset-0 z-50 bg-white opacity-0"
+              style={{ opacity: 0, visibility: 'hidden' }}
+              className="pointer-events-none fixed inset-0 z-50 bg-white"
             />
 
-            <div className="max-w-3xl space-y-8">
+            <div className="max-w-2xl space-y-6">
               <div className="flex flex-col items-center gap-2">
                 <Badge variant="amber">
                   {'● SCENE 06 // THE EPILOGUE'}
@@ -939,31 +960,31 @@ export function HomepageStoryEngine({
                 </div>
               </div>
 
-              <div className="space-y-4">
-                <h2 className="font-title text-5xl sm:text-7xl font-black text-offwhite tracking-tight leading-[1.08]">
+              <div className="space-y-3">
+                <h2 className="font-title text-4xl sm:text-6xl font-black text-offwhite tracking-tight leading-[1.08]">
                   {scene5.headline}
                 </h2>
-                <p className="font-title text-2xl sm:text-3xl text-amber font-light max-w-xl mx-auto leading-relaxed">
+                <p className="font-title text-xl sm:text-2xl text-amber font-light max-w-lg mx-auto leading-relaxed">
                   {scene5.bodyText}
                 </p>
               </div>
 
-              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
                 <Button
                   href={whatsappUrl}
                   isExternal
                   variant="primary"
-                  size="lg"
-                  className="gap-2 shadow-[0_0_30px_rgba(245,158,11,0.25)]"
+                  size="md"
+                  className="gap-2 shadow-[0_0_25px_rgba(245,158,11,0.25)]"
                 >
-                  <MessageCircle className="w-5 h-5" />
+                  <MessageCircle className="w-4 h-4" />
                   Join The Collective
                 </Button>
 
                 <Button
                   href="/gallery"
                   variant="outline"
-                  size="lg"
+                  size="md"
                   className="gap-2"
                 >
                   Explore Light Table <ArrowRight className="w-4 h-4" />
@@ -973,7 +994,7 @@ export function HomepageStoryEngine({
                   href={instagramUrl}
                   isExternal
                   variant="secondary"
-                  size="lg"
+                  size="md"
                 >
                   Follow on Instagram
                 </Button>
@@ -985,8 +1006,9 @@ export function HomepageStoryEngine({
 
       {/* =========================================================================
           MOBILE REVEAL-ON-SCROLL VIEWPORT (Visible < 1024px)
+          Simple vertical flow with individual scroll triggers and zero overlapping
           ========================================================================= */}
-      <div className="block lg:hidden py-16 px-4 space-y-16 max-w-2xl mx-auto">
+      <div className="block lg:hidden py-12 px-4 space-y-12 max-w-2xl mx-auto">
         {/* Mobile Scene 1 */}
         <section className="mobile-story-card p-6 rounded-2xl bg-charcoal border border-charcoal-border space-y-4 text-center">
           <Badge variant="amber" className="mx-auto">
