@@ -11,6 +11,7 @@ import {
   MessageCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ShutterScapeLogo } from '@/components/ui/ShutterScapeLogo';
 
 interface CameraDockBarProps {
   whatsappUrl?: string;
@@ -113,11 +114,11 @@ export function CameraDockBar({
           onHover={setHoveredIndex}
         />
 
-        {/* --- Centerpiece: The Aperture Shutter Release Button --- */}
+        {/* --- Centerpiece: The ShutterScape Logo Button --- */}
         <Link
           href="/"
-          aria-label="Release Shutter // Return to Origin"
-          onMouseEnter={() => setHoveredIndex('Shutter Release // Return to Origin')}
+          aria-label="ShutterScape // Return to Origin"
+          onMouseEnter={() => setHoveredIndex('ShutterScape // Return to Origin')}
           onMouseLeave={() => setHoveredIndex(null)}
           className={cn(
             'relative w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 mx-0.5 sm:mx-1 group hover:scale-110 active:scale-95 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber',
@@ -126,25 +127,9 @@ export function CameraDockBar({
               : 'bg-gradient-to-b from-[#1f1e24] to-black border-2 border-amber/80 text-amber shadow-[0_0_20px_rgba(245,158,11,0.35)]'
           )}
         >
-          {/* Subtle spinning aperture ring on hover */}
-          <div className="w-6 h-6 sm:w-6.5 sm:h-6.5 relative transition-transform duration-500 group-hover:rotate-45">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-full h-full"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="14.31" y1="8" x2="20.05" y2="17.94" />
-              <line x1="9.69" y1="8" x2="21.17" y2="8" />
-              <line x1="7.38" y1="12" x2="13.12" y2="2.06" />
-              <line x1="9.69" y1="16" x2="3.95" y2="6.06" />
-              <line x1="14.31" y1="16" x2="2.83" y2="16" />
-              <line x1="16.62" y1="12" x2="10.88" y2="21.94" />
-            </svg>
+          {/* ShutterScape S-Lens Logo Mark */}
+          <div className="w-5 h-3.5 sm:w-6 sm:h-4 relative transition-transform duration-300 group-hover:scale-110 flex items-center justify-center">
+            <ShutterScapeLogo variant="mark" className="w-full h-full text-current" />
           </div>
 
           {/* Shutter Click Indicator Pulse */}
