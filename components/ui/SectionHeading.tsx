@@ -6,6 +6,7 @@ interface SectionHeadingProps {
   title: string;
   subtitle?: string;
   align?: 'left' | 'center';
+  accent?: 'amber' | 'safelight';
   className?: string;
 }
 
@@ -14,8 +15,11 @@ export function SectionHeading({
   title,
   subtitle,
   align = 'left',
+  accent = 'amber',
   className,
 }: SectionHeadingProps) {
+  const isSafelight = accent === 'safelight';
+
   return (
     <div
       className={cn(
@@ -24,11 +28,22 @@ export function SectionHeading({
         className
       )}
     >
-      <div className="flex items-center gap-2 mb-3 font-mono text-[11px] tracking-[0.25em] text-amber uppercase select-none">
-        <span className="w-2 h-2 rounded-full bg-amber animate-pulse" />
+      <div
+        className={cn(
+          'inline-flex items-center gap-2 mb-3 font-mono text-[11px] tracking-[0.25em] uppercase select-none',
+          isSafelight ? 'text-[#ff6b63]' : 'text-amber',
+          align === 'center' && 'justify-center'
+        )}
+      >
+        <span
+          className={cn(
+            'w-2 h-2 rounded-full animate-pulse',
+            isSafelight ? 'bg-safelight shadow-[0_0_8px_#B3261E]' : 'bg-amber shadow-[0_0_8px_#F59E0B]'
+          )}
+        />
         <span>{chapter}</span>
       </div>
-      <h2 className="font-title text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-offwhite leading-[1.15]">
+      <h2 className="font-title text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-offwhite leading-[1.12]">
         {title}
       </h2>
       {subtitle && (

@@ -1,34 +1,48 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
+/**
+ * 150ms physical camera shutter-blink curtain on page navigation.
+ * Honors prefers-reduced-motion.
+ */
 export function ShutterBlinkTransition() {
   const pathname = usePathname();
-  const [blink, setBlink] = useState(false);
+  const isFirstRender = useRef(true);
+  const [blinking, setBlinking] = useState(false);
 
   useEffect(() => {
-    // 150ms shutter-blink transition upon route shift
-    const startTimeout = setTimeout(() => {
-      setBlink(true);
-    }, 0);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
-    const endTimeout = setTimeout(() => {
-      setBlink(false);
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const startTimer = setTimeout(() => {
+      setBlinking(true);
+    }, 0);
+    const timer = setTimeout(() => {
+      setBlinking(false);
     }, 150);
 
     return () => {
-      clearTimeout(startTimeout);
-      clearTimeout(endTimeout);
+      clearTimeout(startTimer);
+      clearTimeout(timer);
     };
   }, [pathname]);
 
-  if (!blink) return null;
+  if (!blinking) return null;
 
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 z-[99998] bg-black pointer-events-none transition-opacity duration-75 ease-in-out opacity-90"
-    />
+      className="shutter-curtain animate-shutter-blink flex flex-col justify-between"
+    >
+      <div className="w-full h-1/2 bg-black border-b border-amber/20" />
+      <div className="w-full h-1/2 bg-black border-t border-amber/20" />
+    </div>
   );
 }
