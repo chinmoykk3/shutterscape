@@ -64,7 +64,20 @@ export function getOptimizedImageUrl(
     quality: options.quality || 'auto',
     width: options.width,
     height: options.height,
-    crop: options.crop || 'fill',
     secure: true,
   });
+}
+
+/**
+ * Removes an image asset from Cloudinary by its public ID.
+ */
+export async function deleteCloudinaryAsset(publicId: string): Promise<boolean> {
+  try {
+    if (!publicId) return true;
+    const res = await cloudinary.uploader.destroy(publicId);
+    return res.result === 'ok' || res.result === 'not found';
+  } catch (error) {
+    console.error('Error destroying Cloudinary asset:', error);
+    return false;
+  }
 }

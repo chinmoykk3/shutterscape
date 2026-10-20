@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IAuditLog extends Document {
-  adminId: mongoose.Types.ObjectId;
+  adminId?: mongoose.Types.ObjectId | null;
   action: 'create' | 'update' | 'delete' | 'login' | 'logout' | 'lockout';
   entity: 'Activity' | 'GalleryItem' | 'Member' | 'StoryScene' | 'Settings' | 'Auth';
   entityId?: string;
@@ -15,7 +15,8 @@ const AuditLogSchema = new Schema<IAuditLog>(
     adminId: {
       type: Schema.Types.ObjectId,
       ref: 'Admin',
-      required: true,
+      required: false,
+      default: null,
       index: true,
     },
     action: {

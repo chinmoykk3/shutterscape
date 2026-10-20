@@ -7,12 +7,17 @@ import { Footer } from '@/components/layout/Footer';
 import { ShutterLoader } from '@/components/story/ShutterLoader';
 import { ShutterBlinkTransition } from '@/components/story/ShutterBlinkTransition';
 import { FilmCounterScroll } from '@/components/story/FilmCounterScroll';
+import { CameraReadout } from '@/components/story/CameraReadout';
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 import { getSettings } from '@/lib/actions/settings';
 
 export const metadata: Metadata = {
-  title: 'ShutterScape | Photography Club of Girijananda Chowdhury University',
-  description: 'Every frame tells a story. The official photography club of GCU, Assam.',
+  title: {
+    default: 'ShutterScape | Photography Club of GCU',
+    template: '%s | ShutterScape GCU',
+  },
+  description:
+    'Every frame tells a story. Official photography club of Girijananda Chowdhury University (GCU), Assam.',
 };
 
 export default async function RootLayout({
@@ -27,38 +32,44 @@ export default async function RootLayout({
       lang="en"
       className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable} bg-black text-offwhite`}
     >
-      <body className="antialiased selection:bg-amber selection:text-black min-h-screen flex flex-col">
-        {/* Subtle persistent 3% analog film grain overlay */}
+      <body className="antialiased selection:bg-amber selection:text-black min-h-screen flex flex-col bg-black text-offwhite">
+        {/* Persistent 3% Film Grain Overlay */}
         <div className="film-grain" aria-hidden="true" />
 
-        {/* Shutter blink route transitions */}
+        {/* 150ms Shutter-Blink Page Transition */}
         <ShutterBlinkTransition />
 
-        {/* First session visit shutter click loader */}
+        {/* First-Visit SVG Shutter-Click Loader (<1.5s via sessionStorage) */}
         <ShutterLoader />
 
-        {/* Smooth scroll wrapper */}
+        {/* Lenis + GSAP ScrollTrigger Smooth Scroll Provider */}
         <SmoothScrollProvider>
-          {/* Skip accessibility link */}
+          {/* Accessibility Skip-to-Content Link */}
           <a
-            href="#main-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[10000] focus:px-4 focus:py-2 focus:bg-amber focus:text-black focus:font-mono focus:rounded-md"
+            href="#main-story-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100001] focus:px-4 focus:py-2.5 focus:bg-amber focus:text-black focus:font-mono focus:text-xs focus:font-bold focus:rounded-xl focus:shadow-lg"
           >
-            Skip to main frame
+            Skip to main story
           </a>
 
-          {/* Sticky Header with navigation blur */}
-          <Header />
+          {/* Global Sticky Header */}
+          <Header
+            instagramUrl={settings.instagramUrl}
+            whatsappUrl={settings.whatsappUrl}
+          />
 
-          {/* Main Story Container */}
-          <main id="main-content" className="flex-grow">
+          {/* Main Story Content */}
+          <main id="main-story-content" className="flex-grow relative">
             {children}
           </main>
 
-          {/* Global Film Progress Scroll HUD */}
+          {/* Persistent Bottom-Left Camera Exposure Readout HUD */}
+          <CameraReadout floatingHud />
+
+          {/* Persistent Bottom-Right Film Counter Scroll HUD ("Frame 07/36") */}
           <FilmCounterScroll />
 
-          {/* End Credits Footer */}
+          {/* Global "End Credits" Footer */}
           <Footer settings={settings} />
         </SmoothScrollProvider>
       </body>

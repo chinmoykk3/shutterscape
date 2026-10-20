@@ -45,3 +45,18 @@ export function getDarkroomBlurPlaceholder(width = 16, height = 10): string {
       : window.btoa(svg);
   return `data:image/svg+xml;base64,${base64}`;
 }
+
+/**
+ * Converts a string into a URL-friendly kebab-case slug
+ */
+export function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
