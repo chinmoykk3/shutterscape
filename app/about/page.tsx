@@ -12,6 +12,8 @@ import {
   ExternalLink,
   Sparkles,
   Quote,
+  Flame,
+  Code2,
 } from 'lucide-react';
 import { connectDB } from '@/lib/db';
 import { Member, IMember } from '@/lib/models/Member';
@@ -24,13 +26,13 @@ import { getDarkroomBlurPlaceholder } from '@/lib/utils';
 export const revalidate = 60; // ISR cache every 60s
 
 export const metadata: Metadata = {
-  title: 'About Us & Behind The Lens | ShutterScape GCU',
+  title: 'Behind the Lens & About Us | ShutterScape GCU',
   description:
-    'Meet the photographers, faculty mentors, student leaders, and founding alumni behind ShutterScape, the official photography society of Girijananda Chowdhury University.',
+    'Meet the photographers, faculty mentors, core student crew, and founding alumni behind ShutterScape, the official photography society of Girijananda Chowdhury University.',
   openGraph: {
-    title: 'Behind The Lens // ShutterScape GCU',
+    title: 'Behind the Lens // ShutterScape GCU',
     description:
-      'Meet the photographers, faculty mentors, student leaders, and founding alumni behind ShutterScape.',
+      'Meet the photographers, faculty mentors, core student crew, and founding alumni behind ShutterScape.',
   },
 };
 
@@ -64,6 +66,27 @@ export default async function AboutPage() {
   const facultyMembers = members.filter((m) => m.type === 'faculty');
   const coreMembers = members.filter((m) => m.type === 'core');
   const alumniMembers = members.filter((m) => m.type === 'alumni');
+
+  const originActs = [
+    {
+      act: 'ACT I',
+      year: '2023',
+      title: 'The Latent Genesis',
+      desc: 'In the corridors of Girijananda Chowdhury University, a small circle of students shared an obsession with light, optics, and frozen moments. What began as informal campus photowalks quickly ignited into a formal society dedicated to visual literacy and analog printmaking.',
+    },
+    {
+      act: 'ACT II',
+      year: '2024',
+      title: 'Expeditions & Darkroom Heritage',
+      desc: 'The society expanded into rural tea garden expeditions, riverbank twilight safaris along the Brahmaputra, and darkroom chemical processing. We hosted our inaugural World Photography Day salon, showcasing student negatives printed on archival fiber paper.',
+    },
+    {
+      act: 'ACT III',
+      year: 'PRESENT',
+      title: 'The Living Campus Archive',
+      desc: 'Today, ShutterScape operates as the premier visual chronicle of GCU. Across engineering, management, humanities, and sciences, our members document university life with technical precision and emotional truth.',
+    },
+  ];
 
   const pillars = [
     {
@@ -169,6 +192,50 @@ export default async function AboutPage() {
       </section>
 
       {/* =========================================================================
+          THE ORIGIN STORY (With Chronological Act Progression)
+          ========================================================================= */}
+      <section aria-labelledby="origin-heading" className="relative z-10 space-y-12">
+        <div className="border-b border-charcoal-border pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-amber text-xs font-mono font-bold uppercase tracking-wider mb-1">
+              <Flame className="w-3.5 h-3.5 text-amber" />
+              The Genesis Chronicle
+            </div>
+            <h2 id="origin-heading" className="font-title text-3xl sm:text-4xl font-black text-offwhite tracking-tight">
+              Origin Story // Latent to Light
+            </h2>
+          </div>
+          <p className="font-mono text-xs text-offwhite-dim max-w-md">
+            How a campus curiosity developed into the official photographic society of Girijananda Chowdhury University.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {originActs.map((act) => (
+            <div
+              key={act.act}
+              className="p-8 rounded-3xl bg-charcoal/90 border border-charcoal-border space-y-4 hover:border-amber/50 transition-all hover:-translate-y-1 group relative overflow-hidden"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs text-amber font-bold tracking-widest">
+                  {act.act}
+                </span>
+                <span className="font-mono text-xs text-offwhite-dim bg-white/5 px-2.5 py-0.5 rounded-full border border-charcoal-border">
+                  {act.year}
+                </span>
+              </div>
+              <h3 className="font-title text-2xl font-bold text-offwhite group-hover:text-amber transition-colors">
+                {act.title}
+              </h3>
+              <p className="text-sm font-sans text-offwhite-muted leading-relaxed">
+                {act.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
           THE MANIFESTO & 4 PILLARS
           ========================================================================= */}
       <section aria-labelledby="manifesto-heading" className="relative z-10 space-y-12">
@@ -206,7 +273,7 @@ export default async function AboutPage() {
       </section>
 
       {/* =========================================================================
-          FACULTY MENTORS & COORDINATORS
+          THE MENTORS (Faculty Coordinators - Rounded Photos & Quotes)
           ========================================================================= */}
       {facultyMembers.length > 0 && (
         <section aria-labelledby="faculty-heading" className="relative z-10 space-y-8">
@@ -216,10 +283,10 @@ export default async function AboutPage() {
               Academic Mentorship
             </div>
             <h2 id="faculty-heading" className="font-title text-2xl sm:text-3xl font-bold text-offwhite">
-              Faculty Coordinators
+              The Mentors
             </h2>
             <p className="font-mono text-xs text-offwhite-dim">
-              Distinguished mentors guiding the university photography collective.
+              Distinguished faculty coordinators guiding the vision, ethics, and technical standard of our guild.
             </p>
           </div>
 
@@ -227,10 +294,10 @@ export default async function AboutPage() {
             {facultyMembers.map((faculty) => (
               <div
                 key={faculty._id.toString()}
-                className="flex flex-col sm:flex-row items-center gap-6 p-6 sm:p-8 rounded-2xl bg-charcoal border border-charcoal-border hover:border-amber/50 transition-all"
+                className="flex flex-col sm:flex-row items-center gap-6 p-6 sm:p-8 rounded-3xl bg-charcoal border border-charcoal-border hover:border-amber/50 transition-all"
               >
-                {/* Framed Portrait */}
-                <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shrink-0 border-2 border-charcoal-border/80">
+                {/* Rounded Portrait */}
+                <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden shrink-0 border-4 border-charcoal-border/80 group-hover:border-amber transition-colors shadow-2xl">
                   <Image
                     src={faculty.image.url}
                     alt={faculty.name}
@@ -239,16 +306,15 @@ export default async function AboutPage() {
                     blurDataURL={faculty.image.blurDataURL || getDarkroomBlurPlaceholder(12, 12)}
                     className="object-cover"
                   />
-                  <div className="absolute top-2 left-2">
-                    <Badge variant="amber" className="text-[9px] py-0.5 px-1.5 shadow-md">
-                      FACULTY
-                    </Badge>
-                  </div>
+                  <div className="absolute inset-0 rounded-full border border-amber/30 pointer-events-none" />
                 </div>
 
                 {/* Info & Quote */}
                 <div className="space-y-3 text-center sm:text-left flex-1">
                   <div>
+                    <Badge variant="amber" className="text-[10px] py-0.5 px-2 mb-1.5">
+                      FACULTY COORDINATOR
+                    </Badge>
                     <h3 className="font-title text-xl font-bold text-offwhite">
                       {faculty.name}
                     </h3>
@@ -258,9 +324,9 @@ export default async function AboutPage() {
                   </div>
 
                   {faculty.quote && (
-                    <p className="text-xs sm:text-sm text-offwhite-muted italic border-l-2 border-amber/40 pl-3">
+                    <blockquote className="text-xs sm:text-sm text-offwhite-muted italic border-l-2 border-amber/40 pl-3">
                       &ldquo;{faculty.quote}&rdquo;
-                    </p>
+                    </blockquote>
                   )}
                 </div>
               </div>
@@ -270,20 +336,20 @@ export default async function AboutPage() {
       )}
 
       {/* =========================================================================
-          CORE EXECUTIVE COMMITTEE
+          THE CREW (Core Student Committee - Rounded Photos, Names, Roles)
           ========================================================================= */}
       {coreMembers.length > 0 && (
         <section aria-labelledby="core-heading" className="relative z-10 space-y-8">
           <div className="border-b border-charcoal-border pb-4">
             <div className="flex items-center gap-2 text-amber text-xs font-mono font-bold uppercase tracking-wider mb-1">
               <Camera className="w-3.5 h-3.5" />
-              Student Leadership
+              Student Leadership &amp; Operators
             </div>
             <h2 id="core-heading" className="font-title text-2xl sm:text-3xl font-bold text-offwhite">
-              The Core Crew
+              The Crew
             </h2>
             <p className="font-mono text-xs text-offwhite-dim">
-              The shutterbugs, exhibition curators, and expedition leaders shaping each term.
+              The student shutterbugs, exhibition curators, and expedition leaders shaping each term.
             </p>
           </div>
 
@@ -291,16 +357,10 @@ export default async function AboutPage() {
             {coreMembers.map((member) => (
               <div
                 key={member._id.toString()}
-                className="group flex flex-col bg-charcoal border border-charcoal-border rounded-2xl overflow-hidden transition-all duration-300 hover:border-amber hover:shadow-[0_0_25px_rgba(245,158,11,0.12)]"
+                className="group flex flex-col items-center text-center p-6 bg-charcoal border border-charcoal-border rounded-3xl transition-all duration-300 hover:border-amber hover:shadow-[0_0_25px_rgba(245,158,11,0.12)] space-y-4"
               >
-                {/* 35mm Slide Header */}
-                <div className="px-3 py-1.5 bg-black/80 border-b border-charcoal-border font-mono text-[9px] text-offwhite-dim flex justify-between items-center">
-                  <span className="text-amber">CREW #{String(member.order || 1).padStart(2, '0')}</span>
-                  <span>GCU</span>
-                </div>
-
-                {/* Portrait */}
-                <div className="relative aspect-square w-full bg-black/60 overflow-hidden">
+                {/* Rounded Photo */}
+                <div className="relative w-28 h-28 rounded-full overflow-hidden shrink-0 border-2 border-charcoal-border group-hover:border-amber transition-colors shadow-lg">
                   <Image
                     src={member.image.url}
                     alt={member.name}
@@ -309,12 +369,15 @@ export default async function AboutPage() {
                     blurDataURL={member.image.blurDataURL || getDarkroomBlurPlaceholder(12, 12)}
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
-                  <div className="pointer-events-none absolute inset-2 rounded-lg border border-white/0 transition-all duration-300 group-hover:border-white/20" />
+                  <div className="absolute inset-0 rounded-full border border-white/10 pointer-events-none" />
                 </div>
 
                 {/* Info */}
-                <div className="p-4 space-y-1">
-                  <h3 className="font-title text-sm sm:text-base font-bold text-offwhite group-hover:text-amber transition-colors line-clamp-1">
+                <div className="space-y-1">
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-amber">
+                    CREW #{String(member.order || 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="font-title text-base font-bold text-offwhite group-hover:text-amber transition-colors line-clamp-1">
                     {member.name}
                   </h3>
                   <p className="font-mono text-xs text-offwhite-dim font-medium">
@@ -328,41 +391,54 @@ export default async function AboutPage() {
       )}
 
       {/* =========================================================================
-          FOUNDING ALUMNI NEGATIVE STRIP
+          THE NEGATIVES (Archive Style, Inverts on Hover)
           ========================================================================= */}
       {alumniMembers.length > 0 && (
         <section aria-labelledby="alumni-heading" className="relative z-10 space-y-8">
           <div className="border-b border-charcoal-border pb-4">
             <div className="flex items-center gap-2 text-offwhite-dim text-xs font-mono font-bold uppercase tracking-wider mb-1">
               <Quote className="w-3.5 h-3.5 text-amber" />
-              Founding Roll &amp; Legacy
+              Founding Roll &amp; Archival Negatives
             </div>
             <h2 id="alumni-heading" className="font-title text-2xl sm:text-3xl font-bold text-offwhite">
-              The Alumni Negative Strip
+              The Negatives // Alumni Archive
             </h2>
-            <p className="font-mono text-xs text-offwhite-dim">
-              Honoring the founders and past core members who established ShutterScape at GCU.
+            <p className="font-mono text-xs text-amber">
+              Preserved as 35mm physical negatives. Hover or focus on any frame to invert into a positive print.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {alumniMembers.map((alumnus) => (
+            {alumniMembers.map((alumnus, idx) => (
               <div
                 key={alumnus._id.toString()}
-                className="flex items-center gap-4 p-4 rounded-2xl bg-charcoal/60 border border-charcoal-border hover:border-amber/40 transition-colors"
+                className="group relative flex flex-col p-5 rounded-2xl bg-[#0c0c0e] border-2 border-charcoal-border hover:border-amber transition-all duration-500 space-y-3 cursor-pointer shadow-xl"
               >
-                <div className="relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-charcoal-border grayscale hover:grayscale-0 transition-all">
+                {/* 35mm Negative Frame Header */}
+                <div className="flex items-center justify-between font-mono text-[9px] text-amber border-b border-charcoal-border pb-1.5">
+                  <span>NEGATIVE #{String(idx + 1).padStart(2, '0')}A</span>
+                  <span>{alumnus.batch || 'ARCHIVE'}</span>
+                </div>
+
+                {/* The Inverting Photo Frame */}
+                <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-black border border-charcoal-border">
                   <Image
                     src={alumnus.image.url}
                     alt={alumnus.name}
                     fill
                     placeholder="blur"
                     blurDataURL={alumnus.image.blurDataURL || getDarkroomBlurPlaceholder(8, 8)}
-                    className="object-cover"
+                    className="object-cover invert contrast-125 brightness-90 group-hover:invert-0 group-hover:contrast-100 group-hover:brightness-100 transition-all duration-700 ease-out"
                   />
+                  {/* Subtle Inversion Hint Overlay */}
+                  <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/80 font-mono text-[9px] text-amber opacity-80 group-hover:opacity-0 transition-opacity">
+                    NEGATIVE [HOVER]
+                  </div>
                 </div>
-                <div className="space-y-0.5">
-                  <h3 className="font-title text-sm font-bold text-offwhite">
+
+                {/* Name, Role & Batch */}
+                <div className="space-y-1">
+                  <h3 className="font-title text-base font-bold text-offwhite group-hover:text-amber transition-colors">
                     {alumnus.name}
                   </h3>
                   <p className="font-mono text-xs text-amber">
@@ -477,39 +553,33 @@ export default async function AboutPage() {
       </section>
 
       {/* =========================================================================
-          BOTTOM JOIN CTA BANNER
+          DEDICATED CREDIT STRIP (Codénix - GCU Coding Club)
           ========================================================================= */}
-      <section aria-labelledby="join-cta-heading" className="relative z-10">
-        <div className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-amber/20 via-charcoal to-safelight/20 border-2 border-amber/30 text-center space-y-6 shadow-2xl">
-          <Badge variant="amber" className="mx-auto">
-            {'● NEXT ROLL IS WAITING'}
-          </Badge>
-          <div className="space-y-3 max-w-2xl mx-auto">
-            <h2 id="join-cta-heading" className="font-title text-3xl sm:text-4xl font-black text-offwhite">
-              Ready to Expose Your First Frame?
-            </h2>
-            <p className="font-mono text-xs sm:text-sm text-offwhite-muted">
-              Whether you shoot on 35mm film, modern mirrorless, or a smartphone,
-              ShutterScape is open to every student at Girijananda Chowdhury University.
-            </p>
+      <section aria-label="Website maintenance credit" className="relative z-10 pt-4">
+        <div className="p-6 rounded-2xl bg-black/80 border border-charcoal-border flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber/10 border border-amber/30 flex items-center justify-center text-amber shrink-0">
+              <Code2 className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="font-title text-sm font-bold text-offwhite">
+                Digital Infrastructure &amp; Web Experience
+              </div>
+              <div className="font-mono text-xs text-offwhite-dim">
+                Engineered for the visual arts society of Girijananda Chowdhury University.
+              </div>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <Button
-              href={settings.whatsappUrl}
-              isExternal
-              variant="primary"
-              className="gap-2"
-            >
-              <MessageCircle className="w-4 h-4" /> Join Student WhatsApp Group
-            </Button>
-            <Button
-              href="/gallery"
-              variant="outline"
-              className="gap-2"
-            >
-              Explore Light Table <ExternalLink className="w-3.5 h-3.5" />
-            </Button>
-          </div>
+
+          <a
+            href="https://codingclub.gcuniversity.ac.in"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-charcoal border border-amber/40 text-xs font-mono text-amber hover:bg-amber hover:text-black font-semibold transition-all shadow-md group"
+          >
+            <span>Website Maintained by Codénix (GCU Coding Club)</span>
+            <ExternalLink className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
         </div>
       </section>
     </div>
