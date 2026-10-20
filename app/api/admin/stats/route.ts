@@ -6,7 +6,7 @@ import { GalleryItem } from '@/lib/models/GalleryItem';
 import { Member } from '@/lib/models/Member';
 import { StoryScene } from '@/lib/models/StoryScene';
 import { AuditLog } from '@/lib/models/AuditLog';
-import { Admin } from '@/lib/models/Admin';
+import '@/lib/models/Admin'; // Register Admin model for Mongoose populate
 
 export async function GET(request: NextRequest) {
   try {

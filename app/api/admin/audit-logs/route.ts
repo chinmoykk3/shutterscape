@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth';
 import { connectToDatabase } from '@/lib/db';
 import { AuditLog } from '@/lib/models/AuditLog';
-import { Admin } from '@/lib/models/Admin';
+import '@/lib/models/Admin'; // Register Admin model for Mongoose populate
 
 export async function GET(request: NextRequest) {
   try {
