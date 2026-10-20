@@ -17,6 +17,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Countdown } from '@/components/ui/Countdown';
 import { ImageCard } from '@/components/ui/ImageCard';
 import { CameraReadout } from '@/components/story/CameraReadout';
+import { HomepageStoryEngine } from '@/components/story/HomepageStoryEngine';
 
 export const revalidate = 60; // ISR cache every 60s
 
@@ -149,52 +150,16 @@ export default async function HomePage() {
       </section>
 
       {/* =========================================================================
-          CHAPTER 1: THE STORY SCENES (Sequential Visual Narrative)
+          CHAPTER 1: THE STORY SCENES (6 GSAP ScrollTrigger Story Engine)
           ========================================================================= */}
-      <section id="story-scenes" className="relative py-24 sm:py-32 bg-[#09090b] border-t border-charcoal-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            chapter="CHAPTER 01 // VISUAL NARRATIVE"
-            title="Stories in Latent Light"
-            subtitle="The 3-Act Exposure Process: From the split-second click of the mirror to the slow chemical birth inside the darkroom bath—each photograph is a testament to frozen time."
-            align="center"
-            className="mb-16"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {storyScenes.map((scene: IStoryScene, idx: number) => (
-              <div
-                key={scene.key || idx}
-                className="relative flex flex-col rounded-2xl bg-charcoal border border-charcoal-border overflow-hidden p-6 space-y-4 hover:border-amber/50 transition-all duration-300 group"
-              >
-                {/* Scene Image Frame */}
-                {scene.image?.url && (
-                  <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-black border border-charcoal-border">
-                    <Image
-                      src={scene.image.url}
-                      alt={scene.headline}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/80 font-mono text-[10px] text-amber border border-amber/30">
-                      ACT 0{scene.order || idx + 1}
-                    </div>
-                  </div>
-                )}
-
-                <div className="space-y-2">
-                  <h3 className="font-title text-xl font-bold text-offwhite group-hover:text-amber transition-colors">
-                    {scene.headline}
-                  </h3>
-                  <p className="font-body text-sm text-offwhite-muted leading-relaxed">
-                    {scene.bodyText}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <section id="story-scenes" className="relative w-full bg-black border-t border-charcoal-border">
+        <HomepageStoryEngine
+          storyScenes={storyScenes}
+          featuredGallery={galleryItems}
+          nextUpcomingEvent={nextUpcomingEvent}
+          whatsappUrl={settings.whatsappUrl}
+          instagramUrl={settings.instagramUrl}
+        />
       </section>
 
       {/* =========================================================================
