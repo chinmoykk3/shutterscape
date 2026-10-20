@@ -542,7 +542,7 @@ export function HomepageStoryEngine({
           DESKTOP PINNED VIEWPORT (Visible >= 1024px)
           Strictly managed by ScrollTrigger's pin-spacer without conflicting CSS sticky
           ========================================================================= */}
-      <div className="hidden lg:block relative w-full">
+      <div className="hidden lg:block relative w-full desktop-pinned-story">
         <div
           ref={pinnedSectionRef}
           className="relative h-screen w-full overflow-hidden bg-black flex items-center justify-center select-none pt-20"
@@ -1008,7 +1008,7 @@ export function HomepageStoryEngine({
           MOBILE REVEAL-ON-SCROLL VIEWPORT (Visible < 1024px)
           Simple vertical flow with individual scroll triggers and zero overlapping
           ========================================================================= */}
-      <div className="block lg:hidden py-12 px-4 space-y-12 max-w-2xl mx-auto">
+      <div className="block lg:hidden py-12 px-4 space-y-12 max-w-2xl mx-auto mobile-story-flow">
         {/* Mobile Scene 1 */}
         <section className="mobile-story-card p-6 rounded-2xl bg-charcoal border border-charcoal-border space-y-4 text-center">
           <Badge variant="amber" className="mx-auto">

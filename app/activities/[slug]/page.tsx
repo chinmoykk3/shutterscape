@@ -108,8 +108,43 @@ export default async function SingleActivityPage({ params }: ActivityPageProps) 
     minute: '2-digit',
   });
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shutterscape.gcuniversity.ac.in';
+  const eventJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: activity.title,
+    description: activity.pullQuote || activity.title,
+    startDate: activity.date,
+    endDate: activity.endDate || activity.date,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: {
+      '@type': 'Place',
+      name: activity.venue || 'Girijananda Chowdhury University (GCU) Campus',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Guwahati',
+        addressRegion: 'Assam',
+        addressCountry: 'IN',
+      },
+    },
+    image: activity.image?.url ? [activity.image.url] : [],
+    organizer: {
+      '@type': 'Organization',
+      name: 'ShutterScape Photography Club GCU',
+      url: siteUrl,
+    },
+    url: `${siteUrl}/activities/${activity.slug}`,
+  };
+
   return (
     <article className="relative min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-12">
+      {/* Event Schema Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventJsonLd) }}
+      />
+
       {/* Light Leaks */}
       <div className="absolute top-20 right-1/4 w-[450px] h-[450px] rounded-full light-leak-amber blur-[150px] pointer-events-none" />
       <div className="absolute top-2/3 left-10 w-[400px] h-[400px] rounded-full light-leak-safelight blur-[160px] pointer-events-none" />

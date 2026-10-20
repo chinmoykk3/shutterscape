@@ -119,9 +119,8 @@ body {
   border-left: 1px solid rgba(245, 158, 11, 0.5);
 }
 
-/* Reduced Motion Safety */
+/* Reduced Motion Safety & Accessibility Fallback */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   ::before,
   ::after {
@@ -133,5 +132,19 @@ body {
 
   .darkroom-undeveloped {
     filter: none !important;
+    transform: none !important;
+  }
+
+  .shutter-curtain {
+    display: none !important;
+  }
+
+  /* Display accessible static vertical flow instead of pinned scrub timeline */
+  .desktop-pinned-story {
+    display: none !important;
+  }
+
+  .mobile-story-flow {
+    display: block !important;
   }
 }
