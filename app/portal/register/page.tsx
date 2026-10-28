@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { User, Mail, Lock, Camera, BookOpen, ArrowRight, Loader2, Sparkles, Phone } from 'lucide-react';
+import { User, Mail, Lock, Camera, BookOpen, ArrowRight, Loader2 } from 'lucide-react';
 import { ShutterScapeLogo } from '@/components/ui/ShutterScapeLogo';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';

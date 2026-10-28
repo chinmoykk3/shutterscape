@@ -224,7 +224,6 @@ export function HeroFloatingGallery({ items }: HeroFloatingGalleryProps) {
             smoothX={smoothX}
             smoothY={smoothY}
             prefersReduced={Boolean(prefersReduced)}
-            mounted={mounted}
           />
         );
       })}
@@ -238,7 +237,6 @@ interface FloatingCardProps {
   smoothX: ReturnType<typeof useSpring>;
   smoothY: ReturnType<typeof useSpring>;
   prefersReduced: boolean;
-  mounted: boolean;
 }
 
 function FloatingCard({
@@ -247,10 +245,8 @@ function FloatingCard({
   smoothX,
   smoothY,
   prefersReduced,
-  mounted,
 }: FloatingCardProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
 
   // Parallax transform calculation based on depth
   // When smoothX = 1, card moves cfg.depth * 22px

@@ -143,11 +143,10 @@ export async function requireAdmin(
   roleOrRequest?: 'superadmin' | 'editor' | NextRequest | Request,
   maybeRequest?: NextRequest | Request
 ): Promise<SessionUser> {
-  let role: 'superadmin' | 'editor' | undefined;
   let request: NextRequest | Request | undefined;
 
   if (typeof roleOrRequest === 'string') {
-    role = roleOrRequest;
+    void roleOrRequest;
     request = maybeRequest;
   } else if (roleOrRequest && typeof roleOrRequest === 'object') {
     request = roleOrRequest as NextRequest | Request;
@@ -190,7 +189,7 @@ export async function guardAdminApi(
   let request: NextRequest | Request | undefined;
 
   if (typeof roleOrRequest === 'string') {
-    role = roleOrRequest;
+    void roleOrRequest;
     request = maybeRequest;
   } else if (roleOrRequest && typeof roleOrRequest === 'object') {
     request = roleOrRequest as NextRequest | Request;

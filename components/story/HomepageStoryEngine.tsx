@@ -14,16 +14,7 @@ import {
   CheckCircle2,
   Zap,
   Camera,
-  Disc,
-  Eye,
-  Activity,
   Flame,
-  ShieldCheck,
-  Layers,
-  Film,
-  Clock,
-  Compass,
-  Sun,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';

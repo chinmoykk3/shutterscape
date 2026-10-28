@@ -101,6 +101,7 @@ export async function DELETE(
 
     return NextResponse.json({ success: true, message: 'Photo submission permanently destroyed' });
   } catch (error) {
+    console.error('Delete photo error:', error);
     return NextResponse.json(
       { error: 'Failed to delete submission' },
       { status: 500 }

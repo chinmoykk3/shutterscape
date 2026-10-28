@@ -137,7 +137,7 @@ async function scrapeViaOpenGraph(shortcode: string): Promise<Partial<InstagramP
       html.match(/property="og:description"\s+content="([^">]+)"/i) ||
       html.match(/content="([^">]+)"\s+property="og:description"/i);
 
-    let imageUrl = ogImg ? ogImg[1].replace(/&amp;/g, '&') : '';
+    const imageUrl = ogImg ? ogImg[1].replace(/&amp;/g, '&') : '';
     let caption = '';
 
     if (ogDesc && ogDesc[1]) {

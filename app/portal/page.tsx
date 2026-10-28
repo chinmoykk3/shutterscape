@@ -14,10 +14,7 @@ import {
   LogOut,
   Trash2,
   ExternalLink,
-  Edit3,
   Loader2,
-  User,
-  Sliders,
   X,
 } from 'lucide-react';
 import { CloudinaryUploader, ImageAsset } from '@/components/admin/CloudinaryUploader';

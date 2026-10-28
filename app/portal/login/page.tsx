@@ -3,9 +3,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, ArrowRight, Loader2, Sparkles, Camera, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Loader2 } from 'lucide-react';
 import { ShutterScapeLogo } from '@/components/ui/ShutterScapeLogo';
-import { CameraReadout } from '@/components/story/CameraReadout';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 
