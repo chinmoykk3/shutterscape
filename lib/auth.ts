@@ -1,6 +1,9 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import type { NextRequest } from 'next/server';
+import { verifyOrigin } from './security';
+
+export { verifyOrigin };
 
 export const SESSION_COOKIE_NAME = 'shutterscape_session';
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 days
@@ -9,6 +12,7 @@ export interface SessionUser {
   id: string;
   email: string;
   name: string;
+  role: 'superadmin' | 'editor';
 }
 
 const JWT_SECRET_STRING =
@@ -25,6 +29,7 @@ export async function signSessionToken(payload: SessionUser): Promise<string> {
     id: payload.id,
     email: payload.email,
     name: payload.name,
+    role: payload.role || 'editor',
   })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -52,6 +57,7 @@ export async function verifySessionToken(
         id: payload.id,
         email: payload.email,
         name: payload.name,
+        role: (payload.role as 'superadmin' | 'editor') || 'editor',
       };
     }
 
@@ -127,11 +133,26 @@ export async function getSessionFromRequest(
 
 /**
  * Guard function to enforce an active admin session in Server Actions and Route Handlers.
- * Throws an Error if no valid session exists, or returns the verified SessionUser.
+ * Polymorphic signature:
+ * - requireAdmin()
+ * - requireAdmin(request)
+ * - requireAdmin('superadmin')
+ * - requireAdmin('superadmin', request)
  */
 export async function requireAdmin(
-  request?: NextRequest | Request
+  roleOrRequest?: 'superadmin' | 'editor' | NextRequest | Request,
+  maybeRequest?: NextRequest | Request
 ): Promise<SessionUser> {
+  let role: 'superadmin' | 'editor' | undefined;
+  let request: NextRequest | Request | undefined;
+
+  if (typeof roleOrRequest === 'string') {
+    role = roleOrRequest;
+    request = maybeRequest;
+  } else if (roleOrRequest && typeof roleOrRequest === 'object') {
+    request = roleOrRequest as NextRequest | Request;
+  }
+
   let session: SessionUser | null = null;
   if (request) {
     session = await getSessionFromRequest(request);
@@ -140,30 +161,67 @@ export async function requireAdmin(
   }
 
   if (!session) {
-    throw new Error('Unauthorized: Admin session required');
+    throw new Error('Unauthorized: Superadmin session required');
+  }
+
+  // Strictly enforce superadmin access across the admin area
+  if (session.role !== 'superadmin') {
+    throw new Error('Forbidden: Superadmin credentials required to unlock admin area');
   }
 
   return session;
 }
 
 /**
- * Route handler guard that checks authentication and returns either the session or a 401 NextResponse.
+ * Route handler guard that checks authentication and origin, returning either the session or a 401/403 NextResponse.
+ * Polymorphic signature:
+ * - guardAdminApi()
+ * - guardAdminApi(request)
+ * - guardAdminApi('superadmin')
+ * - guardAdminApi('superadmin', request)
  */
 export async function guardAdminApi(
-  request?: NextRequest | Request
+  roleOrRequest?: 'superadmin' | 'editor' | NextRequest | Request,
+  maybeRequest?: NextRequest | Request
 ): Promise<{ session: SessionUser | null; errorResponse: import('next/server').NextResponse | null }> {
   const { NextResponse } = await import('next/server');
+
+  let role: 'superadmin' | 'editor' | undefined;
+  let request: NextRequest | Request | undefined;
+
+  if (typeof roleOrRequest === 'string') {
+    role = roleOrRequest;
+    request = maybeRequest;
+  } else if (roleOrRequest && typeof roleOrRequest === 'object') {
+    request = roleOrRequest as NextRequest | Request;
+  }
+
+  // 1. Verify Origin for mutations
+  if (request && !['GET', 'HEAD', 'OPTIONS'].includes(request.method)) {
+    if (!verifyOrigin(request)) {
+      return {
+        session: null,
+        errorResponse: NextResponse.json(
+          { error: 'Forbidden: Invalid request origin (CSRF protection).' },
+          { status: 403 }
+        ),
+      };
+    }
+  }
+
+  // 2. Verify Session & Role
   try {
-    const session = await requireAdmin(request);
+    const session = await requireAdmin(role, request);
     return { session, errorResponse: null };
-  } catch {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unauthorized';
+    const isForbidden = message.includes('Forbidden') || message.includes('clearance');
     return {
       session: null,
       errorResponse: NextResponse.json(
-        { error: 'Unauthorized: Admin session required.' },
-        { status: 401 }
+        { error: message },
+        { status: isForbidden ? 403 : 401 }
       ),
     };
   }
 }
-

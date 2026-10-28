@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   ArrowRight,
   Loader2,
+  KeyRound,
 } from 'lucide-react';
 import { CameraReadout } from '@/components/story/CameraReadout';
 import { Badge } from '@/components/ui/Badge';
@@ -25,6 +26,8 @@ function LoginForm() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [totpToken, setTotpToken] = useState('');
+  const [requireTotp, setRequireTotp] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(
@@ -63,7 +66,11 @@ function LoginForm() {
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          password,
+          totpToken: totpToken.trim() || undefined,
+        }),
       });
 
       const data = await res.json();
@@ -73,7 +80,17 @@ function LoginForm() {
           setIsLocked(true);
           setRemainingMinutes(data.remainingMinutes || 15);
         }
+        if (data.requireTotp) {
+          setRequireTotp(true);
+        }
         setError(data.error || 'Authentication failed. Please verify credentials.');
+        setLoading(false);
+        return;
+      }
+
+      // Check if backend requested 2FA code before issuing session
+      if (data.requireTotp) {
+        setRequireTotp(true);
         setLoading(false);
         return;
       }
@@ -117,16 +134,30 @@ function LoginForm() {
           <div className="space-y-1.5">
             <div className="inline-flex items-center gap-2">
               <Badge variant="amber" pulse>
-                RESTRICTED ACCESS
+                SUPERADMIN CLEARANCE ONLY
               </Badge>
-              <Badge variant="neutral">SHUTTERSCAPE // GCU</Badge>
+              <Badge variant="neutral">VAULT LOCK // GCU</Badge>
             </div>
             <h1 className="font-title text-2xl sm:text-3xl font-black text-offwhite tracking-tight">
-              The Editing Room
+              The Editing Room Vault
             </h1>
             <p className="font-body text-xs text-offwhite-dim">
-              Curator credentials required to access the negatives vault.
+              The Faculty & Admin area is strictly locked. Only authorized Superadmin credentials will release the vault lock.
             </p>
+          </div>
+        </div>
+
+        {/* Role Toggle Switcher */}
+        <div className="grid grid-cols-2 p-1 rounded-2xl bg-black/60 border border-charcoal-border text-xs font-mono mb-6">
+          <Link
+            href="/portal/login"
+            className="py-2.5 px-3 rounded-xl text-offwhite-dim hover:text-amber text-center transition-colors flex items-center justify-center gap-1.5"
+          >
+            Student Member
+          </Link>
+          <div className="py-2.5 px-3 rounded-xl bg-amber text-black font-bold text-center flex items-center justify-center gap-1.5 shadow-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+            Superadmin Access
           </div>
         </div>
 
@@ -160,7 +191,7 @@ function LoginForm() {
               htmlFor="email"
               className="block font-mono text-[11px] uppercase tracking-wider text-offwhite-dim font-medium"
             >
-              Curator Email
+              Superadmin ID / Email
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-offwhite-muted">
@@ -170,12 +201,12 @@ function LoginForm() {
                 id="email"
                 type="email"
                 required
-                autoFocus
+                autoFocus={!requireTotp}
                 autoComplete="email"
                 autoCapitalize="none"
                 autoCorrect="off"
-                disabled={loading || isLocked}
-                placeholder="curator@gcuniversity.ac.in"
+                disabled={loading || isLocked || requireTotp}
+                placeholder="admin@gcuniversity.ac.in"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 rounded-2xl bg-black/60 border border-charcoal-border text-offwhite placeholder:text-offwhite-muted/50 text-sm font-sans focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber transition-colors disabled:opacity-50"
@@ -190,7 +221,7 @@ function LoginForm() {
                 htmlFor="password"
                 className="block font-mono text-[11px] uppercase tracking-wider text-offwhite-dim font-medium"
               >
-                Access Key
+                Superadmin Pass / Access Key
               </label>
               <span className="font-mono text-[10px] text-offwhite-muted">
                 256-BIT ENCRYPTED
@@ -205,26 +236,72 @@ function LoginForm() {
                 type={showPassword ? 'text' : 'password'}
                 required
                 autoComplete="current-password"
-                disabled={loading || isLocked}
+                disabled={loading || isLocked || requireTotp}
                 placeholder="••••••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-11 py-3 rounded-2xl bg-black/60 border border-charcoal-border text-offwhite placeholder:text-offwhite-muted/50 text-sm font-sans focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber transition-colors disabled:opacity-50"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-offwhite-muted hover:text-offwhite transition-colors"
-              >
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4" />
-                ) : (
-                  <Eye className="w-4 h-4" />
-                )}
-              </button>
+              {!requireTotp && (
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-offwhite-muted hover:text-offwhite transition-colors"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              )}
             </div>
           </div>
+
+          {/* Optional TOTP 2FA Input */}
+          {requireTotp && (
+            <div className="space-y-1.5 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="totpToken"
+                  className="block font-mono text-[11px] uppercase tracking-wider text-amber font-semibold"
+                >
+                  Authenticator 6-Digit Code *
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRequireTotp(false);
+                    setTotpToken('');
+                  }}
+                  className="font-mono text-[10px] text-offwhite-muted hover:text-amber underline"
+                >
+                  Change Password
+                </button>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-amber">
+                  <KeyRound className="w-4 h-4" />
+                </div>
+                <input
+                  id="totpToken"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={6}
+                  required
+                  autoFocus
+                  autoComplete="one-time-code"
+                  disabled={loading || isLocked}
+                  placeholder="123456"
+                  value={totpToken}
+                  onChange={(e) => setTotpToken(e.target.value.replace(/\D/g, ''))}
+                  className="w-full pl-10 pr-4 py-3 rounded-2xl bg-black/80 border-2 border-amber text-offwhite placeholder:text-offwhite-muted/40 font-mono text-center tracking-[0.5em] text-lg focus:outline-none focus:ring-2 focus:ring-amber shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Submit Button */}
           <div className="pt-2">
@@ -232,7 +309,7 @@ function LoginForm() {
               type="submit"
               variant="primary"
               size="lg"
-              disabled={loading || isLocked || !email || !password}
+              disabled={loading || isLocked || !email || !password || (requireTotp && totpToken.length !== 6)}
               className="w-full py-3.5 rounded-2xl shadow-[0_0_25px_rgba(245,158,11,0.25)] hover:shadow-[0_0_35px_rgba(245,158,11,0.4)]"
             >
               {loading ? (
@@ -245,9 +322,14 @@ function LoginForm() {
                   <Lock className="w-4 h-4" />
                   Darkroom Locked
                 </span>
+              ) : requireTotp ? (
+                <span className="inline-flex items-center gap-2">
+                  Verify 2FA Token
+                  <ArrowRight className="w-4 h-4" />
+                </span>
               ) : (
                 <span className="inline-flex items-center gap-2">
-                  Engage Shutter // Enter
+                  Unlock Vault // Enter Admin Area
                   <ArrowRight className="w-4 h-4" />
                 </span>
               )}

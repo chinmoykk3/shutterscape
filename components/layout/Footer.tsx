@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, MapPin, ExternalLink, MessageCircle } from 'lucide-react';
+import { Mail, MapPin, ExternalLink, MessageCircle, ChevronDown, ChevronUp, Send, CheckCircle2 } from 'lucide-react';
 import { GlobalSettings } from '@/lib/actions/settings';
 import { Button } from '@/components/ui/Button';
 import { ShutterScapeLogo } from '@/components/ui/ShutterScapeLogo';
@@ -33,10 +33,54 @@ interface FooterProps {
 /**
  * Footer "End Credits" — identical on every page.
  * Reads address, email, GCU logo, JOIN US buttons (Instagram & WhatsApp),
- * and embedded Google Map of Girijananda Chowdhury University from Settings.
+ * embedded Google Map of Girijananda Chowdhury University, and optional expandable Join Form.
  */
 export function Footer({ settings }: FooterProps) {
   const [gcuLogoError, setGcuLogoError] = useState(false);
+  const [isJoinFormOpen, setIsJoinFormOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    department: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleSubmitJoin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || undefined,
+          subject: `Join Application: ${formData.department || 'GCU Student'}`,
+          message: formData.message || 'I would like to join ShutterScape photography collective.',
+          type: 'join-club',
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to submit application');
+      }
+
+      setSubmitSuccess(true);
+      setFormData({ name: '', email: '', phone: '', department: '', message: '' });
+    } catch (err: unknown) {
+      setSubmitError(err instanceof Error ? err.message : 'Submission failed');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <footer className="relative bg-charcoal border-t border-charcoal-border text-offwhite-muted pt-16 pb-12 overflow-hidden">
@@ -58,7 +102,7 @@ export function Footer({ settings }: FooterProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
           {/* Column 1 (4 cols): Club Identity & Official GCU White Logo */}
           <div className="lg:col-span-4 space-y-6">
             <Link
@@ -126,7 +170,7 @@ export function Footer({ settings }: FooterProps) {
 
             <div className="pt-3 space-y-2.5">
               <span className="font-mono text-[10px] uppercase tracking-widest text-offwhite-dim block">
-                Join The Club
+                Join The Collective
               </span>
               <div className="flex flex-wrap gap-2.5">
                 <Button
@@ -148,6 +192,16 @@ export function Footer({ settings }: FooterProps) {
                   <MessageCircle className="w-3.5 h-3.5" /> WhatsApp
                 </Button>
               </div>
+
+              {/* Optional Join Form Toggle Button */}
+              <button
+                type="button"
+                onClick={() => setIsJoinFormOpen(!isJoinFormOpen)}
+                className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-mono text-amber hover:text-amber-300 underline underline-offset-4 transition-colors focus:outline-none"
+              >
+                <span>{isJoinFormOpen ? 'Close application form' : 'Open membership application form'}</span>
+                {isJoinFormOpen ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </button>
             </div>
           </div>
 
@@ -219,10 +273,150 @@ export function Footer({ settings }: FooterProps) {
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Codénix Credit */}
-        <div className="pt-8 pb-8 sm:pb-4 border-t border-charcoal-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-offwhite-dim">
-          <div>
-            © {new Date().getFullYear()} ShutterScape — Photography Club of GCU. All rights reserved.
+        {/* Optional Expandable Join Club Form */}
+        {isJoinFormOpen && (
+          <div className="mb-12 p-6 sm:p-8 rounded-2xl bg-black/75 border border-amber/40 backdrop-blur-xl animate-in fade-in slide-in-from-top-4 duration-300">
+            <div className="max-w-2xl mx-auto space-y-5">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-title text-xl font-bold text-offwhite">
+                    Apply to Join ShutterScape
+                  </h4>
+                  <p className="font-mono text-xs text-offwhite-dim mt-0.5">
+                    No fancy DSLR required. All students & disciplines from GCU are welcome.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsJoinFormOpen(false)}
+                  className="text-offwhite-dim hover:text-offwhite text-xs font-mono"
+                >
+                  [Dismiss]
+                </button>
+              </div>
+
+              {submitSuccess ? (
+                <div className="p-4 rounded-xl bg-amber/10 border border-amber/30 flex items-center gap-3 text-amber font-mono text-xs">
+                  <CheckCircle2 className="w-5 h-5 shrink-0" />
+                  <span>
+                    Exposure recorded! The lead curator will connect with you via email/WhatsApp for the next orientation roll.
+                  </span>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmitJoin} className="space-y-4">
+                  {submitError && (
+                    <div className="p-3 rounded-lg bg-safelight/20 border border-safelight/40 text-[#ff7b73] text-xs font-mono">
+                      {submitError}
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-mono text-offwhite-dim uppercase mb-1">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder="e.g. Priyanuj Das"
+                        className="w-full px-3.5 py-2 rounded-xl bg-charcoal border border-charcoal-border text-xs text-offwhite focus:outline-none focus:border-amber transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-mono text-offwhite-dim uppercase mb-1">
+                        GCU Student Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="roll@gcuniversity.ac.in"
+                        className="w-full px-3.5 py-2 rounded-xl bg-charcoal border border-charcoal-border text-xs text-offwhite focus:outline-none focus:border-amber transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-mono text-offwhite-dim uppercase mb-1">
+                        WhatsApp Number (Optional)
+                      </label>
+                      <input
+                        type="tel"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="+91 98765 43210"
+                        className="w-full px-3.5 py-2 rounded-xl bg-charcoal border border-charcoal-border text-xs text-offwhite focus:outline-none focus:border-amber transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-mono text-offwhite-dim uppercase mb-1">
+                        Department & Year
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.department}
+                        onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                        placeholder="e.g. CSE, 2nd Year"
+                        className="w-full px-3.5 py-2 rounded-xl bg-charcoal border border-charcoal-border text-xs text-offwhite focus:outline-none focus:border-amber transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-mono text-offwhite-dim uppercase mb-1">
+                      What do you shoot with & what inspires you?
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      placeholder="e.g. Phone, vintage point-and-shoot, or DSLR. Interested in architectural shadows and street candids."
+                      className="w-full px-3.5 py-2 rounded-xl bg-charcoal border border-charcoal-border text-xs text-offwhite focus:outline-none focus:border-amber transition-colors resize-none"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-end gap-3 pt-2">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsJoinFormOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      size="sm"
+                      disabled={isSubmitting}
+                      className="gap-2"
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                      {isSubmitting ? 'Submitting Application...' : 'Submit Application'}
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Bottom Bar: Copyright & Codénix Credit & Portal Links */}
+        <div className="pt-8 pb-8 sm:pb-4 border-t border-charcoal-border/60 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] font-mono text-offwhite-dim">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span>© {new Date().getFullYear()} ShutterScape — GCU. All rights reserved.</span>
+            <span className="text-charcoal-border hidden sm:inline">•</span>
+            <Link href="/portal/login" className="hover:text-amber transition-colors">
+              Member Studio
+            </Link>
+            <span className="text-charcoal-border">•</span>
+            <Link href="/admin/login" className="hover:text-amber transition-colors">
+              Admin Darkroom
+            </Link>
           </div>
           <div>
             Website Maintained by{' '}

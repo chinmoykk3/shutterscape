@@ -84,7 +84,11 @@ export async function middleware(request: NextRequest) {
       const { payload } = await jwtVerify(sessionToken, JWT_SECRET, {
         algorithms: ['HS256'],
       });
-      if (typeof payload.id === 'string' && typeof payload.email === 'string') {
+      if (
+        typeof payload.id === 'string' &&
+        typeof payload.email === 'string' &&
+        payload.role === 'superadmin'
+      ) {
         isValidSession = true;
         adminId = payload.id;
         adminEmail = payload.email;

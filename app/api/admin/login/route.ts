@@ -12,6 +12,7 @@ import {
   resetLoginAttempts,
 } from '@/lib/security';
 import { signSessionToken, setSessionCookie } from '@/lib/auth';
+import { verifyTotpToken } from '@/lib/totp';
 
 export async function POST(request: NextRequest) {
   try {
@@ -47,7 +48,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: issue }, { status: 400 });
     }
 
-    const { email, password } = validation.data;
+    const { email, password, totpToken } = validation.data;
     const normalizedEmail = email.toLowerCase().trim();
 
     // 3. Connect DB
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
     const admin = await Admin.findOne({ email: normalizedEmail });
 
     if (!admin) {
-      // Prevent user enumeration by taking similar timing, record audit log
+      // Prevent user enumeration by taking standard timing & recording audit
       await AuditLog.create({
         action: 'login',
         entity: 'Auth',
@@ -140,7 +141,56 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 7. Successful Authentication
+    // 7. Verify Superadmin Clearance — Only superadmin can unlock the admin area
+    if (admin.role !== 'superadmin') {
+      await AuditLog.create({
+        adminId: admin._id,
+        action: 'login',
+        entity: 'Auth',
+        entityId: admin._id.toString(),
+        details: {
+          success: false,
+          reason: 'Access denied: Superadmin role required',
+          roleAttempted: admin.role,
+        },
+        ipAddress: ip,
+      });
+
+      return NextResponse.json(
+        {
+          error:
+            'Access Restricted: The Faculty & Admin Editing Room requires Superadmin authorization.',
+        },
+        { status: 403 }
+      );
+    }
+
+    // 8. Verify Optional TOTP 2FA if configured
+    if (admin.totpSecret) {
+      if (!totpToken) {
+        return NextResponse.json(
+          {
+            requireTotp: true,
+            message: 'Two-factor authenticator code required.',
+          },
+          { status: 200 }
+        );
+      }
+
+      const isTotpValid = verifyTotpToken(admin.totpSecret, totpToken);
+      if (!isTotpValid) {
+        const failInfo = await recordFailedLogin(admin);
+        return NextResponse.json(
+          {
+            error: `Invalid 2FA authentication code. ${failInfo.remainingAttempts} attempt(s) remaining.`,
+            requireTotp: true,
+          },
+          { status: 401 }
+        );
+      }
+    }
+
+    // 8. Successful Authentication
     await resetLoginAttempts(admin);
 
     await AuditLog.create({
@@ -150,15 +200,17 @@ export async function POST(request: NextRequest) {
       entityId: admin._id.toString(),
       details: {
         success: true,
+        role: admin.role || 'editor',
       },
       ipAddress: ip,
     });
 
-    // 8. Sign JWT and Set Session Cookie
+    // 9. Sign JWT and Set Session Cookie
     const token = await signSessionToken({
       id: admin._id.toString(),
       email: admin.email,
       name: admin.name,
+      role: admin.role || 'editor',
     });
 
     await setSessionCookie(token);
@@ -169,6 +221,7 @@ export async function POST(request: NextRequest) {
         id: admin._id.toString(),
         email: admin.email,
         name: admin.name,
+        role: admin.role || 'editor',
       },
       message: 'Access granted. Welcome to The Editing Room.',
     });
