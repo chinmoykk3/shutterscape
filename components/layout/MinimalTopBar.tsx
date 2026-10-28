@@ -47,14 +47,14 @@ export function MinimalTopBar({
   const isDarkroom = pathname === '/gallery';
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 pointer-events-none p-4 sm:p-6 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-40 pointer-events-none p-3 sm:p-6 transition-all duration-300">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Brand Identity Mark (Interactive) */}
         <div className="pointer-events-auto">
           <Link
             href="/"
             aria-label="ShutterScape Home"
-            className="group flex items-center gap-3 p-2 -ml-2 rounded-2xl transition-all duration-300 hover:bg-black/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber"
+            className="group flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 -ml-1 sm:-ml-2 rounded-2xl transition-all duration-300 hover:bg-black/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber"
           >
             <ShutterScapeLogo variant="combined" />
             <div className="hidden sm:flex flex-col border-l border-charcoal-border pl-3">

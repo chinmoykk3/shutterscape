@@ -47,35 +47,35 @@ interface CardConfig {
 }
 
 const CARD_CONFIGS: CardConfig[] = [
-  // 0: Top-Left (Foreground Hero)
+  // 0: Top-Left (Foreground Hero) - scaled on mobile
   {
     id: 0,
-    posClass: 'top-[8%] left-[2%] sm:left-[4%] lg:left-[5%]',
-    sizeClass: 'w-36 h-48 sm:w-48 sm:h-64 lg:w-56 lg:h-72',
+    posClass: 'top-[6%] left-[2%] sm:left-[4%] lg:left-[5%]',
+    sizeClass: 'w-24 h-32 xs:w-28 xs:h-38 sm:w-48 sm:h-64 lg:w-56 lg:h-72',
     rotate: -6,
     depth: 1.4,
-    baseOpacity: 0.65,
+    baseOpacity: 0.55,
     floatDuration: 14,
     floatY: 14,
     floatX: 8,
     floatDelay: 0,
     expIndex: 'EXP. 01/36',
   },
-  // 1: Top-Right (Foreground Hero)
+  // 1: Top-Right (Foreground Hero) - scaled on mobile
   {
     id: 1,
-    posClass: 'top-[7%] right-[2%] sm:right-[4%] lg:right-[6%]',
-    sizeClass: 'w-36 h-48 sm:w-52 sm:h-68 lg:w-60 lg:h-80',
+    posClass: 'top-[5%] right-[2%] sm:right-[4%] lg:right-[6%]',
+    sizeClass: 'w-24 h-32 xs:w-28 xs:h-38 sm:w-52 sm:h-68 lg:w-60 lg:h-80',
     rotate: 5,
     depth: 1.6,
-    baseOpacity: 0.7,
+    baseOpacity: 0.55,
     floatDuration: 16,
     floatY: 16,
     floatX: -10,
     floatDelay: 1.5,
     expIndex: 'EXP. 04/36',
   },
-  // 2: Mid-Left (Subtle Lateral Anchor)
+  // 2: Mid-Left (Tablet & Desktop Anchor)
   {
     id: 2,
     posClass: 'top-[44%] left-[1%] sm:left-[2%] lg:left-[3%]',
@@ -88,8 +88,9 @@ const CARD_CONFIGS: CardConfig[] = [
     floatX: 6,
     floatDelay: 3,
     expIndex: 'EXP. 09/36',
+    hideOnMobile: true,
   },
-  // 3: Mid-Right (Subtle Lateral Anchor)
+  // 3: Mid-Right (Tablet & Desktop Anchor)
   {
     id: 3,
     posClass: 'top-[46%] right-[1%] sm:right-[3%] lg:right-[4%]',
@@ -102,8 +103,9 @@ const CARD_CONFIGS: CardConfig[] = [
     floatX: -8,
     floatDelay: 2,
     expIndex: 'EXP. 14/36',
+    hideOnMobile: true,
   },
-  // 4: Bottom-Left (Grounded Cinematic Print)
+  // 4: Bottom-Left (Tablet & Desktop Print)
   {
     id: 4,
     posClass: 'bottom-[4%] left-[4%] sm:left-[8%] lg:left-[10%]',
@@ -116,8 +118,9 @@ const CARD_CONFIGS: CardConfig[] = [
     floatX: 7,
     floatDelay: 4,
     expIndex: 'EXP. 21/36',
+    hideOnMobile: true,
   },
-  // 5: Bottom-Right (Grounded Cinematic Print)
+  // 5: Bottom-Right (Tablet & Desktop Print)
   {
     id: 5,
     posClass: 'bottom-[5%] right-[3%] sm:right-[6%] lg:right-[8%]',
@@ -130,8 +133,9 @@ const CARD_CONFIGS: CardConfig[] = [
     floatX: -9,
     floatDelay: 2.5,
     expIndex: 'EXP. 27/36',
+    hideOnMobile: true,
   },
-  // 6: Far Deep Accent (Top-Center-Left)
+  // 6: Far Deep Accent (Desktop Only)
   {
     id: 6,
     posClass: 'top-[2%] left-[24%] sm:left-[22%] lg:left-[20%]',
@@ -146,7 +150,7 @@ const CARD_CONFIGS: CardConfig[] = [
     expIndex: 'EXP. 31/36',
     hideOnMobile: true,
   },
-  // 7: Far Deep Accent (Bottom-Center-Right)
+  // 7: Far Deep Accent (Desktop Only)
   {
     id: 7,
     posClass: 'bottom-[1%] right-[22%] sm:right-[20%] lg:right-[18%]',

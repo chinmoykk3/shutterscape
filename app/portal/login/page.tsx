@@ -42,15 +42,15 @@ export default function MemberLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-offwhite flex flex-col justify-center items-center px-4 py-20 relative overflow-hidden">
+    <div className="min-h-screen bg-black text-offwhite flex flex-col justify-center items-center px-4 py-16 sm:py-20 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] rounded-full light-leak-amber blur-[150px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full light-leak-safelight blur-[150px] pointer-events-none" />
 
       {/* Center Container */}
-      <div className="w-full max-w-md relative z-10 space-y-8 animate-in fade-in zoom-in-95 duration-500">
+      <div className="w-full max-w-md relative z-10 space-y-6 sm:space-y-8 animate-in fade-in zoom-in-95 duration-500">
         {/* Brand Header */}
-        <div className="text-center space-y-3">
+        <div className="text-center space-y-2 sm:space-y-3">
           <Link href="/" className="inline-block hover:opacity-80 transition-opacity">
             <ShutterScapeLogo variant="combined" />
           </Link>
@@ -69,7 +69,7 @@ export default function MemberLoginPage() {
         </div>
 
         {/* Login Card */}
-        <div className="rounded-3xl bg-[#0c0c0e]/90 border border-charcoal-border p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-6">
+        <div className="rounded-3xl bg-[#0c0c0e]/90 border border-charcoal-border p-5 sm:p-8 backdrop-blur-xl shadow-2xl space-y-5 sm:space-y-6">
           {/* Role Toggle Switcher */}
           <div className="grid grid-cols-2 p-1 rounded-2xl bg-black/60 border border-charcoal-border text-xs font-mono">
             <div className="py-2.5 px-3 rounded-xl bg-amber text-black font-bold text-center flex items-center justify-center gap-1.5 shadow-md">

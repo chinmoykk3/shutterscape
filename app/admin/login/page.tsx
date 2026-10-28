@@ -113,7 +113,7 @@ function LoginForm() {
       <div className="absolute -bottom-3 -right-3 w-6 h-6 border-b-2 border-r-2 border-amber/40 pointer-events-none" />
 
       {/* Main Glassmorphic Darkroom Card */}
-      <div className="rounded-3xl bg-charcoal/90 border border-charcoal-border backdrop-blur-2xl p-7 sm:p-9 shadow-[0_0_50px_rgba(0,0,0,0.85)] relative overflow-hidden">
+      <div className="rounded-3xl bg-charcoal/90 border border-charcoal-border backdrop-blur-2xl p-5 sm:p-9 shadow-[0_0_50px_rgba(0,0,0,0.85)] relative overflow-hidden">
         {/* Amber Ambient Top Highlight */}
         <div
           aria-hidden="true"

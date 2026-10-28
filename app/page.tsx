@@ -120,23 +120,23 @@ export default async function HomePage() {
           </div>
 
           {/* Master Editorial Headline */}
-          <div className="space-y-4 max-w-4xl">
-            <h1 className="font-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-offwhite tracking-tight leading-[1.08]">
+          <div className="space-y-4 max-w-4xl px-2 sm:px-0">
+            <h1 className="font-title text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-offwhite tracking-tight leading-[1.1] sm:leading-[1.08]">
               {settings.heroTitle}
             </h1>
-            <p className="font-mono text-sm sm:text-base md:text-lg text-amber tracking-[0.2em] uppercase font-medium">
+            <p className="font-mono text-xs sm:text-sm md:text-base lg:text-lg text-amber tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">
               {`// ${settings.heroSubtitle}`}
             </p>
           </div>
 
           {/* Editorial Hook */}
-          <p className="font-body text-base sm:text-lg text-offwhite-muted max-w-2xl leading-relaxed">
+          <p className="font-body text-sm sm:text-base md:text-lg text-offwhite-muted max-w-2xl leading-relaxed px-2 sm:px-0">
             The official visual arts and photography society of Girijananda Chowdhury University.
             Archiving campus history through 35mm film aesthetics, silver halide chemistry, and modern digital observation.
           </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
             <Button href="#story-scenes" variant="primary" size="lg">
               Begin Story Journey
             </Button>

@@ -593,7 +593,7 @@ export function GalleryLightTable({ initialItems }: GalleryLightTableProps) {
           </div>
 
           {/* Bottom Telemetry HUD Bar */}
-          <div className="relative z-10 bg-black/90 border-t border-charcoal-border/80 p-4 sm:px-8 py-5">
+          <div className="relative z-10 bg-black/90 border-t border-charcoal-border/80 p-3 sm:p-4 sm:px-8 py-3 sm:py-5 max-h-[35vh] overflow-y-auto">
             <div className="max-w-5xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
               {/* Caption & Story */}
               <div className="space-y-1.5 max-w-xl">
