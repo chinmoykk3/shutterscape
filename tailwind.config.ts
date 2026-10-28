@@ -11,6 +11,61 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Semantic Day Arc Theme Variables
+        theme: {
+          canvas: 'var(--color-canvas)',
+          surface: 'var(--color-surface)',
+          subtle: 'var(--color-surface-subtle)',
+          border: 'var(--color-border)',
+          ink: 'var(--color-ink)',
+          muted: 'var(--color-ink-muted)',
+          dim: 'var(--color-ink-dim)',
+          amber: 'var(--color-amber)',
+          safelight: 'var(--color-safelight)',
+        },
+        // Static Day Arc Theme Palettes
+        dawn: {
+          canvas: '#13111C',
+          surface: '#1D1A2B',
+          subtle: '#29243D',
+          border: '#3D3559',
+          ink: '#F5EEF8',
+          muted: '#D8CCE0',
+          dim: '#9D8DA8',
+          accent: '#F472B6',
+          sky: '#93C5FD',
+        },
+        daylight: {
+          canvas: '#F8F9FA',
+          surface: '#FFFFFF',
+          subtle: '#EEF0F3',
+          border: '#D1D5DB',
+          ink: '#0F172A',
+          muted: '#334155',
+          dim: '#64748B',
+          accent: '#D97706',
+        },
+        golden: {
+          canvas: '#140E04',
+          surface: '#221706',
+          subtle: '#332309',
+          border: '#4A330E',
+          ink: '#FEF3C7',
+          muted: '#FDE68A',
+          dim: '#D97706',
+          accent: '#F59E0B',
+        },
+        night: {
+          canvas: '#070708',
+          surface: '#121214',
+          subtle: '#1B1B1F',
+          border: '#29292F',
+          ink: '#F4F1EA',
+          muted: '#C8C4BA',
+          dim: '#8E8B83',
+          accent: '#F59E0B',
+        },
+        // Core Camera & Darkroom Tokens
         black: '#070708',
         charcoal: {
           DEFAULT: '#121214',

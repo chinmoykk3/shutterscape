@@ -2,17 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-black: #070708;
-  --color-charcoal: #121214;
-  --color-offwhite: #F4F1EA;
+/* -----------------------------------------------------------------------------
+   DAY ARC COLOR THEMES (Selected by visitor's local hour or manual override)
+   - Dawn (05:00 - 08:00): Soft pink & atmospheric morning blue
+   - Daylight (08:00 - 16:00): Crisp warm white, deep slate ink
+   - Golden Hour (16:00 - 19:00): Rich amber glow & warm dusk shadow
+   - Night (19:00 - 05:00): Near-black #070708, off-white #F4F1EA archival paper
+   ----------------------------------------------------------------------------- */
+:root,
+.theme-night {
+  --color-canvas: #070708;
+  --color-surface: #121214;
+  --color-surface-subtle: #1B1B1F;
+  --color-border: #29292F;
+  --color-ink: #F4F1EA;
+  --color-ink-muted: #C8C4BA;
+  --color-ink-dim: #8E8B83;
+  --color-amber: #F59E0B;
+  --color-safelight: #B3261E;
+}
+
+.theme-dawn {
+  --color-canvas: #13111C;
+  --color-surface: #1D1A2B;
+  --color-surface-subtle: #29243D;
+  --color-border: #3D3559;
+  --color-ink: #F5EEF8;
+  --color-ink-muted: #D8CCE0;
+  --color-ink-dim: #9D8DA8;
+  --color-amber: #F472B6;
+  --color-safelight: #B3261E;
+}
+
+.theme-daylight {
+  --color-canvas: #F8F9FA;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #EEF0F3;
+  --color-border: #D1D5DB;
+  --color-ink: #0F172A;
+  --color-ink-muted: #334155;
+  --color-ink-dim: #64748B;
+  --color-amber: #D97706;
+  --color-safelight: #B3261E;
+}
+
+.theme-golden {
+  --color-canvas: #140E04;
+  --color-surface: #221706;
+  --color-surface-subtle: #332309;
+  --color-border: #4A330E;
+  --color-ink: #FEF3C7;
+  --color-ink-muted: #FDE68A;
+  --color-ink-dim: #D97706;
   --color-amber: #F59E0B;
   --color-safelight: #B3261E;
 }
 
 html {
-  background-color: var(--color-black);
-  color: var(--color-offwhite);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
   font-family: var(--font-inter), sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -21,7 +69,8 @@ html {
 
 body {
   overflow-x: hidden;
-  background-color: var(--color-black);
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
   min-height: 100vh;
 }
 
@@ -119,32 +168,120 @@ body {
   border-left: 1px solid rgba(245, 158, 11, 0.5);
 }
 
-/* Reduced Motion Safety & Accessibility Fallback */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* Reduced Motion & Quick Mode Styling */
+html[data-story-mode="quick"] .darkroom-undeveloped {
+  filter: none !important;
+  transform: none !important;
+}
 
-  .darkroom-undeveloped {
-    filter: none !important;
-    transform: none !important;
-  }
+html[data-story-mode="quick"] .shutter-curtain {
+  display: none !important;
+}
 
-  .shutter-curtain {
-    display: none !important;
-  }
 
-  /* Display accessible static vertical flow instead of pinned scrub timeline */
-  .desktop-pinned-story {
-    display: none !important;
-  }
+/* -----------------------------------------------------------------------------
+   SCROLLBAR UTILITIES (Hide default scrollbars while preserving touch & wheel scroll)
+   ----------------------------------------------------------------------------- */
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
 
-  .mobile-story-flow {
-    display: block !important;
+.scrollbar-none,
+.no-scrollbar {
+  -ms-overflow-style: none !important; /* IE & Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+/* -----------------------------------------------------------------------------
+   CINEMATIC OPTICAL STORY ENGINE ENHANCEMENTS
+   ----------------------------------------------------------------------------- */
+
+/* Volumetric God-Ray Light Beams */
+@keyframes volumetricRays {
+  0%, 100% {
+    opacity: 0.35;
+    transform: rotate(0deg) scale(1);
   }
+  50% {
+    opacity: 0.65;
+    transform: rotate(6deg) scale(1.08);
+  }
+}
+
+.animate-volumetric-rays {
+  animation: volumetricRays 8s ease-in-out infinite;
+}
+
+/* Anamorphic Horizontal Flare Beam */
+@keyframes anamorphicBeam {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scaleX(0.92);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleX(1.08);
+  }
+}
+
+.animate-anamorphic {
+  animation: anamorphicBeam 4s ease-in-out infinite;
+}
+
+/* Concentric Chemical Agitation Waves for Scene 4 Darkroom */
+@keyframes chemicalRipple {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.animate-chemical-ripple {
+  animation: chemicalRipple 3.5s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+/* Laser AF-Lock Reticle Pulse */
+@keyframes afLockFlash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(245, 158, 11, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+  }
+}
+
+.animate-af-flash {
+  animation: afLockFlash 2s infinite;
+}
+
+/* Chromatic Aberration Text Separation */
+.chromatic-text {
+  text-shadow: -2px 0 2px rgba(244, 63, 94, 0.5), 2px 0 2px rgba(6, 182, 212, 0.5);
+}
+
+/* Film Spool Rotation */
+@keyframes spoolSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spool-spin {
+  animation: spoolSpin 6s linear infinite;
 }
