@@ -56,7 +56,7 @@ export const getSettings = unstable_cache(
       if (!doc) {
         return defaultSettings;
       }
-      return {
+      const plainResult: GlobalSettings = {
         instagramUrl: doc.instagramUrl || defaultSettings.instagramUrl,
         whatsappUrl: doc.whatsappUrl || defaultSettings.whatsappUrl,
         email: doc.email || defaultSettings.email,
@@ -64,14 +64,23 @@ export const getSettings = unstable_cache(
         mapEmbedUrl: doc.mapEmbedUrl || defaultSettings.mapEmbedUrl,
         heroTitle: doc.heroTitle || defaultSettings.heroTitle,
         heroSubtitle: doc.heroSubtitle || defaultSettings.heroSubtitle,
-        heroImages: doc.heroImages?.length ? doc.heroImages : defaultSettings.heroImages,
+        heroImages:
+          doc.heroImages && doc.heroImages.length > 0
+            ? doc.heroImages.map((img: any) => ({
+                url: String(img.url || ''),
+                publicId: String(img.publicId || ''),
+                caption: img.caption ? String(img.caption) : undefined,
+              }))
+            : defaultSettings.heroImages,
         footerTagline: doc.footerTagline || defaultSettings.footerTagline,
         stats: {
-          members: doc.stats?.members ?? defaultSettings.stats.members,
-          events: doc.stats?.events ?? defaultSettings.stats.events,
-          photos: doc.stats?.photos ?? defaultSettings.stats.photos,
+          members: Number(doc.stats?.members ?? defaultSettings.stats.members),
+          events: Number(doc.stats?.events ?? defaultSettings.stats.events),
+          photos: Number(doc.stats?.photos ?? defaultSettings.stats.photos),
         },
       };
+
+      return JSON.parse(JSON.stringify(plainResult));
     } catch (error) {
       console.error('Failed to fetch Settings document, falling back to defaultSettings:', error);
       return defaultSettings;

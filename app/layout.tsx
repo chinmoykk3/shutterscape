@@ -9,6 +9,9 @@ import { ShutterLoader } from '@/components/story/ShutterLoader';
 import { ShutterBlinkTransition } from '@/components/story/ShutterBlinkTransition';
 import { FilmCounterScroll } from '@/components/story/FilmCounterScroll';
 import { CameraReadout } from '@/components/story/CameraReadout';
+import { CursorViewfinder } from '@/components/ui/CursorViewfinder';
+import { DayArcProvider } from '@/components/providers/DayArcProvider';
+import { StoryModeProvider } from '@/components/providers/StoryModeProvider';
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider';
 import { getSettings } from '@/lib/actions/settings';
 
@@ -80,7 +83,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = await getSettings();
+  const settings = JSON.parse(JSON.stringify(await getSettings()));
 
   const organizationJsonLd = {
     '@context': 'https://schema.org',
@@ -114,51 +117,58 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased selection:bg-amber selection:text-black min-h-screen flex flex-col bg-black text-offwhite">
-        {/* Persistent 3% Film Grain Overlay */}
-        <div className="film-grain" aria-hidden="true" />
+        <DayArcProvider>
+          <StoryModeProvider>
+            {/* Desktop Cursor Viewfinder */}
+            <CursorViewfinder />
 
-        {/* 150ms Shutter-Blink Page Transition */}
-        <ShutterBlinkTransition />
+            {/* Persistent 3% Film Grain Overlay */}
+            <div className="film-grain" aria-hidden="true" />
 
-        {/* First-Visit SVG Shutter-Click Loader (<1.5s via sessionStorage) */}
-        <ShutterLoader />
+            {/* 150ms Shutter-Blink Page Transition */}
+            <ShutterBlinkTransition />
 
-        {/* Lenis + GSAP ScrollTrigger Smooth Scroll Provider */}
-        <SmoothScrollProvider>
-          {/* Accessibility Skip-to-Content Link */}
-          <a
-            href="#main-story-content"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100001] focus:px-4 focus:py-2.5 focus:bg-amber focus:text-black focus:font-mono focus:text-xs focus:font-bold focus:rounded-xl focus:shadow-lg"
-          >
-            Skip to main story
-          </a>
+            {/* First-Visit SVG Shutter-Click Loader (<1.5s via sessionStorage) */}
+            <ShutterLoader />
 
-          {/* Minimal Floating Top Watermark Strip */}
-          <MinimalTopBar
-            instagramUrl={settings.instagramUrl}
-            whatsappUrl={settings.whatsappUrl}
-          />
+            {/* GSAP ScrollTrigger Smooth Scroll Provider */}
+            <SmoothScrollProvider>
+              {/* Accessibility Skip-to-Content Link */}
+              <a
+                href="#main-story-content"
+                className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100001] focus:px-4 focus:py-2.5 focus:bg-amber focus:text-black focus:font-mono focus:text-xs focus:font-bold focus:rounded-xl focus:shadow-lg"
+              >
+                Skip to main story
+              </a>
 
-          {/* Main Story Content */}
-          <main id="main-story-content" className="flex-grow relative pb-24">
-            {children}
-          </main>
+              {/* Minimal Floating Top Watermark Strip */}
+              <MinimalTopBar
+                instagramUrl={settings.instagramUrl}
+                whatsappUrl={settings.whatsappUrl}
+              />
 
-          {/* Floating Camera Island Dock Bar (Inspired by Codénix) */}
-          <CameraDockBar
-            whatsappUrl={settings.whatsappUrl}
-            instagramUrl={settings.instagramUrl}
-          />
+              {/* Main Story Content */}
+              <main id="main-story-content" className="flex-grow relative pb-24">
+                {children}
+              </main>
 
-          {/* Persistent Bottom-Left Camera Exposure Readout HUD (XL screens) */}
-          <CameraReadout floatingHud />
+              {/* Floating Camera Island Dock Bar */}
+              <CameraDockBar
+                whatsappUrl={settings.whatsappUrl}
+                instagramUrl={settings.instagramUrl}
+              />
 
-          {/* Persistent Bottom-Right Film Counter Scroll HUD (XL screens) */}
-          <FilmCounterScroll />
+              {/* Persistent Bottom-Left Camera Exposure Readout HUD (XL screens) */}
+              <CameraReadout floatingHud />
 
-          {/* Global "End Credits" Footer */}
-          <Footer settings={settings} />
-        </SmoothScrollProvider>
+              {/* Persistent Bottom-Right Film Counter Scroll HUD (XL screens) */}
+              <FilmCounterScroll />
+
+              {/* Global "End Credits" Footer */}
+              <Footer settings={settings} />
+            </SmoothScrollProvider>
+          </StoryModeProvider>
+        </DayArcProvider>
       </body>
     </html>
   );
