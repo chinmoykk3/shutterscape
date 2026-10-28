@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAdmin } from '@/lib/auth';
+import { getSessionFromRequest } from '@/lib/auth';
+import { getMemberSessionFromRequest } from '@/lib/studentAuth';
 import { getSignedUploadParams } from '@/lib/cloudinary';
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAdmin(request);
+    const adminSession = await getSessionFromRequest(request);
+    const memberSession = !adminSession ? await getMemberSessionFromRequest(request) : null;
+
+    if (!adminSession && !memberSession) {
+      return NextResponse.json({ error: 'Unauthorized: Sign-in required.' }, { status: 401 });
+    }
 
     const body = await request.json().catch(() => ({}));
     const folder = body?.folder || 'shutterscape';

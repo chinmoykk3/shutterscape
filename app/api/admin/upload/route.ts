@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { requireAdmin } from '@/lib/auth';
+import sharp from 'sharp';
+import { getSessionFromRequest } from '@/lib/auth';
+import { getMemberSessionFromRequest } from '@/lib/studentAuth';
 import {
   deleteCloudinaryAsset,
   isCloudinaryConfigured,
@@ -10,7 +12,12 @@ import {
 
 export async function POST(request: NextRequest) {
   try {
-    await requireAdmin(request);
+    const adminSession = await getSessionFromRequest(request);
+    const memberSession = !adminSession ? await getMemberSessionFromRequest(request) : null;
+
+    if (!adminSession && !memberSession) {
+      return NextResponse.json({ error: 'Unauthorized: Authentication required.' }, { status: 401 });
+    }
 
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
@@ -23,7 +30,7 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // If Cloudinary is configured with valid non-placeholder keys, upload to Cloudinary
+    // 1. If Cloudinary is configured with valid keys, upload to Cloudinary
     if (isCloudinaryConfigured()) {
       try {
         const cloudAsset = await uploadBufferToCloudinary(buffer, folder);
@@ -33,33 +40,72 @@ export async function POST(request: NextRequest) {
           asset: cloudAsset,
         });
       } catch (cloudErr) {
-        console.warn('Cloudinary upload error, falling back to local storage:', cloudErr);
+        console.warn('Cloudinary upload error, falling back to storage:', cloudErr);
       }
     }
 
-    // Local development fallback if Cloudinary credentials are not configured or failed
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
+    // 2. Try saving to public/uploads (local development environment)
+    try {
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+
+      const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
+      const filename = `${Date.now()}-${safeName}`;
+      const filePath = path.join(uploadsDir, filename);
+
+      await fs.promises.writeFile(filePath, buffer);
+
+      return NextResponse.json({
+        success: true,
+        isLocalFallback: true,
+        message: 'Photo saved locally.',
+        asset: {
+          url: `/uploads/${filename}`,
+          publicId: `local_${filename}`,
+          width: 1200,
+          height: 800,
+        },
+      });
+    } catch (fsErr) {
+      console.warn('Filesystem read-only (e.g. Vercel serverless), optimizing to Data URL:', fsErr);
+
+      // 3. Serverless / Vercel fallback: Optimize image with sharp to compact WebP Data URL
+      let dataBuffer = buffer;
+      let mimeType = 'image/webp';
+      let width = 1200;
+      let height = 800;
+
+      try {
+        const meta = await sharp(buffer).metadata();
+        width = meta.width || 1200;
+        height = meta.height || 800;
+
+        dataBuffer = await sharp(buffer)
+          .resize(1400, 1400, { fit: 'inside', withoutEnlargement: true })
+          .webp({ quality: 82 })
+          .toBuffer();
+      } catch (sharpErr) {
+        console.warn('Sharp compression error, using raw buffer:', sharpErr);
+        mimeType = file.type || 'image/jpeg';
+      }
+
+      const base64Data = `data:${mimeType};base64,${dataBuffer.toString('base64')}`;
+      const publicId = `inline_${Date.now()}`;
+
+      return NextResponse.json({
+        success: true,
+        isLocalFallback: true,
+        message: 'Photo processed and stored.',
+        asset: {
+          url: base64Data,
+          publicId,
+          width,
+          height,
+        },
+      });
     }
-
-    const safeName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const filename = `${Date.now()}-${safeName}`;
-    const filePath = path.join(uploadsDir, filename);
-
-    await fs.promises.writeFile(filePath, buffer);
-
-    return NextResponse.json({
-      success: true,
-      isLocalFallback: true,
-      message: 'Photo saved locally. Configure Cloudinary credentials in .env.local for production cloud storage.',
-      asset: {
-        url: `/uploads/${filename}`,
-        publicId: `local_${filename}`,
-        width: 1200,
-        height: 800,
-      },
-    });
   } catch (error: any) {
     if (error?.message?.includes('Unauthorized')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -74,7 +120,12 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    await requireAdmin(request);
+    const adminSession = await getSessionFromRequest(request);
+    const memberSession = !adminSession ? await getMemberSessionFromRequest(request) : null;
+
+    if (!adminSession && !memberSession) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
 
     const { searchParams } = new URL(request.url);
     const publicId = searchParams.get('publicId');

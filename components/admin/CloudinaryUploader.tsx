@@ -92,14 +92,15 @@ export function CloudinaryUploader({
         });
 
         if (!serverRes.ok) {
-          throw new Error('Local darkroom upload failed.');
+          const errData = await serverRes.json().catch(() => ({}));
+          throw new Error(errData.error || 'Darkroom exposure upload failed.');
         }
 
         const serverData = await serverRes.json();
         newAsset = serverData.asset;
         setProgress(95);
         toastSuccess(
-          serverData.message || 'Photo saved locally (set Cloudinary keys in .env.local for production).'
+          serverData.message || 'Photo processed and saved to darkroom archive.'
         );
       } else {
         // Cloudinary is configured: attempt direct signed upload with server fallback
