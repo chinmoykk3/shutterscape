@@ -12,6 +12,7 @@ import { Countdown } from '@/components/ui/Countdown';
 import { CameraReadout } from '@/components/story/CameraReadout';
 import { ShareButton } from '@/components/activities/ShareButton';
 import { ActivityCard } from '@/components/activities/ActivityCard';
+import { ActivityPhotoGallery } from '@/components/activities/ActivityPhotoGallery';
 import { getDarkroomBlurPlaceholder } from '@/lib/utils';
 
 export const revalidate = 60; // ISR cache every 60s
@@ -299,6 +300,14 @@ export default async function SingleActivityPage({ params }: ActivityPageProps) 
           dangerouslySetInnerHTML={{ __html: activity.descriptionHtml }}
         />
       </section>
+
+      {/* 35mm Event Negatives & Multi-Photo Gallery */}
+      {activity.gallery && activity.gallery.length > 0 && (
+        <ActivityPhotoGallery
+          photos={activity.gallery}
+          eventTitle={activity.title}
+        />
+      )}
 
       {/* More Field Rolls Footer Showcase */}
       {otherActivities.length > 0 && (

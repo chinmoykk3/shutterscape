@@ -21,6 +21,10 @@ export interface FilmFrameItem {
     publicId: string;
     blurDataURL?: string;
   };
+  gallery?: Array<{
+    url: string;
+    publicId: string;
+  }>;
   registrationLink?: string;
   status: 'draft' | 'published';
 }
@@ -49,6 +53,11 @@ export function FilmFrameCard({ activity, frameIndex }: FilmFrameCardProps) {
           <span className="tracking-widest uppercase text-amber">KODAK TRI-X</span>
         </div>
         <div className="tracking-widest flex items-center gap-2">
+          {activity.gallery && activity.gallery.length > 0 && (
+            <span className="px-1.5 py-0.5 rounded bg-amber/20 text-amber font-mono font-bold text-[9px]">
+              +{activity.gallery.length} NEGATIVES
+            </span>
+          )}
           <span>FRAME <strong className="text-offwhite font-bold">{frameNumStr}</strong>/36</span>
           <span className="text-offwhite-dim">▲</span>
         </div>

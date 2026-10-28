@@ -170,7 +170,6 @@ const CARD_CONFIGS: CardConfig[] = [
 export function HeroFloatingGallery({ items }: HeroFloatingGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
 
   // Mouse normalized coordinates: -1 to +1
   const mouseX = useMotionValue(0);
@@ -181,8 +180,6 @@ export function HeroFloatingGallery({ items }: HeroFloatingGalleryProps) {
   const smoothY = useSpring(mouseY, { stiffness: 45, damping: 25, mass: 0.5 });
 
   useEffect(() => {
-    setMounted(true);
-
     const handleMouseMove = (e: MouseEvent) => {
       if (prefersReduced) return;
       const { innerWidth, innerHeight } = window;

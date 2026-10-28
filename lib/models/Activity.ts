@@ -10,6 +10,15 @@ export interface IActivityImage {
   };
 }
 
+export interface IActivityGalleryItem {
+  url: string;
+  publicId: string;
+  caption?: string;
+  blurDataURL?: string;
+  width?: number;
+  height?: number;
+}
+
 export interface IActivity extends Document {
   title: string;
   slug: string;
@@ -19,6 +28,7 @@ export interface IActivity extends Document {
   descriptionHtml: string;
   pullQuote?: string;
   image: IActivityImage;
+  gallery?: IActivityGalleryItem[];
   registrationLink?: string;
   status: 'draft' | 'scheduled' | 'published';
   publishAt?: Date;
@@ -70,6 +80,16 @@ const ActivitySchema = new Schema<IActivity>(
         y: { type: Number, default: 0.5 },
       },
     },
+    gallery: [
+      {
+        url: { type: String, required: true },
+        publicId: { type: String, required: true },
+        caption: { type: String, trim: true },
+        blurDataURL: { type: String },
+        width: { type: Number },
+        height: { type: Number },
+      },
+    ],
     registrationLink: {
       type: String,
       trim: true,

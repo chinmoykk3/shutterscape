@@ -36,6 +36,15 @@ export const LoginSchema = z.object({
 });
 
 // Activity Validation
+export const ActivityGalleryItemSchema = z.object({
+  url: z.string().url(),
+  publicId: z.string(),
+  caption: z.string().max(200).optional().or(z.literal('')),
+  blurDataURL: z.string().optional(),
+  width: z.number().optional(),
+  height: z.number().optional(),
+});
+
 export const ActivitySchema = z.object({
   title: z.string().min(3, 'Title must be at least 3 characters').max(150),
   slug: z
@@ -49,6 +58,7 @@ export const ActivitySchema = z.object({
   descriptionHtml: z.string().min(10, 'Description must be at least 10 characters'),
   pullQuote: z.string().max(300).optional(),
   image: ImageAssetSchema,
+  gallery: z.array(ActivityGalleryItemSchema).optional().default([]),
   registrationLink: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   publishAt: z.coerce.date().optional(),
   status: z.enum(['draft', 'scheduled', 'published']),
