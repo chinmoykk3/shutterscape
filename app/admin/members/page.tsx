@@ -121,14 +121,20 @@ export default function AdminMembersPage() {
     setSubmitting(true);
     try {
       const payload = {
-        name,
-        role,
+        name: name.trim(),
+        role: role.trim(),
         type,
-        batch: type === 'alumni' ? batch : undefined,
-        quote,
+        batch: batch ? batch.trim() : undefined,
+        quote: quote ? quote.trim() : undefined,
         order: Number(order) || 0,
         status,
-        image,
+        image: {
+          url: image.url,
+          publicId: image.publicId,
+          blurDataURL: image.blurDataURL,
+          width: image.width || 800,
+          height: image.height || 800,
+        },
       };
 
       const url = editingMember

@@ -13,6 +13,7 @@ export interface IMember extends Document {
   image: IMemberImage;
   batch?: string;
   quote?: string;
+  whereNow?: string;
   order: number;
   status: 'active' | 'archived';
   createdAt: Date;
@@ -47,6 +48,10 @@ const MemberSchema = new Schema<IMember>(
       trim: true,
     },
     quote: {
+      type: String,
+      trim: true,
+    },
+    whereNow: {
       type: String,
       trim: true,
     },

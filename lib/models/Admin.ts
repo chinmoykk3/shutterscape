@@ -4,9 +4,11 @@ export interface IAdmin extends Document {
   email: string;
   name: string;
   passwordHash: string;
+  role: 'superadmin' | 'editor';
   failedAttempts: number;
   lockUntil?: Date | null;
   lastLogin?: Date | null;
+  totpSecret?: string | null;
   createdAt: Date;
   updatedAt: Date;
   isLocked(): boolean;
@@ -30,6 +32,17 @@ const AdminSchema = new Schema<IAdmin>(
     passwordHash: {
       type: String,
       required: [true, 'Password hash is required'],
+    },
+    role: {
+      type: String,
+      enum: ['superadmin', 'editor'],
+      default: 'editor',
+      required: true,
+      index: true,
+    },
+    totpSecret: {
+      type: String,
+      default: null,
     },
     failedAttempts: {
       type: Number,

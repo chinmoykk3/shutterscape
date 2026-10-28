@@ -4,6 +4,10 @@ export interface IActivityImage {
   url: string;
   publicId: string;
   blurDataURL?: string;
+  focalPoint?: {
+    x: number;
+    y: number;
+  };
 }
 
 export interface IActivity extends Document {
@@ -16,7 +20,8 @@ export interface IActivity extends Document {
   pullQuote?: string;
   image: IActivityImage;
   registrationLink?: string;
-  status: 'draft' | 'published';
+  status: 'draft' | 'scheduled' | 'published';
+  publishAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -60,14 +65,22 @@ const ActivitySchema = new Schema<IActivity>(
       url: { type: String, required: true },
       publicId: { type: String, required: true },
       blurDataURL: { type: String },
+      focalPoint: {
+        x: { type: Number, default: 0.5 },
+        y: { type: Number, default: 0.5 },
+      },
     },
     registrationLink: {
       type: String,
       trim: true,
     },
+    publishAt: {
+      type: Date,
+      index: true,
+    },
     status: {
       type: String,
-      enum: ['draft', 'published'],
+      enum: ['draft', 'scheduled', 'published'],
       default: 'published',
       index: true,
     },

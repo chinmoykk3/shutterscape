@@ -19,6 +19,8 @@ export interface ISettings extends Document {
     events: number;
     photos: number;
   };
+  soundDefault: boolean;
+  themeMode: 'auto' | 'dawn' | 'daylight' | 'golden' | 'night';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -69,6 +71,15 @@ const SettingsSchema = new Schema<ISettings>(
       members: { type: Number, default: 65 },
       events: { type: Number, default: 18 },
       photos: { type: Number, default: 1200 },
+    },
+    soundDefault: {
+      type: Boolean,
+      default: false,
+    },
+    themeMode: {
+      type: String,
+      enum: ['auto', 'dawn', 'daylight', 'golden', 'night'],
+      default: 'auto',
     },
   },
   {

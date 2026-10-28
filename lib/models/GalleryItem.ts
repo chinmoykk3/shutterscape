@@ -7,13 +7,21 @@ export interface IGalleryItem extends Document {
     width: number;
     height: number;
     blurDataURL?: string;
+    focalPoint?: {
+      x: number;
+      y: number;
+    };
   };
   caption: string;
   story?: string;
   photographer?: string;
   cameraInfo?: string;
   room: string;
+  activityId?: mongoose.Types.ObjectId | null;
+  instagramUrl?: string;
+  instagramId?: string;
   featured: boolean;
+  photoOfTheWeek: boolean;
   status: 'draft' | 'published';
   createdAt: Date;
   updatedAt: Date;
@@ -27,6 +35,10 @@ const GalleryItemSchema = new Schema<IGalleryItem>(
       width: { type: Number, required: true },
       height: { type: Number, required: true },
       blurDataURL: { type: String },
+      focalPoint: {
+        x: { type: Number, default: 0.5 },
+        y: { type: Number, default: 0.5 },
+      },
     },
     caption: {
       type: String,
@@ -51,7 +63,28 @@ const GalleryItemSchema = new Schema<IGalleryItem>(
       default: 'General',
       index: true,
     },
+    activityId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Activity',
+      default: null,
+      index: true,
+    },
+    instagramUrl: {
+      type: String,
+      trim: true,
+    },
+    instagramId: {
+      type: String,
+      trim: true,
+      index: true,
+      sparse: true,
+    },
     featured: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+    photoOfTheWeek: {
       type: Boolean,
       default: false,
       index: true,

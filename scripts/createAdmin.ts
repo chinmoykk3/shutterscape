@@ -9,6 +9,7 @@ import bcrypt from 'bcrypt';
 import readline from 'readline';
 import { Admin } from '../lib/models/Admin';
 import { AuditLog } from '../lib/models/AuditLog';
+import { generateTotpSecret, getTotpAuthUri } from '../lib/totp';
 
 async function promptInput(query: string, hidden = false): Promise<string> {
   const rl = readline.createInterface({
@@ -23,7 +24,6 @@ async function promptInput(query: string, hidden = false): Promise<string> {
         resolve(ans.trim());
       });
     } else {
-      // Masking password input
       process.stdout.write(query);
       let text = '';
       process.stdin.setRawMode?.(true);
@@ -39,7 +39,6 @@ async function promptInput(query: string, hidden = false): Promise<string> {
           rl.close();
           resolve(text.trim());
         } else if (char === '\u0003') {
-          // Ctrl+C
           process.exit(1);
         } else if (char === '\b' || char === '\x7f') {
           if (text.length > 0) {
@@ -65,14 +64,17 @@ async function main() {
   }
 
   console.log('\n======================================================');
-  console.log('🎞️  SHUTTERSCAPE // ADMIN CREATION & RECOVERY SUITE  🎞️');
+  console.log('🎞️  SHUTTERSCAPE // ADMIN CREATION & PROVISIONING CLI 🎞️');
   console.log('======================================================\n');
 
-  // Positional arguments support: npx tsx scripts/createAdmin.ts <email> <password> <name>
+  // Positional arguments support:
+  // npx tsx scripts/createAdmin.ts <email> <password> <name> <role> [enable2fa]
   const args = process.argv.slice(2);
   let email = args[0] || process.env.ADMIN_INITIAL_EMAIL;
   let password = args[1] || process.env.ADMIN_INITIAL_PASSWORD;
   let name = args[2] || process.env.ADMIN_INITIAL_NAME;
+  let role = (args[3] as 'superadmin' | 'editor') || 'superadmin';
+  const enableTotpArg = args[4] === 'true' || args[4] === 'totp';
 
   if (!email) {
     email = await promptInput('Enter Admin Email: ');
@@ -80,8 +82,20 @@ async function main() {
   if (!name) {
     name = (await promptInput('Enter Admin Name (e.g. Master Curator): ')) || 'ShutterScape Curator';
   }
+  if (!role || (role !== 'superadmin' && role !== 'editor')) {
+    const roleAnswer = await promptInput('Select Role [1: superadmin (default), 2: editor]: ');
+    role = roleAnswer === '2' || roleAnswer.toLowerCase() === 'editor' ? 'editor' : 'superadmin';
+  }
   if (!password) {
     password = await promptInput('Enter Admin Password (min 8 chars): ', true);
+  }
+
+  let totpSecret: string | undefined = undefined;
+  if (role === 'superadmin') {
+    const wantTotp = enableTotpArg || (await promptInput('Enable optional TOTP 2FA for this Superadmin? (y/N): ')).toLowerCase().startsWith('y');
+    if (wantTotp) {
+      totpSecret = generateTotpSecret();
+    }
   }
 
   if (!email || !email.includes('@')) {
@@ -107,20 +121,24 @@ async function main() {
   let admin = await Admin.findOne({ email: normalizedEmail });
 
   if (admin) {
-    console.log(`ℹ️ Admin with email "${normalizedEmail}" already exists. Updating password & clearing lockout...`);
+    console.log(`ℹ️ Admin with email "${normalizedEmail}" already exists. Updating password, role, & lockout...`);
     admin.name = name;
+    admin.role = role;
     admin.passwordHash = passwordHash;
     admin.failedAttempts = 0;
     admin.lockUntil = null;
+    if (totpSecret) admin.totpSecret = totpSecret;
     await admin.save();
     console.log('✓ Existing Admin credentials updated successfully.');
   } else {
     admin = await Admin.create({
       email: normalizedEmail,
       name,
+      role,
       passwordHash,
       failedAttempts: 0,
       lockUntil: null,
+      totpSecret,
     });
     console.log(`✓ New Admin created successfully: ID ${admin._id}`);
   }
@@ -135,6 +153,8 @@ async function main() {
       action: 'admin_cli_provisioned',
       email: normalizedEmail,
       name,
+      role,
+      totpEnabled: Boolean(totpSecret),
     },
     ipAddress: '127.0.0.1 (CLI)',
   });
@@ -143,7 +163,16 @@ async function main() {
   console.log('✅ ADMIN ACCESS PROVISIONED SUCCESSFULLY!');
   console.log(`   Email: ${normalizedEmail}`);
   console.log(`   Name:  ${name}`);
+  console.log(`   Role:  ${role.toUpperCase()}`);
   console.log('   Status: Unlocked & Active');
+
+  if (totpSecret) {
+    console.log('\n🔐 [OPTIONAL 2FA CREDENTIALS]');
+    console.log(`   Base32 Secret: ${totpSecret}`);
+    console.log(`   Authenticator URI: ${getTotpAuthUri(normalizedEmail, totpSecret)}`);
+    console.log('   (Add this secret key to Google Authenticator / 1Password / Authy)');
+  }
+
   console.log('======================================================\n');
 
   await mongoose.disconnect();

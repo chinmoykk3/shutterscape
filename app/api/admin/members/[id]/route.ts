@@ -44,8 +44,11 @@ export async function PUT(
 
     const validation = MemberSchema.safeParse(body);
     if (!validation.success) {
+      const issueDetails = validation.error.issues
+        .map((iss) => `${iss.path.join('.')}: ${iss.message}`)
+        .join('; ');
       return NextResponse.json(
-        { error: 'Validation failed', issues: validation.error.issues },
+        { error: `Validation failed: ${issueDetails}`, issues: validation.error.issues },
         { status: 400 }
       );
     }

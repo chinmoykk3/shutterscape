@@ -6,13 +6,15 @@ import {
   Calendar,
   Image as ImageIcon,
   Users,
-  Film,
   Plus,
   ShieldCheck,
   ArrowUpRight,
   RefreshCw,
   Clock,
   Sliders,
+  Inbox,
+  BookOpen,
+  UserCheck,
 } from 'lucide-react';
 import { CameraReadout } from '@/components/story/CameraReadout';
 import { Badge } from '@/components/ui/Badge';
@@ -23,6 +25,8 @@ interface DashboardStats {
   gallery: { total: number; published: number };
   members: { total: number; active: number };
   scenes: { total: number };
+  submissions?: { unhandled: number };
+  stories?: { total: number };
 }
 
 interface AuditLogItem {
@@ -153,58 +157,58 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* Club Roster Card */}
+        {/* Submissions Inbox Card */}
         <div className="p-5 rounded-3xl bg-charcoal/80 border border-charcoal-border hover:border-amber/40 transition-all space-y-3 group">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[11px] uppercase tracking-wider text-offwhite-dim">
-              Club Roster (Members)
+              Student Submissions
             </span>
             <div className="p-2 rounded-xl bg-black/60 border border-charcoal-border group-hover:text-amber text-offwhite-dim">
-              <Users className="w-4 h-4" />
+              <Inbox className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between">
             <span className="font-title text-3xl font-black text-offwhite tabular-nums">
-              {loading ? '—' : stats?.members.total ?? 0}
+              {loading ? '—' : stats?.submissions?.unhandled ?? 0}
             </span>
-            <span className="font-mono text-[11px] text-emerald-400">
-              {loading ? '' : `${stats?.members.active ?? 0} In Committee`}
+            <span className="font-mono text-[11px] text-amber">
+              Pending Review
             </span>
           </div>
           <div className="pt-1">
             <Link
-              href="/admin/members"
+              href="/admin/submissions"
               className="font-mono text-[11px] text-offwhite-dim hover:text-amber transition-colors inline-flex items-center gap-1"
             >
-              Reorder roster <ArrowUpRight className="w-3 h-3" />
+              Inspect inbox <ArrowUpRight className="w-3 h-3" />
             </Link>
           </div>
         </div>
 
-        {/* Story Scenes Card */}
+        {/* Photo Stories Card */}
         <div className="p-5 rounded-3xl bg-charcoal/80 border border-charcoal-border hover:border-amber/40 transition-all space-y-3 group">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[11px] uppercase tracking-wider text-offwhite-dim">
-              Prologue Story Scenes
+              Photo Stories
             </span>
             <div className="p-2 rounded-xl bg-black/60 border border-charcoal-border group-hover:text-amber text-offwhite-dim">
-              <Film className="w-4 h-4" />
+              <BookOpen className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline justify-between">
             <span className="font-title text-3xl font-black text-offwhite tabular-nums">
-              {loading ? '—' : stats?.scenes.total ?? 0}
+              {loading ? '—' : stats?.stories?.total ?? 0}
             </span>
             <span className="font-mono text-[11px] text-amber">
-              Homepage Sequence
+              Visual Chronicles
             </span>
           </div>
           <div className="pt-1">
             <Link
-              href="/admin/scenes"
+              href="/admin/stories"
               className="font-mono text-[11px] text-offwhite-dim hover:text-amber transition-colors inline-flex items-center gap-1"
             >
-              Order narrative <ArrowUpRight className="w-3 h-3" />
+              Manage chronicles <ArrowUpRight className="w-3 h-3" />
             </Link>
           </div>
         </div>
@@ -224,13 +228,25 @@ export default function AdminDashboardPage() {
             <Plus className="w-3.5 h-3.5" />
             Upload Photo Exposure
           </Button>
+          <Button href="/admin/stories" variant="secondary" size="sm">
+            <BookOpen className="w-3.5 h-3.5" />
+            Curate Photo Story
+          </Button>
           <Button href="/admin/members" variant="secondary" size="sm">
-            <Plus className="w-3.5 h-3.5" />
-            Add Team Member
+            <Users className="w-3.5 h-3.5" />
+            Manage Roster
+          </Button>
+          <Button href="/admin/submissions" variant="ghost" size="sm">
+            <Inbox className="w-3.5 h-3.5" />
+            Inbox & Applications
+          </Button>
+          <Button href="/admin/admins" variant="ghost" size="sm">
+            <UserCheck className="w-3.5 h-3.5" />
+            Admin Clearances
           </Button>
           <Button href="/admin/settings" variant="ghost" size="sm">
             <Sliders className="w-3.5 h-3.5" />
-            Adjust Site Config & Stats
+            Site Settings & Stats
           </Button>
         </div>
       </div>

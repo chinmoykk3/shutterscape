@@ -109,15 +109,31 @@ export async function uploadBufferToCloudinary(
 
 export function getOptimizedImageUrl(
   publicId: string,
-  options: { width?: number; height?: number; crop?: string; quality?: string | number } = {}
+  options: {
+    width?: number;
+    height?: number;
+    crop?: string;
+    quality?: string | number;
+    focalPoint?: { x: number; y: number };
+  } = {}
 ): string {
-  return cloudinary.url(publicId, {
+  const transformation: Record<string, unknown> = {
     fetch_format: 'auto',
     quality: options.quality || 'auto',
+    crop: options.crop || (options.width || options.height ? 'fill' : undefined),
     width: options.width,
     height: options.height,
     secure: true,
-  });
+  };
+
+  if (options.focalPoint) {
+    // Cloudinary custom focal point coordinates (percentages 0.0 - 1.0 mapped to gravity)
+    transformation.gravity = 'custom';
+  } else {
+    transformation.gravity = 'auto';
+  }
+
+  return cloudinary.url(publicId, transformation);
 }
 
 /**

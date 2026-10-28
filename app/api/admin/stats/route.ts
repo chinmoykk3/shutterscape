@@ -5,6 +5,8 @@ import { Activity } from '@/lib/models/Activity';
 import { GalleryItem } from '@/lib/models/GalleryItem';
 import { Member } from '@/lib/models/Member';
 import { StoryScene } from '@/lib/models/StoryScene';
+import { Submission } from '@/lib/models/Submission';
+import { PhotoStory } from '@/lib/models/PhotoStory';
 import { AuditLog } from '@/lib/models/AuditLog';
 import '@/lib/models/Admin'; // Register Admin model for Mongoose populate
 
@@ -21,6 +23,8 @@ export async function GET(request: NextRequest) {
       totalMembers,
       activeMembers,
       totalScenes,
+      unhandledSubmissions,
+      totalStories,
       recentAuditLogs,
     ] = await Promise.all([
       Activity.countDocuments(),
@@ -30,6 +34,8 @@ export async function GET(request: NextRequest) {
       Member.countDocuments(),
       Member.countDocuments({ status: 'active' }),
       StoryScene.countDocuments(),
+      Submission.countDocuments({ handled: false }),
+      PhotoStory.countDocuments(),
       AuditLog.find()
         .sort({ timestamp: -1 })
         .limit(6)
@@ -44,6 +50,8 @@ export async function GET(request: NextRequest) {
         gallery: { total: totalGallery, published: publishedGallery },
         members: { total: totalMembers, active: activeMembers },
         scenes: { total: totalScenes },
+        submissions: { unhandled: unhandledSubmissions },
+        stories: { total: totalStories },
       },
       recentLogs: recentAuditLogs,
     });
