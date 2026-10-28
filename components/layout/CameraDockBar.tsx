@@ -8,6 +8,7 @@ import {
   Film,
   Camera,
   Info,
+  UserCircle,
   MessageCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -46,6 +47,13 @@ const DOCK_ITEMS = [
     code: '04',
     tooltip: 'Frame 04 // Behind The Lens',
     icon: Info,
+  },
+  {
+    href: '/portal',
+    label: 'Studio',
+    code: '05',
+    tooltip: 'Frame 05 // Member Studio & Submissions',
+    icon: UserCircle,
   },
 ];
 
@@ -151,6 +159,13 @@ export function CameraDockBar({
 
         <DockButton
           item={DOCK_ITEMS[3]}
+          pathname={pathname}
+          isDarkroom={isDarkroom}
+          onHover={setHoveredIndex}
+        />
+
+        <DockButton
+          item={DOCK_ITEMS[4]}
           pathname={pathname}
           isDarkroom={isDarkroom}
           onHover={setHoveredIndex}

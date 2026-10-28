@@ -3,7 +3,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Sun, Moon, Sparkles, Zap, UserCircle } from 'lucide-react';
 import { ShutterScapeLogo } from '@/components/ui/ShutterScapeLogo';
+import { useDayArc } from '@/components/providers/DayArcProvider';
+import { useStoryMode } from '@/components/providers/StoryModeProvider';
 import { cn } from '@/lib/utils';
 
 function InstagramIcon({ className }: { className?: string }) {
@@ -33,6 +36,8 @@ export function MinimalTopBar({
   instagramUrl = 'https://www.instagram.com/shutterscape_gcu',
 }: MinimalTopBarProps) {
   const pathname = usePathname();
+  const { theme, isAuto, metadata, toggleSunMoon } = useDayArc();
+  const { mode, toggleMode } = useStoryMode();
 
   // Hide on admin routes to leave full screen for Editing Room
   if (pathname?.startsWith('/admin')) {
@@ -68,20 +73,61 @@ export function MinimalTopBar({
           </Link>
         </div>
 
-        {/* Right: Live Viewfinder Status & Social Mark (Interactive) */}
-        <div className="pointer-events-auto flex items-center gap-3">
-          {/* Subtle Live Viewfinder Status Chip */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 border border-charcoal-border/70 backdrop-blur-md font-mono text-[10px] text-offwhite-dim">
-            <span
-              className={cn(
-                'w-1.5 h-1.5 rounded-full animate-pulse',
-                isDarkroom ? 'bg-safelight' : 'bg-amber'
-              )}
-            />
-            <span className="uppercase tracking-widest">
-              {isDarkroom ? 'SAFELIGHT 650NM' : 'METERING: 5000K'}
+        {/* Right: Controls & Social Mark (Interactive) */}
+        <div className="pointer-events-auto flex items-center gap-2 sm:gap-3">
+          {/* Day Arc Dial / Sun-Moon Override Button */}
+          <button
+            type="button"
+            onClick={toggleSunMoon}
+            title={`Day Arc Theme: ${metadata.label} (${isAuto ? 'Auto' : 'Manual'}). Click to cycle.`}
+            aria-label={`Cycle Day Arc theme, currently ${metadata.label}`}
+            className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-black/75 border border-charcoal-border/80 text-offwhite-dim hover:text-amber hover:border-amber/40 backdrop-blur-md transition-all active:scale-95 shadow-lg font-mono text-[10px]"
+          >
+            {theme === 'night' ? (
+              <Moon className="w-3.5 h-3.5 text-amber" />
+            ) : (
+              <Sun className="w-3.5 h-3.5 text-amber" />
+            )}
+            <span className="hidden lg:inline-block tracking-wider uppercase">
+              {metadata.label}
             </span>
-          </div>
+            <span className="text-[9px] px-1 py-0.2 rounded bg-white/10 text-offwhite-dim uppercase hidden xl:inline">
+              {isAuto ? 'Auto' : 'Manual'}
+            </span>
+          </button>
+
+          {/* Story / Quick Mode Toggle */}
+          <button
+            type="button"
+            onClick={toggleMode}
+            title={`Toggle viewing experience (Currently ${mode.toUpperCase()} mode)`}
+            aria-label={`Toggle Story or Quick mode, currently ${mode} mode`}
+            className={cn(
+              'flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full bg-black/75 border backdrop-blur-md transition-all active:scale-95 shadow-lg font-mono text-[10px]',
+              mode === 'story'
+                ? 'border-amber/40 text-amber'
+                : 'border-charcoal-border/80 text-offwhite-dim hover:text-offwhite'
+            )}
+          >
+            {mode === 'story' ? (
+              <Sparkles className="w-3.5 h-3.5 text-amber" />
+            ) : (
+              <Zap className="w-3.5 h-3.5 text-offwhite-dim" />
+            )}
+            <span className="hidden md:inline-block tracking-wider uppercase font-semibold">
+              {mode === 'story' ? 'Story' : 'Quick'}
+            </span>
+          </button>
+
+          {/* Member Studio / Sign In Link */}
+          <Link
+            href="/portal"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber/15 hover:bg-amber border border-amber/30 hover:border-amber text-amber hover:text-black font-mono text-[10px] font-bold tracking-wider uppercase backdrop-blur-md transition-all active:scale-95 shadow-lg"
+          >
+            <UserCircle className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Member Studio</span>
+            <span className="sm:hidden">Studio</span>
+          </Link>
 
           {/* Instagram Link */}
           <a
@@ -89,7 +135,7 @@ export function MinimalTopBar({
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Follow ShutterScape on Instagram"
-            className="p-2 sm:p-2.5 rounded-full bg-black/60 border border-charcoal-border/80 text-offwhite-dim hover:text-amber hover:border-amber/40 backdrop-blur-md transition-all active:scale-95 shadow-lg"
+            className="p-2 sm:p-2.5 rounded-full bg-black/75 border border-charcoal-border/80 text-offwhite-dim hover:text-amber hover:border-amber/40 backdrop-blur-md transition-all active:scale-95 shadow-lg"
           >
             <InstagramIcon className="w-4 h-4" />
           </a>
