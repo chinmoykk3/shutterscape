@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import { InstagramIcon } from '@/components/ui/InstagramIcon';
 import { getDarkroomBlurPlaceholder } from '@/lib/utils';
 
 export interface GalleryItemData {
@@ -34,6 +35,7 @@ export interface GalleryItemData {
   photographer?: string;
   cameraInfo?: string;
   room: string;
+  instagramUrl?: string;
   featured: boolean;
   status: 'draft' | 'published';
   createdAt: string;
@@ -172,15 +174,25 @@ function GalleryMasonryCard({
           )}
         </div>
 
-        {/* Technical EXIF readout line */}
-        {item.cameraInfo && (
-          <div
-            className="pt-2 border-t border-charcoal-border/70 text-[10px] font-mono text-offwhite-dim truncate"
-            title={item.cameraInfo}
-          >
-            {item.cameraInfo}
-          </div>
-        )}
+        {/* Technical EXIF readout & Instagram attribution line */}
+        <div className="pt-2 border-t border-charcoal-border/70 flex items-center justify-between text-[10px] font-mono text-offwhite-dim">
+          <span className="truncate pr-2" title={item.cameraInfo || item.room}>
+            {item.cameraInfo || item.room}
+          </span>
+          {item.instagramUrl && (
+            <a
+              href={item.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 text-pink-400 hover:text-pink-300 transition-colors shrink-0"
+              title="View on Instagram (@shutterscape_gcu)"
+            >
+              <InstagramIcon className="w-3 h-3" />
+              <span>Instagram</span>
+            </a>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -600,18 +612,33 @@ export function GalleryLightTable({ initialItems }: GalleryLightTableProps) {
                 )}
               </div>
 
-              {/* Technical EXIF Readout Box */}
-              {activeItem.cameraInfo && (
-                <div className="bg-charcoal/80 border border-charcoal-border p-3.5 rounded-xl font-mono text-xs space-y-1 self-start md:self-auto min-w-[260px]">
-                  <div className="text-[10px] uppercase text-offwhite-dim tracking-widest flex items-center gap-1.5">
-                    <Sliders className="w-3 h-3 text-amber" />
-                    CAMERA EXIF TELEMETRY
+              {/* Technical EXIF Readout Box & Instagram Link */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 self-start md:self-auto">
+                {activeItem.cameraInfo && (
+                  <div className="bg-charcoal/80 border border-charcoal-border p-3.5 rounded-xl font-mono text-xs space-y-1 min-w-[240px]">
+                    <div className="text-[10px] uppercase text-offwhite-dim tracking-widest flex items-center gap-1.5">
+                      <Sliders className="w-3 h-3 text-amber" />
+                      CAMERA EXIF TELEMETRY
+                    </div>
+                    <div className="text-offwhite font-medium">
+                      {activeItem.cameraInfo}
+                    </div>
                   </div>
-                  <div className="text-offwhite font-medium">
-                    {activeItem.cameraInfo}
-                  </div>
-                </div>
-              )}
+                )}
+
+                {activeItem.instagramUrl && (
+                  <Button
+                    href={activeItem.instagramUrl}
+                    isExternal
+                    variant="secondary"
+                    size="sm"
+                    className="gap-2 text-pink-400 border-pink-500/30 hover:border-pink-500/60 shadow-lg whitespace-nowrap"
+                  >
+                    <InstagramIcon className="w-4 h-4" />
+                    <span>View on @shutterscape_gcu</span>
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
