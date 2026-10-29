@@ -47,7 +47,7 @@ export function MinimalTopBar({
   const isDarkroom = pathname === '/gallery';
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 pointer-events-none p-3 sm:p-6 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-40 pointer-events-none p-2.5 sm:p-6 transition-all duration-300 bg-gradient-to-b from-black/80 via-black/40 to-transparent sm:bg-none">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Brand Identity Mark (Interactive) */}
         <div className="pointer-events-auto">

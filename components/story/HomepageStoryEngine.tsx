@@ -348,9 +348,9 @@ export function HomepageStoryEngine({
           const mm = gsap.matchMedia();
 
           // =====================================================================
-          // 1. DESKTOP: PINNED + SCRUBBED TIMELINE (1024px and up)
+          // 1. CINEMATIC PINNED + SCRUBBED TIMELINE (All Devices & Viewports)
           // =====================================================================
-          mm.add('(min-width: 1024px)', () => {
+          mm.add('all', () => {
             const masterTl = gsap.timeline({
               scrollTrigger: {
                 trigger: pinnedSectionRef.current,
@@ -642,30 +642,6 @@ export function HomepageStoryEngine({
                 scene5Start + 0.12
               );
           });
-
-          // =====================================================================
-          // 2. MOBILE: REVEAL-ON-SCROLL (< 1024px)
-          // =====================================================================
-          mm.add('(max-width: 1023px)', () => {
-            const mobileCards = document.querySelectorAll('.mobile-story-card');
-            mobileCards?.forEach((card) => {
-              gsap.fromTo(
-                card,
-                { opacity: 0, y: 35 },
-                {
-                  opacity: 1,
-                  y: 0,
-                  duration: 0.7,
-                  ease: 'power2.out',
-                  scrollTrigger: {
-                    trigger: card,
-                    start: 'top 85%',
-                    toggleActions: 'play none none reverse',
-                  },
-                }
-              );
-            });
-          });
         });
       } catch (err) {
         console.error('GSAP dynamic initialization error:', err);
@@ -911,12 +887,12 @@ export function HomepageStoryEngine({
   return (
     <div className="relative w-full">
       {/* =======================================================================
-          DESKTOP PINNED VIEWPORT (Visible >= 1024px)
+          CINEMATIC PINNED VIEWPORT (Active across Mobile, Tablet & Desktop)
           ======================================================================= */}
-      <div className="hidden lg:block relative w-full">
+      <div className="relative w-full">
         <div
           ref={pinnedSectionRef}
-          className="relative h-screen w-full overflow-hidden bg-black flex items-center justify-center select-none"
+          className="relative h-[100dvh] w-full overflow-hidden bg-black flex items-center justify-center select-none"
         >
           {/* Atmospheric Silver Halide Particle & Bokeh Canvas */}
           <StoryAtmosphereCanvas activeChapter={activeChapter} />
@@ -943,13 +919,13 @@ export function HomepageStoryEngine({
             </div>
 
             {/* Bottom Telemetry Strip */}
-            <div className="absolute bottom-6 left-10 right-10 flex items-center justify-between font-mono text-[11px] text-offwhite-dim">
-              <div className="flex items-center gap-2">
+            <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-10 right-4 sm:right-10 flex items-center justify-between font-mono text-[9px] sm:text-[11px] text-offwhite-dim">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse" />
-                <span className="tracking-widest uppercase">ShutterScape Optical Engine</span>
+                <span className="tracking-widest uppercase">ShutterScape Optical</span>
               </div>
-              <div className="tracking-widest text-amber/80 flex items-center gap-2">
-                <span>SCROLL TO ADVANCE SHUTTER</span>
+              <div className="tracking-widest text-amber/80 flex items-center gap-1.5 sm:gap-2">
+                <span>SCROLL SHUTTER</span>
                 <span className="text-offwhite-dim font-bold">↓</span>
               </div>
             </div>
@@ -961,7 +937,7 @@ export function HomepageStoryEngine({
           <div
             ref={scene0Ref}
             style={{ opacity: 1, visibility: 'visible' }}
-            className="absolute inset-0 z-20 flex items-center justify-center text-center p-8 bg-black pt-16 overflow-hidden"
+            className="absolute inset-0 z-20 flex items-center justify-center text-center p-4 sm:p-8 bg-black pt-12 sm:pt-16 overflow-hidden"
           >
             {/* Volumetric Ray Burst emerging through aperture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(245,158,11,0.22)_0%,_rgba(245,158,11,0.05)_40%,_transparent_70%)] animate-volumetric-rays pointer-events-none" />
@@ -977,7 +953,7 @@ export function HomepageStoryEngine({
                 <svg
                   ref={irisBladesRef}
                   viewBox="0 0 500 500"
-                  className="w-[560px] h-[560px] text-amber/40 pointer-events-none will-change-transform drop-shadow-[0_0_35px_rgba(245,158,11,0.2)]"
+                  className="w-[300px] h-[300px] sm:w-[560px] sm:h-[560px] text-amber/40 pointer-events-none will-change-transform drop-shadow-[0_0_35px_rgba(245,158,11,0.2)]"
                   style={{ transformOrigin: '50% 50%' }}
                 >
                   {/* Outer Mechanical Barrel Ring */}
@@ -1002,30 +978,30 @@ export function HomepageStoryEngine({
                 </svg>
 
                 {/* Center Core Aperture Glow */}
-                <div className="absolute w-28 h-28 rounded-full bg-amber/30 blur-2xl animate-pulse pointer-events-none" />
+                <div className="absolute w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-amber/30 blur-2xl animate-pulse pointer-events-none" />
               </div>
             </div>
 
             {/* Headline and text */}
-            <div className="relative z-10 max-w-2xl space-y-5">
-              <Badge variant="amber" className="mx-auto shadow-[0_0_20px_rgba(245,158,11,0.25)]">
+            <div className="relative z-10 max-w-2xl space-y-4 sm:space-y-5 px-2">
+              <Badge variant="amber" className="mx-auto shadow-[0_0_20px_rgba(245,158,11,0.25)] text-[10px] sm:text-xs">
                 ● CHAPTER 00 // THE DARKNESS
               </Badge>
-              <h2 className="font-title text-5xl sm:text-7xl font-black text-offwhite tracking-tight leading-none">
+              <h2 className="font-title text-4xl sm:text-6xl md:text-7xl font-black text-offwhite tracking-tight leading-none">
                 {scene0.headline}
               </h2>
-              <p className="font-mono text-base sm:text-lg text-amber tracking-widest uppercase">
+              <p className="font-mono text-xs sm:text-base md:text-lg text-amber tracking-widest uppercase">
                 {`// ${scene0.bodyText}`}
               </p>
 
               {/* Real-time F-Stop Scale Readout */}
-              <div className="pt-4 flex flex-col items-center gap-2">
-                <div className="flex items-center gap-3 bg-charcoal/90 border border-charcoal-border px-5 py-2 rounded-xl font-mono text-xs shadow-xl backdrop-blur-md">
-                  <span className="w-2 h-2 rounded-full bg-amber animate-ping" />
+              <div className="pt-2 sm:pt-4 flex flex-col items-center gap-2">
+                <div className="flex items-center gap-2 sm:gap-3 bg-charcoal/90 border border-charcoal-border px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-xl font-mono text-[10px] sm:text-xs shadow-xl backdrop-blur-md">
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-amber animate-ping" />
                   <span className="text-offwhite-dim">IRIS:</span>
                   <span className="text-offwhite line-through opacity-40">f/16</span>
                   <span className="text-offwhite-dim">→</span>
-                  <span className="text-amber font-bold text-sm tracking-widest">f/1.4 MAXIMUM APERTURE</span>
+                  <span className="text-amber font-bold text-xs sm:text-sm tracking-widest">f/1.4 MAXIMUM APERTURE</span>
                 </div>
               </div>
             </div>
@@ -1038,24 +1014,24 @@ export function HomepageStoryEngine({
           <div
             ref={scene1Ref}
             style={{ opacity: 0, visibility: 'hidden' }}
-            className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8 pt-16 overflow-hidden"
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-4 sm:p-8 pt-12 sm:pt-16 overflow-hidden"
           >
             {/* Anamorphic Cyan-Amber Horizontal Beam Streak */}
             <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent blur-[1px] animate-anamorphic pointer-events-none -translate-y-1/2" />
             <div className="absolute top-1/2 left-0 right-0 h-[8px] bg-gradient-to-r from-transparent via-amber-400/40 to-transparent blur-[6px] animate-anamorphic pointer-events-none -translate-y-1/2" />
 
             {/* Concentric Lens Flare Elements */}
-            <div className="absolute w-[450px] h-[450px] rounded-full border border-cyan-500/15 pointer-events-none" />
-            <div className="absolute w-[280px] h-[280px] rounded-full border border-amber/20 pointer-events-none" />
+            <div className="absolute w-[280px] h-[280px] sm:w-[450px] sm:h-[450px] rounded-full border border-cyan-500/15 pointer-events-none" />
+            <div className="absolute w-[200px] h-[200px] sm:w-[280px] sm:h-[280px] rounded-full border border-amber/20 pointer-events-none" />
 
-            <div ref={focusTargetRef} className="max-w-3xl space-y-6 relative z-10">
-              <Badge variant="amber" className="mx-auto shadow-[0_0_20px_rgba(245,158,11,0.25)]">
+            <div ref={focusTargetRef} className="max-w-3xl space-y-4 sm:space-y-6 relative z-10 px-2">
+              <Badge variant="amber" className="mx-auto shadow-[0_0_20px_rgba(245,158,11,0.25)] text-[10px] sm:text-xs">
                 ● CHAPTER 01 // RACKING FOCUS
               </Badge>
-              <h2 className="font-title text-5xl sm:text-7xl font-black text-offwhite tracking-tight leading-[1.05] chromatic-text">
+              <h2 className="font-title text-4xl sm:text-6xl md:text-7xl font-black text-offwhite tracking-tight leading-[1.05] chromatic-text">
                 {scene1.headline}
               </h2>
-              <p className="font-title text-2xl sm:text-3xl text-amber font-light max-w-2xl mx-auto leading-snug">
+              <p className="font-title text-base sm:text-2xl md:text-3xl text-amber font-light max-w-2xl mx-auto leading-snug">
                 {scene1.bodyText}
               </p>
             </div>
@@ -1063,31 +1039,31 @@ export function HomepageStoryEngine({
             {/* Optical Focus Distance Helicoid Scale */}
             <div
               ref={focusScaleRef}
-              className="mt-10 flex flex-col items-center gap-3 bg-charcoal/90 border border-charcoal-border px-8 py-4 rounded-2xl backdrop-blur-md shadow-2xl relative z-10"
+              className="mt-6 sm:mt-10 flex flex-col items-center gap-2 sm:gap-3 bg-charcoal/90 border border-charcoal-border px-4 sm:px-8 py-2.5 sm:py-4 rounded-2xl backdrop-blur-md shadow-2xl relative z-10 max-w-xs sm:max-w-none"
             >
-              <div className="font-mono text-[10px] tracking-widest uppercase text-offwhite-dim flex items-center gap-2">
-                <Sliders className="w-3.5 h-3.5 text-amber" />
-                <span>MANUAL FOCUS HELICOID BARREL</span>
-                <span className="text-amber/60 font-bold">• 35mm f/1.4 GM</span>
+              <div className="font-mono text-[9px] sm:text-[10px] tracking-widest uppercase text-offwhite-dim flex items-center gap-2">
+                <Sliders className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber" />
+                <span>MANUAL FOCUS HELICOID</span>
+                <span className="text-amber/60 font-bold hidden sm:inline">• 35mm f/1.4 GM</span>
               </div>
-              <div className="font-mono text-xs text-offwhite tracking-widest flex items-center gap-4">
+              <div className="font-mono text-[10px] sm:text-xs text-offwhite tracking-widest flex items-center gap-2 sm:gap-4">
                 <span className="text-offwhite-dim">0.3m</span>
                 <span className="text-offwhite-dim">──</span>
                 <span className="text-offwhite-dim">0.7m</span>
                 <span className="text-offwhite-dim">──</span>
                 <span className="text-offwhite-dim">1.2m</span>
+                <span className="text-offwhite-dim hidden sm:inline">──</span>
+                <span className="text-offwhite-dim hidden sm:inline">3.0m</span>
                 <span className="text-offwhite-dim">──</span>
-                <span className="text-offwhite-dim">3.0m</span>
-                <span className="text-offwhite-dim">──</span>
-                <span className="text-amber font-bold text-sm bg-amber/15 px-2 py-0.5 rounded border border-amber/30">
+                <span className="text-amber font-bold text-xs sm:text-sm bg-amber/15 px-2 py-0.5 rounded border border-amber/30">
                   ∞
                 </span>
               </div>
               <span
                 ref={focusLockRef}
-                className="font-mono text-[11px] font-bold text-emerald-400 opacity-0 flex items-center gap-1.5 animate-af-flash px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30"
+                className="font-mono text-[10px] sm:text-[11px] font-bold text-emerald-400 opacity-0 flex items-center gap-1.5 animate-af-flash px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30"
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-400" />
                 OPTICAL FOCUS CONFIRMED (AF-LOCK)
               </span>
             </div>
@@ -1099,11 +1075,11 @@ export function HomepageStoryEngine({
           <div
             ref={scene2Ref}
             style={{ opacity: 0, visibility: 'hidden' }}
-            className="absolute inset-0 z-20 flex items-center justify-center p-8 pt-16 overflow-hidden"
+            className="absolute inset-0 z-20 flex items-center justify-center p-3 sm:p-8 pt-12 sm:pt-16 overflow-hidden"
           >
             <div
               ref={bracketsRef}
-              className="relative max-w-4xl w-full aspect-[16/10] border border-white/20 rounded-3xl p-6 sm:p-8 flex flex-col justify-between bg-charcoal/50 backdrop-blur-xl shadow-[0_0_60px_rgba(0,0,0,0.85)] overflow-hidden"
+              className="relative max-w-4xl w-full aspect-[4/3] sm:aspect-[16/10] border border-white/20 rounded-2xl sm:rounded-3xl p-3 sm:p-8 flex flex-col justify-between bg-charcoal/50 backdrop-blur-xl shadow-[0_0_60px_rgba(0,0,0,0.85)] overflow-hidden"
             >
               {/* Authentic Monochrome Campus Backdrop inside Viewfinder */}
               <div className="absolute inset-0 pointer-events-none opacity-20 filter contrast-125">
@@ -1116,13 +1092,13 @@ export function HomepageStoryEngine({
               </div>
 
               {/* Corner Framing Brackets */}
-              <div className="absolute top-5 left-5 w-8 h-8 border-t-2 border-l-2 border-amber" />
-              <div className="absolute top-5 right-5 w-8 h-8 border-t-2 border-r-2 border-amber" />
-              <div className="absolute bottom-5 left-5 w-8 h-8 border-b-2 border-l-2 border-amber" />
-              <div className="absolute bottom-5 right-5 w-8 h-8 border-b-2 border-r-2 border-amber" />
+              <div className="absolute top-3 left-3 sm:top-5 sm:left-5 w-5 h-5 sm:w-8 sm:h-8 border-t-2 border-l-2 border-amber" />
+              <div className="absolute top-3 right-3 sm:top-5 sm:right-5 w-5 h-5 sm:w-8 sm:h-8 border-t-2 border-r-2 border-amber" />
+              <div className="absolute bottom-3 left-3 sm:bottom-5 sm:left-5 w-5 h-5 sm:w-8 sm:h-8 border-b-2 border-l-2 border-amber" />
+              <div className="absolute bottom-3 right-3 sm:bottom-5 sm:right-5 w-5 h-5 sm:w-8 sm:h-8 border-b-2 border-r-2 border-amber" />
 
               {/* Optical Rule of Thirds Grid with Intersection Nodes */}
-              <div className="pointer-events-none absolute inset-6 grid grid-cols-3 grid-rows-3 border border-white/5 opacity-40">
+              <div className="pointer-events-none absolute inset-3 sm:inset-6 grid grid-cols-3 grid-rows-3 border border-white/5 opacity-40">
                 <div className="border-r border-b border-white/5 relative">
                   <span className="absolute bottom-[-3px] right-[-3px] w-1.5 h-1.5 rounded-full bg-amber/70" />
                 </div>
@@ -1140,69 +1116,66 @@ export function HomepageStoryEngine({
               </div>
 
               {/* Viewfinder Center Crosshair Reticle with Electronic Level */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 pointer-events-none flex items-center justify-center">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 sm:w-20 sm:h-20 pointer-events-none flex items-center justify-center">
                 <div className="absolute w-full h-[1.5px] bg-amber/80" />
                 <div className="absolute h-full w-[1.5px] bg-amber/80" />
-                <div className="absolute inset-3 rounded-full border border-amber/40" />
-                <div className="absolute inset-5 rounded-full border-2 border-amber" />
+                <div className="absolute inset-2 sm:inset-3 rounded-full border border-amber/40" />
+                <div className="absolute inset-3.5 sm:inset-5 rounded-full border-2 border-amber" />
                 {/* Electronic Level Bar */}
-                <div className="absolute -bottom-7 flex items-center gap-1 font-mono text-[9px] text-emerald-400 bg-black/85 px-2 py-0.5 rounded border border-emerald-500/30">
+                <div className="absolute -bottom-6 sm:-bottom-7 flex items-center gap-1 font-mono text-[8px] sm:text-[9px] text-emerald-400 bg-black/85 px-1.5 sm:px-2 py-0.5 rounded border border-emerald-500/30">
                   <span>LEVEL 0.0°</span>
                 </div>
               </div>
 
               {/* Top Viewfinder Telemetry */}
-              <div className="flex items-center justify-between font-mono text-xs text-offwhite-dim z-10">
-                <span className="text-amber font-bold flex items-center gap-1.5 bg-black/75 px-3 py-1 rounded-lg border border-amber/30">
-                  <span className="w-2 h-2 rounded-full bg-amber animate-ping" />
-                  [AF-C CONTINUOUS 3D-TRACKING]
+              <div className="flex items-center justify-between font-mono text-[9px] sm:text-xs text-offwhite-dim z-10">
+                <span className="text-amber font-bold flex items-center gap-1 bg-black/75 px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg border border-amber/30 text-[8px] sm:text-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber animate-ping" />
+                  [AF-C TRACKING]
                 </span>
-                <span className="bg-black/80 px-3 py-1 rounded-lg border border-charcoal-border text-offwhite font-bold">
-                  EXP. COMP: +0.3 EV
+                <span className="bg-black/80 px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg border border-charcoal-border text-offwhite font-bold hidden xs:inline">
+                  +0.3 EV
                 </span>
-                <span className="bg-black/80 px-3 py-1 rounded-lg border border-charcoal-border text-emerald-400 font-bold">
-                  RAW [14-BIT UNCOMPRESSED]
+                <span className="bg-black/80 px-2 sm:px-3 py-0.5 sm:py-1 rounded-lg border border-charcoal-border text-emerald-400 font-bold">
+                  RAW 14-BIT
                 </span>
               </div>
 
               {/* Scene Narrative */}
-              <div className="text-center space-y-3 z-10 max-w-xl mx-auto my-auto">
-                <Badge variant="amber" className="mx-auto shadow-md">
+              <div className="text-center space-y-1.5 sm:space-y-3 z-10 max-w-xl mx-auto my-auto px-2">
+                <Badge variant="amber" className="mx-auto shadow-md text-[9px] sm:text-xs">
                   ● CHAPTER 02 // THE COMPOSITION
                 </Badge>
-                <h2 className="font-title text-4xl sm:text-6xl font-black text-offwhite tracking-tight">
+                <h2 className="font-title text-2xl sm:text-5xl md:text-6xl font-black text-offwhite tracking-tight">
                   {scene2.headline}
                 </h2>
-                <p className="font-title text-lg sm:text-xl text-offwhite-muted leading-relaxed">
+                <p className="font-title text-xs sm:text-lg md:text-xl text-offwhite-muted leading-relaxed line-clamp-2 sm:line-clamp-none">
                   {scene2.bodyText}
                 </p>
               </div>
 
               {/* Bottom Camera Telemetry Meter & Exposure Gauge */}
-              <div className="flex flex-col gap-2 z-10 pt-4 border-t border-white/10 font-mono text-xs">
+              <div className="flex flex-col gap-1.5 sm:gap-2 z-10 pt-2 sm:pt-4 border-t border-white/10 font-mono text-[9px] sm:text-xs">
                 {/* Exposure Meter Scale */}
-                <div className="flex items-center justify-center gap-1 text-[10px] text-offwhite-dim">
-                  <span>-3</span>
-                  <span className="text-white/20">···</span>
+                <div className="flex items-center justify-center gap-1 text-[8px] sm:text-[10px] text-offwhite-dim">
                   <span>-2</span>
                   <span className="text-white/20">···</span>
                   <span>-1</span>
-                  <span className="text-amber font-bold text-xs">▼</span>
+                  <span className="text-white/20">···</span>
+                  <span className="text-amber font-bold text-[10px] sm:text-xs">▼</span>
                   <span className="text-amber font-bold">0</span>
                   <span className="text-white/20">···</span>
                   <span>+1</span>
                   <span className="text-white/20">···</span>
                   <span>+2</span>
-                  <span className="text-white/20">···</span>
-                  <span>+3</span>
                 </div>
 
-                <div className="flex items-center justify-between text-amber font-bold">
-                  <span className="bg-black/80 px-2 py-0.5 rounded border border-charcoal-border">1/2000s</span>
-                  <span className="text-offwhite font-bold text-sm bg-black/80 px-2.5 py-0.5 rounded border border-charcoal-border">f/1.4</span>
-                  <span className="bg-black/80 px-2 py-0.5 rounded border border-charcoal-border">ISO 400</span>
-                  <span className="hidden sm:inline text-emerald-400 font-semibold bg-black/80 px-2 py-0.5 rounded border border-emerald-500/30">
-                    BATT: 98% (7.2V)
+                <div className="flex items-center justify-between text-amber font-bold text-[9px] sm:text-xs">
+                  <span className="bg-black/80 px-1.5 sm:px-2 py-0.5 rounded border border-charcoal-border">1/2000s</span>
+                  <span className="text-offwhite font-bold text-xs sm:text-sm bg-black/80 px-2 sm:px-2.5 py-0.5 rounded border border-charcoal-border">f/1.4</span>
+                  <span className="bg-black/80 px-1.5 sm:px-2 py-0.5 rounded border border-charcoal-border">ISO 400</span>
+                  <span className="text-emerald-400 font-semibold bg-black/80 px-1.5 sm:px-2 py-0.5 rounded border border-emerald-500/30">
+                    98%
                   </span>
                 </div>
               </div>
@@ -1216,72 +1189,72 @@ export function HomepageStoryEngine({
           <div
             ref={scene3Ref}
             style={{ opacity: 0, visibility: 'hidden' }}
-            className="absolute inset-0 z-20 flex flex-col justify-center px-8 sm:px-12 pt-16 overflow-hidden"
+            className="absolute inset-0 z-20 flex flex-col justify-center px-4 sm:px-12 pt-12 sm:pt-16 overflow-hidden"
           >
             {/* Header Readout Bar with Live Frame Counter */}
-            <div className="max-w-6xl mx-auto w-full flex items-end justify-between mb-4 z-10">
-              <div className="space-y-1">
-                <Badge variant="amber" className="shadow-md">
+            <div className="max-w-6xl mx-auto w-full flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-2 sm:mb-4 z-10">
+              <div className="space-y-0.5 sm:space-y-1">
+                <Badge variant="amber" className="shadow-md text-[9px] sm:text-xs">
                   ● CHAPTER 03 // 35MM CONTINUOUS REEL
                 </Badge>
-                <h2 className="font-title text-3xl sm:text-5xl font-black text-offwhite">
+                <h2 className="font-title text-2xl sm:text-4xl md:text-5xl font-black text-offwhite">
                   {scene3.headline}
                 </h2>
-                <p className="font-mono text-xs text-offwhite-muted">
+                <p className="font-mono text-[10px] sm:text-xs text-offwhite-muted">
                   {scene3.bodyText}
                 </p>
               </div>
 
               {/* Live Analog Dial / Frame Counter */}
-              <div className="flex items-center gap-3 bg-charcoal border border-charcoal-border px-4 py-2.5 rounded-2xl font-mono text-xs shadow-2xl backdrop-blur-md">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber animate-pulse shadow-[0_0_8px_#F59E0B]" />
+              <div className="self-start sm:self-auto flex items-center gap-2 sm:gap-3 bg-charcoal border border-charcoal-border px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl font-mono text-[10px] sm:text-xs shadow-2xl backdrop-blur-md">
+                <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-amber animate-pulse shadow-[0_0_8px_#F59E0B]" />
                 <span className="text-offwhite-dim">FRAME:</span>
-                <span className="text-amber font-bold text-sm tracking-widest">
+                <span className="text-amber font-bold text-xs sm:text-sm tracking-widest">
                   EXP. {String(activeReelFrame).padStart(2, '0')}/36
                 </span>
               </div>
             </div>
 
             {/* Horizontal Film Reel Track with 35mm Canister on Left */}
-            <div className="relative w-full overflow-hidden py-4 flex items-center">
+            <div className="relative w-full overflow-hidden py-2 sm:py-4 flex items-center">
               {/* Metallic 35mm Film Canister Housing */}
-              <div className="relative shrink-0 w-28 h-56 rounded-r-2xl bg-gradient-to-r from-zinc-800 via-zinc-900 to-black border-y-2 border-r-2 border-amber/40 shadow-[10px_0_30px_rgba(0,0,0,0.9)] flex flex-col justify-between p-3 z-20">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3.5 h-3.5 rounded-full border border-amber/70 animate-spool-spin flex items-center justify-center">
-                    <span className="w-1 h-1 bg-amber rounded-full" />
+              <div className="relative shrink-0 w-16 sm:w-28 h-36 sm:h-56 rounded-r-xl sm:rounded-r-2xl bg-gradient-to-r from-zinc-800 via-zinc-900 to-black border-y-2 border-r-2 border-amber/40 shadow-[10px_0_30px_rgba(0,0,0,0.9)] flex flex-col justify-between p-2 sm:p-3 z-20">
+                <div className="flex items-center gap-1 sm:gap-1.5">
+                  <div className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full border border-amber/70 animate-spool-spin flex items-center justify-center">
+                    <span className="w-0.5 h-0.5 sm:w-1 sm:h-1 bg-amber rounded-full" />
                   </div>
-                  <span className="font-mono text-[9px] text-amber font-bold tracking-wider">TRI-X</span>
+                  <span className="font-mono text-[7px] sm:text-[9px] text-amber font-bold tracking-wider">TRI-X</span>
                 </div>
-                <div className="font-mono text-[9px] text-offwhite-dim tracking-widest rotate-90 origin-center whitespace-nowrap uppercase">
-                  SHUTTERSCAPE 400
+                <div className="font-mono text-[7px] sm:text-[9px] text-offwhite-dim tracking-widest rotate-90 origin-center whitespace-nowrap uppercase">
+                  SHUTTERSCAPE
                 </div>
-                <div className="font-mono text-[8px] text-zinc-500">ISO 400/27°</div>
+                <div className="font-mono text-[6px] sm:text-[8px] text-zinc-500">ISO 400</div>
               </div>
 
               {/* Film Strip Slider */}
               <div
                 ref={filmReelRef}
-                className="flex items-center gap-6 w-max will-change-transform pl-4"
+                className="flex items-center gap-3 sm:gap-6 w-max will-change-transform pl-2 sm:pl-4"
               >
                 {displayGallery.map((item, idx) => (
                   <div
                     key={item._id}
-                    className="relative w-[340px] shrink-0 bg-[#0c0c0e] border border-charcoal-border rounded-2xl p-3.5 shadow-2xl space-y-2 group transition-transform duration-300 hover:-translate-y-2 hover:border-amber/60 hover:shadow-[0_15px_40px_rgba(245,158,11,0.2)]"
+                    className="relative w-[220px] sm:w-[340px] shrink-0 bg-[#0c0c0e] border border-charcoal-border rounded-xl sm:rounded-2xl p-2 sm:p-3.5 shadow-2xl space-y-1.5 sm:space-y-2 group transition-transform duration-300 hover:-translate-y-2 hover:border-amber/60 hover:shadow-[0_15px_40px_rgba(245,158,11,0.2)]"
                   >
                     {/* Top Sprocket Perforation Strip */}
-                    <div className="horizontal-film-track h-5 w-full opacity-70" />
+                    <div className="horizontal-film-track h-3 sm:h-5 w-full opacity-70" />
 
                     {/* Film Frame Margin Indicators */}
-                    <div className="flex items-center justify-between text-[10px] font-mono text-amber px-1 font-semibold">
+                    <div className="flex items-center justify-between text-[8px] sm:text-[10px] font-mono text-amber px-1 font-semibold">
                       <span>KODAK SAFETY FILM</span>
-                      <span className="font-bold bg-black/80 px-1.5 py-0.5 rounded border border-amber/30">
+                      <span className="font-bold bg-black/80 px-1 py-0.5 rounded border border-amber/30">
                         EXP. {String(idx + 1).padStart(2, '0')}A
                       </span>
                       <span>▲ {idx + 1}</span>
                     </div>
 
                     {/* Image */}
-                    <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-black shadow-inner">
+                    <div className="relative aspect-[4/3] w-full rounded-lg sm:rounded-xl overflow-hidden bg-black shadow-inner">
                       <Image
                         src={item.image.url}
                         alt={item.caption}
@@ -1290,27 +1263,27 @@ export function HomepageStoryEngine({
                         blurDataURL={item.image.blurDataURL || getDarkroomBlurPlaceholder(16, 12)}
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
                       />
-                      <div className="absolute top-2 left-2 z-10">
-                        <Badge variant="neutral" className="text-[9px] py-0.5 px-2 bg-black/85 backdrop-blur-sm border border-white/20">
+                      <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10">
+                        <Badge variant="neutral" className="text-[7px] sm:text-[9px] py-0.5 px-1.5 sm:px-2 bg-black/85 backdrop-blur-sm border border-white/20">
                           {item.room}
                         </Badge>
                       </div>
                     </div>
 
                     {/* Frame Caption */}
-                    <div className="p-1 space-y-0.5">
-                      <h4 className="font-title text-sm font-bold text-offwhite truncate group-hover:text-amber transition-colors">
+                    <div className="p-0.5 sm:p-1 space-y-0.5">
+                      <h4 className="font-title text-xs sm:text-sm font-bold text-offwhite truncate group-hover:text-amber transition-colors">
                         {item.caption}
                       </h4>
                       {item.photographer && (
-                        <p className="font-mono text-[10px] text-offwhite-dim truncate">
+                        <p className="font-mono text-[8px] sm:text-[10px] text-offwhite-dim truncate">
                           {item.photographer}
                         </p>
                       )}
                     </div>
 
                     {/* Bottom Sprocket Perforation Strip */}
-                    <div className="horizontal-film-track h-5 w-full opacity-70" />
+                    <div className="horizontal-film-track h-3 sm:h-5 w-full opacity-70" />
                   </div>
                 ))}
               </div>
@@ -1325,21 +1298,21 @@ export function HomepageStoryEngine({
             <div
               ref={scene4Ref}
               style={{ opacity: 0, visibility: 'hidden' }}
-              className="absolute inset-0 z-20 flex items-center justify-center p-8 pt-16 overflow-hidden"
+              className="absolute inset-0 z-20 flex items-center justify-center p-3 sm:p-8 pt-12 sm:pt-16 overflow-hidden"
             >
               {/* Concentric Chemical Agitation Wave Rings */}
-              <div className="pointer-events-none absolute w-[600px] h-[600px] rounded-full border border-rose-600/30 animate-chemical-ripple" />
-              <div className="pointer-events-none absolute w-[400px] h-[400px] rounded-full border border-amber/20 animate-chemical-ripple [animation-delay:1.5s]" />
+              <div className="pointer-events-none absolute w-[340px] sm:w-[600px] h-[340px] sm:h-[600px] rounded-full border border-rose-600/30 animate-chemical-ripple" />
+              <div className="pointer-events-none absolute w-[240px] sm:w-[400px] h-[240px] sm:h-[400px] rounded-full border border-amber/20 animate-chemical-ripple [animation-delay:1.5s]" />
 
-              <div className="max-w-3xl w-full space-y-4 relative z-10">
-                <div className="text-center space-y-1">
-                  <Badge variant="amber" className="mx-auto shadow-[0_0_20px_rgba(245,158,11,0.25)]">
+              <div className="max-w-3xl w-full space-y-2 sm:space-y-4 relative z-10">
+                <div className="text-center space-y-0.5 sm:space-y-1">
+                  <Badge variant="amber" className="mx-auto shadow-[0_0_20px_rgba(245,158,11,0.25)] text-[9px] sm:text-xs">
                     ● CHAPTER 04 // THE LATENT NEGATIVE
                   </Badge>
-                  <h2 className="font-title text-3xl sm:text-5xl font-black text-offwhite">
+                  <h2 className="font-title text-2xl sm:text-4xl md:text-5xl font-black text-offwhite">
                     {scene4.headline}
                   </h2>
-                  <p className="font-mono text-xs text-offwhite-muted">
+                  <p className="font-mono text-[10px] sm:text-xs text-offwhite-muted">
                     {scene4.bodyText}
                   </p>
                 </div>
@@ -1348,20 +1321,20 @@ export function HomepageStoryEngine({
                 <div
                   ref={developingCardRef}
                   style={{ filter: 'grayscale(100%) invert(80%) blur(14px) contrast(1.4)' }}
-                  className="relative p-6 sm:p-8 rounded-3xl bg-charcoal/90 border-2 border-amber/50 shadow-[0_0_60px_rgba(245,158,11,0.25)] will-change-transform backdrop-blur-xl"
+                  className="relative p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-charcoal/90 border-2 border-amber/50 shadow-[0_0_60px_rgba(245,158,11,0.25)] will-change-transform backdrop-blur-xl"
                 >
                   {/* Darkroom Developer Bath Telemetry Bar */}
-                  <div className="mb-4 flex items-center justify-between font-mono text-[10px] text-amber pb-2 border-b border-charcoal-border">
-                    <span className="flex items-center gap-1.5 font-bold">
-                      <Flame className="w-3 h-3 text-rose-500 animate-pulse" />
-                      DARKROOM SAFELIGHT 650nm // BATH 01: KODAK D-76 (1:1)
+                  <div className="mb-2 sm:mb-4 flex items-center justify-between font-mono text-[9px] sm:text-[10px] text-amber pb-1.5 sm:pb-2 border-b border-charcoal-border">
+                    <span className="flex items-center gap-1.5 font-bold truncate">
+                      <Flame className="w-3 h-3 text-rose-500 animate-pulse shrink-0" />
+                      SAFELIGHT 650nm // BATH 01: D-76
                     </span>
-                    <span className="text-offwhite-dim">TEMP: 20°C / 68°F</span>
+                    <span className="text-offwhite-dim shrink-0">TEMP: 20°C</span>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-6 items-center">
                     {/* Event Cover Image */}
-                    <div className="md:col-span-5 relative aspect-[16/11] rounded-2xl overflow-hidden border border-charcoal-border shadow-2xl">
+                    <div className="md:col-span-5 relative aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden border border-charcoal-border shadow-2xl">
                       <Image
                         src={nextUpcomingEvent.image?.url || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200'}
                         alt={nextUpcomingEvent.title}
@@ -1370,19 +1343,19 @@ export function HomepageStoryEngine({
                         blurDataURL={nextUpcomingEvent.image?.blurDataURL || getDarkroomBlurPlaceholder(16, 11)}
                         className="object-cover"
                       />
-                      <div className="absolute top-2 left-2 z-10">
-                        <Badge variant="amber" className="text-[9px] shadow-lg">
-                          <Sparkles className="w-3 h-3 mr-1" />
+                      <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-10">
+                        <Badge variant="amber" className="text-[8px] sm:text-[9px] shadow-lg">
+                          <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-1" />
                           EXPEDITION SCHEDULED
                         </Badge>
                       </div>
                     </div>
 
                     {/* Event Details & Live Countdown */}
-                    <div className="md:col-span-7 space-y-3">
-                      <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-amber">
-                        <span className="flex items-center gap-1.5 bg-amber/10 px-2.5 py-0.5 rounded-full border border-amber/30">
-                          <Calendar className="w-3 h-3" />
+                    <div className="md:col-span-7 space-y-2 sm:space-y-3">
+                      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-mono text-amber">
+                        <span className="flex items-center gap-1 bg-amber/10 px-2 py-0.5 rounded-full border border-amber/30">
+                          <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                           {new Date(nextUpcomingEvent.date).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
@@ -1390,37 +1363,37 @@ export function HomepageStoryEngine({
                           })}
                         </span>
                         {nextUpcomingEvent.venue && (
-                          <span className="flex items-center gap-1.5 text-offwhite-dim bg-white/5 px-2.5 py-0.5 rounded-full border border-charcoal-border">
-                            <MapPin className="w-3 h-3" />
+                          <span className="flex items-center gap-1 text-offwhite-dim bg-white/5 px-2 py-0.5 rounded-full border border-charcoal-border truncate max-w-[180px]">
+                            <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
                             {nextUpcomingEvent.venue}
                           </span>
                         )}
                       </div>
 
-                      <h3 className="font-title text-xl sm:text-2xl font-bold text-offwhite leading-tight">
+                      <h3 className="font-title text-base sm:text-xl md:text-2xl font-bold text-offwhite leading-tight">
                         {nextUpcomingEvent.title}
                       </h3>
 
                       {nextUpcomingEvent.pullQuote && (
-                        <p className="text-xs text-offwhite-muted italic border-l-2 border-amber pl-3 line-clamp-2">
+                        <p className="text-[11px] sm:text-xs text-offwhite-muted italic border-l-2 border-amber pl-2 sm:pl-3 line-clamp-2">
                           &ldquo;{nextUpcomingEvent.pullQuote}&rdquo;
                         </p>
                       )}
 
                       {/* Live Intervalometer Countdown */}
-                      <div className="pt-1">
+                      <div className="pt-0.5 sm:pt-1">
                         <Countdown targetDate={nextUpcomingEvent.date} />
                       </div>
 
                       {/* Register Links */}
-                      <div className="pt-2 flex items-center gap-3">
+                      <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-2 sm:gap-3">
                         <Button
                           href={`/activities/${nextUpcomingEvent.slug}`}
                           variant="primary"
                           size="sm"
-                          className="gap-2 shadow-md"
+                          className="gap-1.5 shadow-md text-xs py-1.5"
                         >
-                          Examine Roll Manifest <ArrowRight className="w-3.5 h-3.5" />
+                          Examine Roll <ArrowRight className="w-3 h-3" />
                         </Button>
                         {nextUpcomingEvent.registrationLink && (
                           <Button
@@ -1428,9 +1401,9 @@ export function HomepageStoryEngine({
                             isExternal
                             variant="outline"
                             size="sm"
-                            className="gap-1.5"
+                            className="gap-1 text-xs py-1.5"
                           >
-                            Register <ExternalLink className="w-3 h-3" />
+                            Register <ExternalLink className="w-2.5 h-2.5" />
                           </Button>
                         )}
                       </div>
@@ -1447,45 +1420,45 @@ export function HomepageStoryEngine({
           <div
             ref={scene5Ref}
             style={{ opacity: 0, visibility: 'hidden' }}
-            className="absolute inset-0 z-20 flex items-center justify-center p-8 pt-16 text-center overflow-hidden"
+            className="absolute inset-0 z-20 flex items-center justify-center p-4 sm:p-8 pt-12 sm:pt-16 text-center overflow-hidden"
           >
             {/* Center Golden Flash Flare Burst */}
-            <div className="absolute w-[600px] h-[600px] rounded-full bg-gradient-to-r from-amber-500/10 via-amber-300/20 to-transparent blur-3xl pointer-events-none" />
+            <div className="absolute w-[360px] sm:w-[600px] h-[360px] sm:h-[600px] rounded-full bg-gradient-to-r from-amber-500/10 via-amber-300/20 to-transparent blur-3xl pointer-events-none" />
 
             {/* Gilded Society Collective Invitation Card */}
-            <div className="max-w-2xl w-full p-8 sm:p-12 rounded-3xl bg-gradient-to-b from-[#16161a] via-[#101014] to-black border border-amber/40 shadow-[0_0_80px_rgba(245,158,11,0.2)] space-y-6 relative z-10 backdrop-blur-2xl">
-              <div className="flex flex-col items-center gap-2">
-                <Badge variant="amber" className="shadow-lg">
+            <div className="max-w-2xl w-full p-5 sm:p-12 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#16161a] via-[#101014] to-black border border-amber/40 shadow-[0_0_80px_rgba(245,158,11,0.2)] space-y-4 sm:space-y-6 relative z-10 backdrop-blur-2xl">
+              <div className="flex flex-col items-center gap-1.5 sm:gap-2">
+                <Badge variant="amber" className="shadow-lg text-[9px] sm:text-xs">
                   ● CHAPTER 05 // THE EPILOGUE
                 </Badge>
-                <div className="font-mono text-[10px] text-amber/80 tracking-widest uppercase font-bold">
+                <div className="font-mono text-[9px] sm:text-[10px] text-amber/80 tracking-widest uppercase font-bold">
                   ROLL EXPOSURE 36/36 COMPLETED • CAMERA READY
                 </div>
               </div>
 
               {/* Society Guild Emblem Seal */}
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber via-pink-500 to-purple-600 p-[2px] mx-auto shadow-2xl">
-                <div className="w-full h-full rounded-[14px] bg-black flex items-center justify-center text-amber">
-                  <Camera className="w-8 h-8" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-amber via-pink-500 to-purple-600 p-[2px] mx-auto shadow-2xl">
+                <div className="w-full h-full rounded-[10px] sm:rounded-[14px] bg-black flex items-center justify-center text-amber">
+                  <Camera className="w-6 h-6 sm:w-8 sm:h-8" />
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <h2 className="font-title text-4xl sm:text-6xl font-black text-offwhite tracking-tight leading-[1.08]">
+              <div className="space-y-2 sm:space-y-3">
+                <h2 className="font-title text-2xl sm:text-5xl md:text-6xl font-black text-offwhite tracking-tight leading-[1.08]">
                   {scene5.headline}
                 </h2>
-                <p className="font-title text-xl sm:text-2xl text-amber font-light max-w-lg mx-auto leading-relaxed">
+                <p className="font-title text-base sm:text-2xl text-amber font-light max-w-lg mx-auto leading-relaxed">
                   {scene5.bodyText}
                 </p>
               </div>
 
-              <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3 pt-2 sm:pt-3">
                 <Button
                   href={whatsappUrl}
                   isExternal
                   variant="primary"
                   size="md"
-                  className="gap-2 shadow-[0_0_25px_rgba(245,158,11,0.35)]"
+                  className="gap-2 shadow-[0_0_25px_rgba(245,158,11,0.35)] justify-center"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Join The Collective
@@ -1495,7 +1468,7 @@ export function HomepageStoryEngine({
                   href="/gallery"
                   variant="outline"
                   size="md"
-                  className="gap-2"
+                  className="gap-2 justify-center"
                 >
                   Explore Light Table <ArrowRight className="w-4 h-4" />
                 </Button>
@@ -1505,6 +1478,7 @@ export function HomepageStoryEngine({
                   isExternal
                   variant="secondary"
                   size="md"
+                  className="justify-center"
                 >
                   Follow on Instagram
                 </Button>
@@ -1512,289 +1486,6 @@ export function HomepageStoryEngine({
             </div>
           </div>
         </div>
-      </div>
-
-      {/* =======================================================================
-          MOBILE REVEAL-ON-SCROLL VIEWPORT (Visible < 1024px)
-          ======================================================================= */}
-      <div className="block lg:hidden py-12 px-4 space-y-12 max-w-2xl mx-auto mobile-story-flow">
-        {/* Mobile Scene 0: Darkness */}
-        <section
-          id="story-scene-0"
-          className="mobile-story-card p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#141418] to-black border border-charcoal-border space-y-5 text-center shadow-2xl relative overflow-hidden"
-        >
-          {/* Subtle aperture blades backdrop */}
-          <div className="w-28 h-28 mx-auto relative flex items-center justify-center">
-            <svg
-              viewBox="0 0 200 200"
-              className="w-full h-full text-amber/40 animate-spool-spin"
-            >
-              <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="6 6" opacity="0.5" />
-              {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
-                <g key={i} transform={`rotate(${angle} 100 100)`}>
-                  <path
-                    d="M100,20 C140,35 160,80 145,110 C120,85 100,60 100,20 Z"
-                    fill="currentColor"
-                    fillOpacity="0.15"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                </g>
-              ))}
-            </svg>
-            <div className="absolute w-8 h-8 rounded-full bg-amber/30 blur-md animate-pulse" />
-          </div>
-
-          <Badge variant="amber" className="mx-auto">
-            ● CHAPTER 00 // DARKNESS
-          </Badge>
-          <h2 className="font-title text-3xl sm:text-4xl font-black text-offwhite">
-            {scene0.headline}
-          </h2>
-          <p className="font-mono text-xs sm:text-sm text-amber">
-            {`// ${scene0.bodyText}`}
-          </p>
-          <div className="inline-flex items-center gap-2 font-mono text-[10px] text-offwhite-dim bg-black/60 px-3 py-1 rounded-full border border-charcoal-border">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber animate-pulse" />
-            <span>APERTURE DILATING: f/16 → f/1.4</span>
-          </div>
-        </section>
-
-        {/* Mobile Scene 1: Light */}
-        <section
-          id="story-scene-1"
-          className="mobile-story-card p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#141418] to-black border border-charcoal-border space-y-5 text-center shadow-2xl relative overflow-hidden"
-        >
-          <div className="absolute top-1/2 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent blur-[1px] -translate-y-1/2 opacity-70" />
-
-          <Badge variant="amber" className="mx-auto">
-            ● CHAPTER 01 // RACKING FOCUS
-          </Badge>
-          <h2 className="font-title text-3xl sm:text-4xl font-black text-offwhite chromatic-text">
-            {scene1.headline}
-          </h2>
-          <p className="text-sm font-body text-offwhite-muted max-w-md mx-auto leading-relaxed">
-            {scene1.bodyText}
-          </p>
-
-          <div className="pt-2 flex flex-col items-center gap-2">
-            <div className="font-mono text-[10px] text-offwhite-dim flex items-center gap-3">
-              <span>0.3m</span>
-              <span>──</span>
-              <span>1.0m</span>
-              <span>──</span>
-              <span className="text-amber font-bold">∞</span>
-            </div>
-            <div className="font-mono text-[10px] text-emerald-400 flex items-center gap-1.5 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              OPTICAL FOCUS CONFIRMED (AF-LOCK)
-            </div>
-          </div>
-        </section>
-
-        {/* Mobile Scene 2: Frame */}
-        <section
-          id="story-scene-2"
-          className="mobile-story-card p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#141418] to-black border border-charcoal-border space-y-5 text-center shadow-2xl relative overflow-hidden"
-        >
-          {/* Viewfinder corner brackets */}
-          <div className="absolute top-3 left-3 w-5 h-5 border-t-2 border-l-2 border-amber" />
-          <div className="absolute top-3 right-3 w-5 h-5 border-t-2 border-r-2 border-amber" />
-          <div className="absolute bottom-3 left-3 w-5 h-5 border-b-2 border-l-2 border-amber" />
-          <div className="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-amber" />
-
-          <Badge variant="amber" className="mx-auto">
-            ● CHAPTER 02 // THE COMPOSITION
-          </Badge>
-          <h2 className="font-title text-3xl sm:text-4xl font-black text-offwhite">
-            {scene2.headline}
-          </h2>
-          <p className="text-sm font-body text-offwhite-muted leading-relaxed">
-            {scene2.bodyText}
-          </p>
-
-          <div className="flex justify-between items-center font-mono text-[10px] text-amber pt-3 border-t border-charcoal-border">
-            <span className="bg-black/60 px-2 py-0.5 rounded border border-charcoal-border">1/2000s</span>
-            <span className="bg-black/60 px-2 py-0.5 rounded border border-charcoal-border text-offwhite font-bold">f/1.4</span>
-            <span className="bg-black/60 px-2 py-0.5 rounded border border-charcoal-border">ISO 400</span>
-            <span className="text-emerald-400">98% 7.2V</span>
-          </div>
-        </section>
-
-        {/* Mobile Scene 3: Moments (Horizontal Swipeable 35mm Film Strip) */}
-        <section
-          id="story-scene-3"
-          className="mobile-story-card p-5 sm:p-6 rounded-3xl bg-[#0c0c0e] border border-charcoal-border space-y-4 shadow-2xl overflow-hidden"
-        >
-          <div className="text-center space-y-1">
-            <Badge variant="amber" className="mx-auto">
-              ● CHAPTER 03 // 35MM MOMENTS
-            </Badge>
-            <h2 className="font-title text-2xl sm:text-3xl font-black text-offwhite">
-              {scene3.headline}
-            </h2>
-            <p className="font-mono text-xs text-amber">
-              {scene3.bodyText}
-            </p>
-            <p className="font-mono text-[10px] text-offwhite-dim">
-              ← SWIPE HORIZONTALLY TO BROWSE EXPOSURES →
-            </p>
-          </div>
-
-          {/* Swipeable 35mm Track */}
-          <div className="overflow-x-auto flex gap-4 pb-2 pt-2 scrollbar-none snap-x snap-mandatory -mx-2 px-2">
-            {displayGallery.map((item, idx) => (
-              <div
-                key={item._id}
-                className="relative w-[260px] shrink-0 bg-black border border-charcoal-border rounded-2xl p-3 space-y-2 snap-center shadow-lg"
-              >
-                {/* Top Sprocket Perforation */}
-                <div className="horizontal-film-track h-4 w-full opacity-60" />
-
-                <div className="flex justify-between text-[9px] font-mono text-amber">
-                  <span>KODAK TRI-X 400</span>
-                  <span className="font-bold">EXP. {String(idx + 1).padStart(2, '0')}A</span>
-                </div>
-
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-zinc-900">
-                  <Image
-                    src={item.image.url}
-                    alt={item.caption}
-                    fill
-                    placeholder="blur"
-                    blurDataURL={item.image.blurDataURL || getDarkroomBlurPlaceholder(16, 12)}
-                    className="object-cover"
-                  />
-                  <div className="absolute top-1.5 left-1.5 z-10">
-                    <Badge variant="neutral" className="text-[8px] py-0.5 px-1.5 bg-black/80">
-                      {item.room}
-                    </Badge>
-                  </div>
-                </div>
-
-                <div className="space-y-0.5">
-                  <p className="font-title text-xs font-bold text-offwhite truncate">
-                    {item.caption}
-                  </p>
-                  {item.photographer && (
-                    <p className="font-mono text-[9px] text-offwhite-dim truncate">
-                      {item.photographer}
-                    </p>
-                  )}
-                </div>
-
-                {/* Bottom Sprocket Perforation */}
-                <div className="horizontal-film-track h-4 w-full opacity-60" />
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Mobile Scene 4: Next Frame */}
-        {nextUpcomingEvent && (
-          <section
-            id="story-scene-4"
-            className="mobile-story-card p-6 sm:p-8 rounded-3xl bg-charcoal border-2 border-amber/40 space-y-4 text-center shadow-2xl relative overflow-hidden"
-          >
-            <div className="flex items-center justify-between font-mono text-[9px] text-amber pb-2 border-b border-charcoal-border">
-              <span>DARKROOM SAFELIGHT 650nm</span>
-              <span>BATH 01: D-76</span>
-            </div>
-
-            <Badge variant="amber" className="mx-auto">
-              ● CHAPTER 04 // THE LATENT FRAME
-            </Badge>
-            <h2 className="font-title text-2xl font-black text-offwhite">
-              {scene4.headline}
-            </h2>
-
-            <div className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-charcoal-border shadow-md">
-              <Image
-                src={nextUpcomingEvent.image?.url || 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200'}
-                alt={nextUpcomingEvent.title}
-                fill
-                placeholder="blur"
-                blurDataURL={nextUpcomingEvent.image?.blurDataURL || getDarkroomBlurPlaceholder(16, 10)}
-                className="object-cover"
-              />
-              <div className="absolute top-2 left-2 z-10">
-                <Badge variant="amber" className="text-[9px] shadow-lg">
-                  <Sparkles className="w-3 h-3 mr-1" />
-                  EXPEDITION
-                </Badge>
-              </div>
-            </div>
-
-            <h3 className="font-title text-lg font-bold text-offwhite">
-              {nextUpcomingEvent.title}
-            </h3>
-
-            <Countdown targetDate={nextUpcomingEvent.date} />
-
-            <div className="flex flex-col gap-2 pt-2">
-              <Button
-                href={`/activities/${nextUpcomingEvent.slug}`}
-                variant="primary"
-                size="sm"
-                className="w-full justify-center"
-              >
-                Examine Roll Manifest <ArrowRight className="w-3.5 h-3.5 ml-1" />
-              </Button>
-              {nextUpcomingEvent.registrationLink && (
-                <Button
-                  href={nextUpcomingEvent.registrationLink}
-                  isExternal
-                  variant="outline"
-                  size="sm"
-                  className="w-full justify-center"
-                >
-                  Register Online <ExternalLink className="w-3 h-3 ml-1" />
-                </Button>
-              )}
-            </div>
-          </section>
-        )}
-
-        {/* Mobile Scene 5: Epilogue */}
-        <section
-          id="story-scene-5"
-          className="mobile-story-card p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-[#18181c] via-[#121216] to-black border border-amber/40 space-y-5 text-center shadow-2xl relative overflow-hidden"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber via-pink-500 to-purple-600 p-[2px] mx-auto shadow-lg">
-            <div className="w-full h-full rounded-[14px] bg-black flex items-center justify-center text-amber">
-              <Camera className="w-6 h-6" />
-            </div>
-          </div>
-
-          <Badge variant="amber" className="mx-auto">
-            ● CHAPTER 05 // THE EPILOGUE
-          </Badge>
-          <h2 className="font-title text-2xl sm:text-3xl font-black text-offwhite">
-            {scene5.headline}
-          </h2>
-          <p className="font-title text-base text-amber leading-relaxed">
-            {scene5.bodyText}
-          </p>
-
-          <div className="flex flex-col gap-2.5 pt-3">
-            <Button
-              href={whatsappUrl}
-              isExternal
-              variant="primary"
-              size="md"
-              className="w-full justify-center shadow-lg"
-            >
-              <MessageCircle className="w-4 h-4 mr-2" />
-              Join The Collective
-            </Button>
-            <Button href="/gallery" variant="outline" size="md" className="w-full justify-center">
-              Explore Light Table <ArrowRight className="w-4 h-4 ml-1" />
-            </Button>
-            <Button href={instagramUrl} isExternal variant="secondary" size="md" className="w-full justify-center">
-              Follow on Instagram
-            </Button>
-          </div>
-        </section>
       </div>
     </div>
   );
