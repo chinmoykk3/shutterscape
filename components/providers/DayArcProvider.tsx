@@ -21,6 +21,8 @@ interface DayArcContextValue {
   metadata: DayArcMetadata;
   setTheme: (theme: DayArcTheme | 'auto') => void;
   toggleSunMoon: () => void;
+  isLight: boolean;
+  toggleTheme: () => void;
 }
 
 const DayArcContext = createContext<DayArcContextValue | undefined>(undefined);
@@ -34,8 +36,17 @@ export function DayArcProvider({ children }: { children: React.ReactNode }) {
   // Initialize theme from localStorage or system time
   useEffect(() => {
     try {
-      const stored = localStorage.getItem('shutterscape_day_arc');
-      if (stored && stored !== 'auto' && stored in DAY_ARC_PRESETS) {
+      const stored =
+        localStorage.getItem('shutterscape_theme') ||
+        localStorage.getItem('shutterscape_day_arc');
+
+      if (stored === 'light' || stored === 'daylight') {
+        setInternalTheme('daylight');
+        setIsAuto(false);
+      } else if (stored === 'dark' || stored === 'night') {
+        setInternalTheme('night');
+        setIsAuto(false);
+      } else if (stored && stored !== 'auto' && stored in DAY_ARC_PRESETS) {
         setInternalTheme(stored as DayArcTheme);
         setIsAuto(false);
       } else {
@@ -54,6 +65,16 @@ export function DayArcProvider({ children }: { children: React.ReactNode }) {
     THEME_CLASSES.forEach((cls) => root.classList.remove(cls));
     root.classList.add(`theme-${theme}`);
     root.setAttribute('data-day-arc', theme);
+
+    if (theme === 'daylight') {
+      root.classList.add('light');
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
+    } else {
+      root.classList.add('dark');
+      root.classList.remove('light');
+      root.setAttribute('data-theme', 'dark');
+    }
   }, [theme]);
 
   // Recalculate if on auto mode every 5 minutes
@@ -74,6 +95,7 @@ export function DayArcProvider({ children }: { children: React.ReactNode }) {
       setInternalTheme(computed);
       setIsAuto(true);
       try {
+        localStorage.setItem('shutterscape_theme', 'auto');
         localStorage.setItem('shutterscape_day_arc', 'auto');
       } catch {
         // storage disabled
@@ -82,6 +104,7 @@ export function DayArcProvider({ children }: { children: React.ReactNode }) {
       setInternalTheme(newTheme);
       setIsAuto(false);
       try {
+        localStorage.setItem('shutterscape_theme', newTheme === 'daylight' ? 'light' : 'dark');
         localStorage.setItem('shutterscape_day_arc', newTheme);
       } catch {
         // storage disabled
@@ -89,18 +112,17 @@ export function DayArcProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const toggleSunMoon = useCallback(() => {
-    // Quick toggle between daylight/golden (Sun) and night (Moon)
-    if (theme === 'night') {
-      setTheme('golden');
-    } else if (theme === 'golden') {
-      setTheme('daylight');
-    } else if (theme === 'daylight') {
-      setTheme('dawn');
-    } else {
+  const isLight = theme === 'daylight';
+
+  const toggleTheme = useCallback(() => {
+    if (theme === 'daylight') {
       setTheme('night');
+    } else {
+      setTheme('daylight');
     }
   }, [theme, setTheme]);
+
+  const toggleSunMoon = toggleTheme;
 
   const value = useMemo(
     () => ({
@@ -109,8 +131,10 @@ export function DayArcProvider({ children }: { children: React.ReactNode }) {
       metadata: DAY_ARC_PRESETS[theme],
       setTheme,
       toggleSunMoon,
+      isLight,
+      toggleTheme,
     }),
-    [theme, isAuto, setTheme, toggleSunMoon]
+    [theme, isAuto, setTheme, toggleSunMoon, isLight, toggleTheme]
   );
 
   return <DayArcContext.Provider value={value}>{children}</DayArcContext.Provider>;

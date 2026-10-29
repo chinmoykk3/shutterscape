@@ -118,7 +118,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable} bg-black text-offwhite`}
+      className={`${playfair.variable} ${inter.variable} ${jetbrainsMono.variable} bg-theme-canvas text-theme-ink transition-colors duration-300`}
     >
       <head>
         <script
@@ -126,7 +126,7 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
-      <body className="antialiased selection:bg-amber selection:text-black min-h-screen flex flex-col bg-black text-offwhite">
+      <body className="antialiased selection:bg-amber selection:text-black min-h-screen flex flex-col bg-theme-canvas text-theme-ink transition-colors duration-300">
         <DayArcProvider>
           <StoryModeProvider>
             {/* Desktop Cursor Viewfinder */}

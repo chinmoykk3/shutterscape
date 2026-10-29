@@ -44,6 +44,191 @@
   --color-ink-dim: #64748B;
   --color-amber: #D97706;
   --color-safelight: #B3261E;
+  color-scheme: light;
+}
+
+/* -----------------------------------------------------------------------------
+   LIGHT MODE (Daylight Studio) COMPREHENSIVE THEME OVERRIDES
+   Transforms all dark camera surfaces, darkroom cards, and typography
+   into crisp, high-contrast daylight photo studio aesthetics.
+   ----------------------------------------------------------------------------- */
+html.theme-daylight,
+html.theme-daylight body {
+  background-color: #F8F9FA !important;
+  color: #0F172A !important;
+}
+
+/* Core surfaces & cards */
+html.theme-daylight .bg-black {
+  background-color: #F8F9FA !important;
+}
+
+html.theme-daylight .bg-charcoal,
+html.theme-daylight .bg-\[\#070708\],
+html.theme-daylight .bg-\[\#121214\],
+html.theme-daylight .bg-\[\#0c0c0e\],
+html.theme-daylight .bg-\[\#141418\],
+html.theme-daylight .bg-\[\#16161a\],
+html.theme-daylight .bg-\[\#18181c\],
+html.theme-daylight .bg-\[\#101014\],
+html.theme-daylight .bg-zinc-900,
+html.theme-daylight .bg-zinc-950 {
+  background-color: #FFFFFF !important;
+}
+
+html.theme-daylight .bg-charcoal\/90,
+html.theme-daylight .bg-charcoal\/80,
+html.theme-daylight .bg-charcoal\/70,
+html.theme-daylight .bg-charcoal\/60,
+html.theme-daylight .bg-charcoal\/50,
+html.theme-daylight .bg-charcoal\/40 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(16px);
+}
+
+html.theme-daylight .bg-black\/95,
+html.theme-daylight .bg-black\/90,
+html.theme-daylight .bg-black\/85,
+html.theme-daylight .bg-black\/80,
+html.theme-daylight .bg-black\/75,
+html.theme-daylight .bg-black\/70,
+html.theme-daylight .bg-black\/60,
+html.theme-daylight .bg-black\/50,
+html.theme-daylight .bg-black\/40 {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(16px);
+}
+
+html.theme-daylight .bg-charcoal-subtle,
+html.theme-daylight .bg-white\/5,
+html.theme-daylight .bg-white\/10 {
+  background-color: #F1F5F9 !important;
+}
+
+/* Borders */
+html.theme-daylight .border-charcoal-border,
+html.theme-daylight .border-charcoal-border\/60,
+html.theme-daylight .border-charcoal-border\/80,
+html.theme-daylight .border-charcoal-border\/90,
+html.theme-daylight .border-white\/5,
+html.theme-daylight .border-white\/10,
+html.theme-daylight .border-white\/15,
+html.theme-daylight .border-white\/20,
+html.theme-daylight .border-white\/30,
+html.theme-daylight .border-zinc-800,
+html.theme-daylight .border-zinc-700 {
+  border-color: #E2E8F0 !important;
+}
+
+/* Typography & Headings */
+html.theme-daylight .text-offwhite,
+html.theme-daylight .text-white {
+  color: #0F172A !important;
+}
+
+html.theme-daylight .text-offwhite-muted,
+html.theme-daylight .text-zinc-300,
+html.theme-daylight .text-zinc-400 {
+  color: #334155 !important;
+}
+
+html.theme-daylight .text-offwhite-dim,
+html.theme-daylight .text-zinc-500 {
+  color: #64748B !important;
+}
+
+html.theme-daylight .text-amber {
+  color: #D97706 !important;
+}
+
+html.theme-daylight .text-amber\/80,
+html.theme-daylight .text-amber\/70 {
+  color: #B45309 !important;
+}
+
+html.theme-daylight .chromatic-text {
+  text-shadow: 1px 1px 0 rgba(217, 119, 6, 0.15), -1px -1px 0 rgba(14, 165, 233, 0.15) !important;
+}
+
+/* Gradients */
+html.theme-daylight .from-\[\#16161a\],
+html.theme-daylight .from-\[\#141418\],
+html.theme-daylight .from-\[\#18181c\],
+html.theme-daylight .from-zinc-900,
+html.theme-daylight .via-\[\#101014\],
+html.theme-daylight .via-\[\#121216\],
+html.theme-daylight .via-zinc-900,
+html.theme-daylight .to-black {
+  --tw-gradient-from: #FFFFFF var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: #F8F9FA var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #FFFFFF var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+
+html.theme-daylight .light-leak-amber {
+  background: radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.02) 40%, transparent 70%) !important;
+}
+
+html.theme-daylight .light-leak-safelight {
+  background: radial-gradient(circle at 85% 15%, rgba(179, 38, 30, 0.08) 0%, rgba(179, 38, 30, 0.02) 50%, transparent 80%) !important;
+}
+
+/* Shadows & Elevation */
+html.theme-daylight .shadow-2xl,
+html.theme-daylight .shadow-\[0_0_60px_rgba\(0\,0\,0\,0\.85\)\],
+html.theme-daylight .shadow-\[0_0_80px_rgba\(245\,158\,11\,0\.2\)\],
+html.theme-daylight .shadow-\[0_12px_45px_rgba\(0\,0\,0\,0\.9\)\] {
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.07), 0 4px 10px -2px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Form controls & inputs */
+html.theme-daylight input,
+html.theme-daylight textarea,
+html.theme-daylight select {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
+
+html.theme-daylight input::placeholder,
+html.theme-daylight textarea::placeholder {
+  color: #94A3B8 !important;
+}
+
+/* Mobile Top bar translucent header gradient in daylight */
+html.theme-daylight header {
+  background: linear-gradient(to bottom, rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.4), transparent) !important;
+}
+
+@media (min-width: 640px) {
+  html.theme-daylight header {
+    background: none !important;
+  }
+}
+
+/* Floating Camera Dock in Daylight Mode */
+html.theme-daylight nav[aria-label="Floating Camera Dock"] > div {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  border-color: rgba(226, 232, 240, 0.95) !important;
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+html.theme-daylight nav[aria-label="Floating Camera Dock"] a {
+  color: #475569 !important;
+}
+
+html.theme-daylight nav[aria-label="Floating Camera Dock"] a:hover {
+  color: #D97706 !important;
+}
+
+/* Film strip and grain */
+html.theme-daylight .film-strip-border {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+html.theme-daylight .film-grain {
+  opacity: 0.015 !important;
+  mix-blend-mode: multiply !important;
 }
 
 .theme-golden {

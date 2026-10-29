@@ -36,7 +36,7 @@ export function MinimalTopBar({
   instagramUrl = 'https://www.instagram.com/shutterscape_gcu',
 }: MinimalTopBarProps) {
   const pathname = usePathname();
-  const { theme, isAuto, metadata, toggleSunMoon } = useDayArc();
+  const { isLight, toggleTheme } = useDayArc();
   const { mode, toggleMode } = useStoryMode();
 
   // Hide on admin routes to leave full screen for Editing Room
@@ -75,24 +75,34 @@ export function MinimalTopBar({
 
         {/* Right: Controls & Social Mark (Interactive) */}
         <div className="pointer-events-auto flex items-center gap-2 sm:gap-3">
-          {/* Day Arc Dial / Sun-Moon Override Button */}
+          {/* Day Arc / Light & Dark Mode Toggle Switch */}
           <button
             type="button"
-            onClick={toggleSunMoon}
-            title={`Day Arc Theme: ${metadata.label} (${isAuto ? 'Auto' : 'Manual'}). Click to cycle.`}
-            aria-label={`Cycle Day Arc theme, currently ${metadata.label}`}
-            className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-black/75 border border-charcoal-border/80 text-offwhite-dim hover:text-amber hover:border-amber/40 backdrop-blur-md transition-all active:scale-95 shadow-lg font-mono text-[10px]"
-          >
-            {theme === 'night' ? (
-              <Moon className="w-3.5 h-3.5 text-amber" />
-            ) : (
-              <Sun className="w-3.5 h-3.5 text-amber" />
+            onClick={toggleTheme}
+            title={isLight ? 'Switch to Dark Mode (Darkroom Safe Light)' : 'Switch to Light Mode (Daylight Studio)'}
+            aria-label={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            className={cn(
+              'group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full border backdrop-blur-md transition-all duration-300 active:scale-95 shadow-lg font-mono text-[10px] sm:text-[11px] font-semibold',
+              isLight
+                ? 'bg-white/90 border-slate-300 text-slate-800 hover:text-amber-700 hover:border-amber-400 shadow-slate-200/50'
+                : 'bg-black/75 border-charcoal-border/80 text-offwhite hover:text-amber hover:border-amber/40 shadow-black/40'
             )}
-            <span className="hidden lg:inline-block tracking-wider uppercase">
-              {metadata.label}
+          >
+            {isLight ? (
+              <Sun className="w-3.5 h-3.5 text-amber-600 transition-transform duration-300 group-hover:rotate-45" />
+            ) : (
+              <Moon className="w-3.5 h-3.5 text-amber transition-transform duration-300 group-hover:-rotate-12" />
+            )}
+            <span className="tracking-wider uppercase">
+              {isLight ? 'Light' : 'Dark'}
             </span>
-            <span className="text-[9px] px-1 py-0.2 rounded bg-white/10 text-offwhite-dim uppercase hidden xl:inline">
-              {isAuto ? 'Auto' : 'Manual'}
+            <span
+              className={cn(
+                'hidden sm:inline-block text-[9px] px-1.5 py-0.2 rounded uppercase transition-colors',
+                isLight ? 'bg-slate-100 text-slate-600' : 'bg-white/10 text-offwhite-dim'
+              )}
+            >
+              Mode
             </span>
           </button>
 

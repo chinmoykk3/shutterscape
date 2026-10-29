@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, MapPin, ExternalLink, MessageCircle, ChevronDown, ChevronUp, Send, CheckCircle2 } from 'lucide-react';
+import { Mail, MapPin, ExternalLink, MessageCircle, ChevronDown, ChevronUp, Send, CheckCircle2, Sun, Moon } from 'lucide-react';
 import { GlobalSettings } from '@/lib/actions/settings';
 import { Button } from '@/components/ui/Button';
 import { ShutterScapeLogo } from '@/components/ui/ShutterScapeLogo';
+import { useDayArc } from '@/components/providers/DayArcProvider';
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -36,6 +37,7 @@ interface FooterProps {
  * embedded Google Map of Girijananda Chowdhury University, and optional expandable Join Form.
  */
 export function Footer({ settings }: FooterProps) {
+  const { isLight, toggleTheme } = useDayArc();
   const [gcuLogoError, setGcuLogoError] = useState(false);
   const [isJoinFormOpen, setIsJoinFormOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -417,6 +419,16 @@ export function Footer({ settings }: FooterProps) {
             <Link href="/admin/login" className="hover:text-amber transition-colors">
               Admin Darkroom
             </Link>
+            <span className="text-charcoal-border">•</span>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+              className="hover:text-amber transition-colors inline-flex items-center gap-1.5 focus:outline-none"
+            >
+              {isLight ? <Moon className="w-3 h-3 text-amber" /> : <Sun className="w-3 h-3 text-amber" />}
+              <span>{isLight ? 'Dark Mode' : 'Light Mode'}</span>
+            </button>
           </div>
           <div>
             Website Maintained by{' '}
