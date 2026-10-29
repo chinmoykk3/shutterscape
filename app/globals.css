@@ -54,13 +54,22 @@
    ----------------------------------------------------------------------------- */
 html.theme-daylight,
 html.theme-daylight body {
-  background-color: #F8F9FA !important;
+  background-color: #FAFAF9 !important;
   color: #0F172A !important;
+}
+
+/* Studio Drafting Table & Gallery Grid Texture */
+html.theme-daylight body {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.04) 0%, transparent 60%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px) !important;
+  background-size: 100% 100%, 48px 48px, 48px 48px !important;
 }
 
 /* Core surfaces & cards */
 html.theme-daylight .bg-black {
-  background-color: #F8F9FA !important;
+  background-color: #FAFAF9 !important;
 }
 
 html.theme-daylight .bg-charcoal,
@@ -88,7 +97,7 @@ html.theme-daylight .bg-charcoal\/60,
 html.theme-daylight .bg-charcoal\/50,
 html.theme-daylight .bg-charcoal\/40,
 html.theme-daylight .bg-\[\#0c0c0e\]\/90 {
-  background-color: rgba(255, 255, 255, 0.94) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(16px);
 }
 
@@ -101,7 +110,7 @@ html.theme-daylight .bg-black\/70,
 html.theme-daylight .bg-black\/60,
 html.theme-daylight .bg-black\/50,
 html.theme-daylight .bg-black\/40 {
-  background-color: rgba(255, 255, 255, 0.9) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(16px);
 }
 
@@ -111,7 +120,7 @@ html.theme-daylight .bg-white\/10 {
   background-color: #F1F5F9 !important;
 }
 
-/* Borders */
+/* Borders with Architectural Polish */
 html.theme-daylight .border-charcoal-border,
 html.theme-daylight .border-charcoal-border\/40,
 html.theme-daylight .border-charcoal-border\/60,
@@ -221,21 +230,32 @@ html.theme-daylight .light-leak-safelight {
   background: radial-gradient(circle at 85% 15%, rgba(179, 38, 30, 0.08) 0%, rgba(179, 38, 30, 0.02) 50%, transparent 80%) !important;
 }
 
-/* Shadows & Elevation */
+/* Exhibition Mat Passpartout Shadows & Elevation on Cards */
 html.theme-daylight .shadow-2xl,
 html.theme-daylight .shadow-\[0_0_60px_rgba\(0\,0\,0\,0\.85\)\],
 html.theme-daylight .shadow-\[0_0_80px_rgba\(245\,158\,11\,0\.2\)\],
 html.theme-daylight .shadow-\[0_12px_45px_rgba\(0\,0\,0\,0\.9\)\] {
-  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.07), 0 4px 10px -2px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 
+    0 1px 3px 0 rgba(0, 0, 0, 0.04), 
+    0 12px 30px -4px rgba(0, 0, 0, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9) !important;
 }
 
-/* Form controls & inputs */
+/* Form controls & inputs with Crisp Contrast */
 html.theme-daylight input,
 html.theme-daylight textarea,
 html.theme-daylight select {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
   border-color: #CBD5E1 !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.theme-daylight input:focus,
+html.theme-daylight textarea:focus,
+html.theme-daylight select:focus {
+  border-color: #D97706 !important;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.12) !important;
 }
 
 html.theme-daylight input::placeholder,
@@ -254,24 +274,34 @@ html.theme-daylight .bg-charcoal.text-offwhite.border {
   background-color: #FFFFFF !important;
   border-color: #CBD5E1 !important;
   color: #0F172A !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Badges in light mode */
+html.theme-daylight .bg-charcoal.text-offwhite.border:hover {
+  background-color: #F8FAFC !important;
+  border-color: #94A3B8 !important;
+}
+
+/* Editorial Badges in light mode */
 html.theme-daylight .bg-amber\/15 {
   background-color: #FEF3C7 !important;
   border-color: #FCD34D !important;
-  color: #B45309 !important;
+  color: #92400E !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 2px rgba(217, 119, 6, 0.08) !important;
 }
 
 html.theme-daylight .bg-safelight\/20 {
   background-color: #FFE4E6 !important;
   border-color: #FDA4AF !important;
-  color: #BE123C !important;
+  color: #9F1239 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 2px rgba(225, 29, 72, 0.08) !important;
 }
 
 /* Mobile Top bar translucent header gradient in daylight */
 html.theme-daylight header {
-  background: linear-gradient(to bottom, rgba(248, 249, 250, 0.88), rgba(248, 249, 250, 0.45), transparent) !important;
+  background: linear-gradient(to bottom, rgba(250, 250, 249, 0.94), rgba(250, 250, 249, 0.5), transparent) !important;
 }
 
 @media (min-width: 640px) {
@@ -280,11 +310,14 @@ html.theme-daylight header {
   }
 }
 
-/* Floating Camera Dock in Daylight Mode */
+/* Floating Camera Dock in Daylight Mode with Multi-Layer Bevel */
 html.theme-daylight nav[aria-label="Floating Camera Dock"] > div {
-  background-color: rgba(255, 255, 255, 0.95) !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
   border-color: rgba(226, 232, 240, 0.95) !important;
-  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 20px 40px -8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
 }
 
 html.theme-daylight nav[aria-label="Floating Camera Dock"] a:not(.bg-amber):not(.bg-safelight) {
@@ -299,6 +332,7 @@ html.theme-daylight nav[aria-label="Floating Camera Dock"] a:not(.bg-amber):not(
 html.theme-daylight nav[aria-label="Floating Camera Dock"] a.bg-amber {
   background-color: #F59E0B !important;
   color: #000000 !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35) !important;
 }
 
 html.theme-daylight nav[aria-label="Floating Camera Dock"] a[aria-label*="Return to Origin"] {
@@ -317,6 +351,34 @@ html.theme-daylight .film-strip-border {
 html.theme-daylight .film-grain {
   opacity: 0.015 !important;
   mix-blend-mode: multiply !important;
+}
+
+/* Brushed Titanium / Aluminum 35mm Canister in Daylight Mode */
+html.theme-daylight [class*="from-zinc-800"][class*="to-black"] {
+  background: linear-gradient(135deg, #E2E8F0 0%, #F8FAFC 45%, #CBD5E1 100%) !important;
+  border-color: rgba(217, 119, 6, 0.5) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+html.theme-daylight [class*="from-zinc-800"][class*="to-black"] span,
+html.theme-daylight [class*="from-zinc-800"][class*="to-black"] div {
+  color: #1E293B !important;
+}
+
+/* Viewfinder Optical Rangefinder Styling in Scene 2 */
+html.theme-daylight [class*="aspect-\[16\/10\]"][class*="backdrop-blur-xl"],
+html.theme-daylight [class*="aspect-\[4\/3\]"][class*="backdrop-blur-xl"] {
+  background-color: rgba(255, 255, 255, 0.88) !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* High-Contrast Perforated Film Track in Daylight Mode */
+html.theme-daylight .horizontal-film-track {
+  background-image: url("data:image/svg+xml,%3Csvg width='48' height='24' viewBox='0 0 48 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='12' y='4' width='24' height='16' rx='3' fill='%231E293B' stroke='%23475569' stroke-width='1.5'/%3E%3C/svg%3E") !important;
+  opacity: 0.85 !important;
 }
 
 .theme-golden {
