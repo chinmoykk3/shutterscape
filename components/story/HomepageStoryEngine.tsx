@@ -937,7 +937,7 @@ export function HomepageStoryEngine({
           <div
             ref={scene0Ref}
             style={{ opacity: 1, visibility: 'visible' }}
-            className="absolute inset-0 z-20 flex items-center justify-center text-center p-4 sm:p-8 bg-black pt-12 sm:pt-16 overflow-hidden"
+            className="absolute inset-0 z-20 flex items-center justify-center text-center p-4 sm:p-8 bg-theme-canvas text-theme-ink pt-12 sm:pt-16 overflow-hidden transition-colors duration-300"
           >
             {/* Volumetric Ray Burst emerging through aperture */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(245,158,11,0.22)_0%,_rgba(245,158,11,0.05)_40%,_transparent_70%)] animate-volumetric-rays pointer-events-none" />
@@ -946,7 +946,7 @@ export function HomepageStoryEngine({
             <div
               ref={irisMaskRef}
               style={{ clipPath: 'circle(12% at 50% 50%)' }}
-              className="absolute inset-0 flex items-center justify-center bg-radial from-amber/25 via-black to-black pointer-events-none"
+              className="absolute inset-0 flex items-center justify-center bg-radial from-amber/25 via-theme-canvas to-theme-canvas pointer-events-none"
             >
               {/* Rotating mechanical iris blades SVG with engraved f-stop ring */}
               <div className="relative flex items-center justify-center">

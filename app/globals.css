@@ -633,3 +633,76 @@ html[data-story-mode="quick"] .shutter-curtain {
 .animate-spool-spin {
   animation: spoolSpin 6s linear infinite;
 }
+
+/* -----------------------------------------------------------------------------
+   LIGHT MODE (DAYLIGHT ARCHIVAL SUITE) - EDITORIAL & GALLERY POLISH
+   ----------------------------------------------------------------------------- */
+html.theme-daylight {
+  color-scheme: light;
+}
+
+html.theme-daylight body {
+  background-color: #FAF9F5 !important;
+  color: #0F172A !important;
+  background-image: 
+    radial-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(to right, rgba(15, 23, 42, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.015) 1px, transparent 1px) !important;
+  background-size: 24px 24px, 48px 48px, 48px 48px !important;
+}
+
+/* Hero Centered Soft Vignette for Daylight Canvas */
+html.theme-daylight .hero-center-vignette {
+  background: radial-gradient(ellipse 65% 60% at 50% 50%, transparent 0%, rgba(250, 249, 245, 0.72) 65%, rgba(250, 249, 245, 0.95) 100%) !important;
+}
+
+/* Hero Floating Negatives: Physical Archival Prints in Loft Gallery */
+html.theme-daylight .hero-floating-card {
+  background-color: rgba(255, 255, 255, 0.96) !important;
+  border-color: rgba(226, 232, 240, 0.9) !important;
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 16px 36px -4px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.95) !important;
+}
+
+html.theme-daylight .hero-floating-card [class*="border-white"] {
+  border-color: rgba(226, 232, 240, 0.8) !important;
+}
+
+html.theme-daylight .hero-floating-card span {
+  color: #475569 !important;
+}
+
+html.theme-daylight .hero-floating-card [class*="text-amber"] {
+  color: #B45309 !important;
+}
+
+/* Clean Google Maps styling in Daylight Mode */
+html.theme-daylight iframe {
+  filter: grayscale(15%) contrast(98%) !important;
+}
+
+/* Corner framing brackets & viewfinder focus in Daylight */
+html.theme-daylight .border-amber {
+  border-color: #D97706 !important;
+}
+
+/* High-contrast typography hierarchy in Daylight */
+html.theme-daylight h1.font-title,
+html.theme-daylight h2.font-title,
+html.theme-daylight h3.font-title,
+html.theme-daylight h4.font-title {
+  color: #0F172A !important;
+}
+
+html.theme-daylight p.font-body {
+  color: #334155 !important;
+}
+
+/* Editorial badge in Daylight */
+html.theme-daylight .badge-amber {
+  background-color: #FEF3C7 !important;
+  color: #92400E !important;
+  border-color: #FCD34D !important;
+}

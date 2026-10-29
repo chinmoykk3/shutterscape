@@ -32,21 +32,25 @@ function VectorMark({ svgClassName }: { svgClassName?: string }) {
   );
 }
 
-function StackedTypography({ darkText = false }: { darkText?: boolean }) {
+function StackedTypography({ darkText }: { darkText?: boolean }) {
   return (
     <div
       className={cn(
         'flex flex-col leading-[0.82] select-none',
-        darkText ? 'text-black' : 'text-offwhite'
+        darkText !== undefined
+          ? (darkText ? 'text-black' : 'text-offwhite')
+          : 'text-slate-900 dark:text-offwhite'
       )}
     >
-      <span className="font-body font-black text-[19px] tracking-[-0.04em] lowercase">
+      <span className="font-body font-black text-[18px] sm:text-[19px] tracking-[-0.04em] lowercase">
         shutter
       </span>
       <span
         className={cn(
-          'font-body font-extralight text-[19px] tracking-[-0.03em] lowercase transition-colors duration-300',
-          darkText ? 'text-black/80' : 'text-offwhite-muted group-hover:text-amber'
+          'font-body font-extralight text-[18px] sm:text-[19px] tracking-[-0.03em] lowercase transition-colors duration-300',
+          darkText !== undefined
+            ? (darkText ? 'text-black/80' : 'text-offwhite-muted group-hover:text-amber')
+            : 'text-slate-600 dark:text-offwhite-muted group-hover:text-amber-600 dark:group-hover:text-amber'
         )}
       >
         scape
@@ -70,7 +74,7 @@ export function ShutterScapeLogo({
 
   if (variant === 'mark') {
     return (
-      <div className={cn('inline-flex items-center justify-center select-none', className)}>
+      <div className={cn('inline-flex items-center justify-center select-none text-slate-900 dark:text-offwhite', className)}>
         <VectorMark />
       </div>
     );
@@ -118,11 +122,11 @@ export function ShutterScapeLogo({
 
   // Default 'combined' lockup: Geometric S-Camera Mark + Stacked "shutter scape" wordmark
   return (
-    <div className={cn('inline-flex items-center gap-3 select-none', className)}>
-      <div className="w-10 h-7 text-offwhite group-hover:text-amber transition-colors duration-300 shrink-0">
+    <div className={cn('inline-flex items-center gap-2 sm:gap-3 select-none', className)}>
+      <div className="w-8 h-5 sm:w-10 sm:h-7 text-slate-900 dark:text-offwhite group-hover:text-amber-600 dark:group-hover:text-amber transition-colors duration-300 shrink-0">
         <VectorMark />
       </div>
-      <StackedTypography darkText={false} />
+      <StackedTypography />
     </div>
   );
 }

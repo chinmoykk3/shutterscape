@@ -211,7 +211,7 @@ export function HeroFloatingGallery({ items }: HeroFloatingGalleryProps) {
       className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0"
     >
       {/* Darkroom Center Safeguard Vignette: Keeps center headline ultra-sharp and 100% legible */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,transparent_0%,rgba(7,7,8,0.75)_70%,rgba(7,7,8,0.95)_100%)] z-10 pointer-events-none" />
+      <div className="hero-center-vignette absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,transparent_0%,rgba(7,7,8,0.75)_70%,rgba(7,7,8,0.95)_100%)] z-10 pointer-events-none" />
 
       {/* Floating Photograph Constellation */}
       {cards.map(({ cfg, item }, idx) => {
@@ -319,7 +319,7 @@ function FloatingCard({
       >
         {/* Analog Print Mount (Frame) */}
         <div
-          className={`relative w-full h-full rounded-2xl p-1.5 sm:p-2 bg-[#0c0c0e]/90 border border-white/10 backdrop-blur-md overflow-hidden transition-all duration-500 ${
+          className={`hero-floating-card relative w-full h-full rounded-2xl p-1.5 sm:p-2 bg-[#0c0c0e]/90 border border-white/10 backdrop-blur-md overflow-hidden transition-all duration-500 ${
             isHovered
               ? 'border-amber/60 shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_35px_rgba(245,158,11,0.3)] ring-1 ring-amber/40'
               : 'shadow-[0_15px_40px_rgba(0,0,0,0.85),0_0_15px_rgba(245,158,11,0.04)]'

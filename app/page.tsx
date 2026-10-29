@@ -97,7 +97,7 @@ export default async function HomePage() {
       {/* =========================================================================
           HERO FRAME: Viewfinder HUD, Aperture Reveal, Analog Telemetry
           ========================================================================= */}
-      <section className="relative min-h-[92vh] flex flex-col items-center justify-center pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative min-h-[92vh] flex flex-col items-center justify-center pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-theme-canvas text-theme-ink transition-colors duration-300">
         {/* Subtle Ambient Light Leak Gradients */}
         <div className="absolute top-0 left-1/4 w-[600px] h-[500px] rounded-full light-leak-amber blur-[140px] pointer-events-none" />
         <div className="absolute top-1/3 right-10 w-[500px] h-[500px] rounded-full light-leak-safelight blur-[150px] pointer-events-none" />
@@ -121,16 +121,16 @@ export default async function HomePage() {
 
           {/* Master Editorial Headline */}
           <div className="space-y-4 max-w-4xl px-2 sm:px-0">
-            <h1 className="font-title text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-offwhite tracking-tight leading-[1.1] sm:leading-[1.08]">
+            <h1 className="font-title text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-slate-900 dark:text-offwhite tracking-tight leading-[1.1] sm:leading-[1.08]">
               {settings.heroTitle}
             </h1>
-            <p className="font-mono text-xs sm:text-sm md:text-base lg:text-lg text-amber tracking-[0.15em] sm:tracking-[0.2em] uppercase font-medium">
+            <p className="font-mono text-xs sm:text-sm md:text-base lg:text-lg text-amber-600 dark:text-amber tracking-[0.15em] sm:tracking-[0.2em] uppercase font-semibold">
               {`// ${settings.heroSubtitle}`}
             </p>
           </div>
 
           {/* Editorial Hook */}
-          <p className="font-body text-sm sm:text-base md:text-lg text-offwhite-muted max-w-2xl leading-relaxed px-2 sm:px-0">
+          <p className="font-body text-sm sm:text-base md:text-lg text-slate-600 dark:text-offwhite-muted max-w-2xl leading-relaxed px-2 sm:px-0">
             The official visual arts and photography society of Girijananda Chowdhury University.
             Archiving campus history through 35mm film aesthetics, silver halide chemistry, and modern digital observation.
           </p>
@@ -160,7 +160,7 @@ export default async function HomePage() {
       {/* =========================================================================
           CHAPTER 1: THE STORY ENGINE (Scenes 0 to 5, Contact Sheet Jump)
           ========================================================================= */}
-      <section id="story-scenes" className="relative w-full bg-black border-t border-charcoal-border">
+      <section id="story-scenes" className="relative w-full bg-theme-canvas border-t border-theme-border transition-colors duration-300">
         <HomepageStoryEngine
           storyScenes={storyScenes}
           featuredGallery={galleryItems}
@@ -178,7 +178,7 @@ export default async function HomePage() {
       {/* =========================================================================
           CHAPTER 2: GALLERY & EXHIBITION ROOMS
           ========================================================================= */}
-      <section id="gallery-rooms" className="relative py-24 sm:py-32 bg-black border-t border-charcoal-border">
+      <section id="gallery-rooms" className="relative py-24 sm:py-32 bg-theme-canvas border-t border-theme-border transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <SectionHeading
@@ -282,7 +282,7 @@ export default async function HomePage() {
       {/* =========================================================================
           CHAPTER 3: ACTIVITIES & LIVE PHOTOWALKS (with Intervalometer Countdown)
           ========================================================================= */}
-      <section id="activities" className="relative py-24 sm:py-32 bg-[#09090b] border-t border-charcoal-border">
+      <section id="activities" className="relative py-24 sm:py-32 bg-theme-canvas border-t border-theme-border transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             chapter="CHAPTER 03 // FIELD EXPEDITIONS"
@@ -370,7 +370,7 @@ export default async function HomePage() {
       {/* =========================================================================
           CHAPTER 4: THE COLLECTIVE (Faculty, Core, Alumni)
           ========================================================================= */}
-      <section id="members" className="relative py-24 sm:py-32 bg-black border-t border-charcoal-border">
+      <section id="members" className="relative py-24 sm:py-32 bg-theme-canvas border-t border-theme-border transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             chapter="CHAPTER 04 // THE COLLECTIVE"
@@ -422,7 +422,7 @@ export default async function HomePage() {
       {/* =========================================================================
           CHAPTER 5: CONTACT & DISPATCH
           ========================================================================= */}
-      <section id="contact" className="relative py-24 sm:py-32 bg-[#09090b] border-t border-charcoal-border">
+      <section id="contact" className="relative py-24 sm:py-32 bg-theme-canvas border-t border-theme-border transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
