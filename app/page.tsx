@@ -98,9 +98,39 @@ export default async function HomePage() {
           HERO FRAME: Viewfinder HUD, Aperture Reveal, Analog Telemetry
           ========================================================================= */}
       <section className="relative min-h-[92vh] flex flex-col items-center justify-center pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-theme-canvas text-theme-ink transition-colors duration-300">
-        {/* Subtle Ambient Light Leak Gradients */}
-        <div className="absolute top-0 left-1/4 w-[600px] h-[500px] rounded-full light-leak-amber blur-[140px] pointer-events-none" />
-        <div className="absolute top-1/3 right-10 w-[500px] h-[500px] rounded-full light-leak-safelight blur-[150px] pointer-events-none" />
+        {/* Warm Ambient Golden Hour & Safelight Gradients */}
+        <div className="absolute top-10 left-1/4 w-[600px] h-[500px] rounded-full bg-amber-400/15 dark:bg-amber-500/10 blur-[130px] pointer-events-none" />
+        <div className="absolute top-1/3 right-10 w-[550px] h-[550px] rounded-full bg-rose-400/10 dark:bg-rose-600/15 blur-[150px] pointer-events-none" />
+
+        {/* Architectural Optical Ground-Glass Lens Calibration Rings */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          {/* Outer Reticle Ring */}
+          <div className="w-[600px] h-[600px] sm:w-[920px] sm:h-[920px] rounded-full border border-amber-500/15 dark:border-amber/10 animate-pulse duration-1000" />
+          {/* Mid Dashed Helicoid Ring */}
+          <div className="absolute w-[440px] h-[440px] sm:w-[680px] sm:h-[680px] rounded-full border border-stone-300/50 dark:border-white/5 border-dashed" />
+          {/* Inner Ground-Glass Optical Ring */}
+          <div className="absolute w-[280px] h-[280px] sm:w-[460px] sm:h-[460px] rounded-full border border-stone-300/40 dark:border-white/5" />
+          
+          {/* Crosshair Rangefinder Axis Guides */}
+          <div className="absolute w-[92%] max-w-6xl h-[1px] bg-gradient-to-r from-transparent via-stone-300/50 dark:via-white/10 to-transparent" />
+          <div className="absolute h-[80%] max-h-[720px] w-[1px] bg-gradient-to-b from-transparent via-stone-300/50 dark:via-white/10 to-transparent" />
+
+          {/* Technical Telemetry Watermarks at Optical Poles */}
+          <div className="absolute top-[16%] font-mono text-[9px] tracking-[0.3em] uppercase text-stone-400 dark:text-offwhite-dim/40">
+            OPTICAL GROUND GLASS // 35MM ARCHIVAL FRAME
+          </div>
+          <div className="absolute bottom-[16%] font-mono text-[9px] tracking-[0.3em] uppercase text-amber-700/60 dark:text-amber/40">
+            AF-ACTIVE • 50MM F/1.4 GM • ∞
+          </div>
+        </div>
+
+        {/* Viewfinder Perimeter Corner Reticles */}
+        <div className="pointer-events-none absolute inset-6 sm:inset-12 hidden md:block select-none opacity-40 dark:opacity-30">
+          <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-amber-600 dark:border-amber" />
+          <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-amber-600 dark:border-amber" />
+          <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-amber-600 dark:border-amber" />
+          <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-amber-600 dark:border-amber" />
+        </div>
 
         {/* Ambient Floating 35mm Negatives Parallax Constellation */}
         <HeroFloatingGallery items={galleryItems} />

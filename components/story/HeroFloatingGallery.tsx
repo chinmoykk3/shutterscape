@@ -211,7 +211,7 @@ export function HeroFloatingGallery({ items }: HeroFloatingGalleryProps) {
       className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0"
     >
       {/* Darkroom Center Safeguard Vignette: Keeps center headline ultra-sharp and 100% legible */}
-      <div className="hero-center-vignette absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_50%,transparent_0%,rgba(7,7,8,0.75)_70%,rgba(7,7,8,0.95)_100%)] z-10 pointer-events-none" />
+      <div className="hero-center-vignette absolute inset-0 bg-radial from-transparent via-transparent to-stone-100/50 dark:to-[#070708]/90 z-10 pointer-events-none transition-colors duration-500" />
 
       {/* Floating Photograph Constellation */}
       {cards.map(({ cfg, item }, idx) => {
@@ -319,25 +319,25 @@ function FloatingCard({
       >
         {/* Analog Print Mount (Frame) */}
         <div
-          className={`hero-floating-card relative w-full h-full rounded-2xl p-1.5 sm:p-2 bg-[#0c0c0e]/90 border border-white/10 backdrop-blur-md overflow-hidden transition-all duration-500 ${
+          className={`hero-floating-card relative w-full h-full rounded-2xl p-1.5 sm:p-2 bg-white/95 dark:bg-[#0c0c0e]/90 border border-stone-200/90 dark:border-white/10 backdrop-blur-md overflow-hidden transition-all duration-500 ${
             isHovered
-              ? 'border-amber/60 shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_35px_rgba(245,158,11,0.3)] ring-1 ring-amber/40'
-              : 'shadow-[0_15px_40px_rgba(0,0,0,0.85),0_0_15px_rgba(245,158,11,0.04)]'
+              ? 'border-amber-500 dark:border-amber/60 shadow-[0_20px_50px_rgba(0,0,0,0.12),0_0_25px_rgba(245,158,11,0.2)] dark:shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_35px_rgba(245,158,11,0.3)] ring-1 ring-amber-500/40 dark:ring-amber/40'
+              : 'shadow-[0_12px_32px_rgba(0,0,0,0.06),0_1px_4px_rgba(0,0,0,0.03)] dark:shadow-[0_15px_40px_rgba(0,0,0,0.85),0_0_15px_rgba(245,158,11,0.04)]'
           }`}
         >
           {/* Top Film Frame Stamp Header */}
-          <div className="flex items-center justify-between px-1.5 pb-1 font-mono text-[8px] sm:text-[9px] text-offwhite-dim/70 tracking-wider uppercase border-b border-white/5">
-            <span className="flex items-center gap-1 text-amber/80 font-bold">
+          <div className="flex items-center justify-between px-1.5 pb-1 font-mono text-[8px] sm:text-[9px] text-slate-500 dark:text-offwhite-dim/70 tracking-wider uppercase border-b border-stone-100 dark:border-white/5">
+            <span className="flex items-center gap-1 text-amber-700 dark:text-amber/80 font-bold">
               <span className="w-1 h-1 rounded-full bg-amber animate-pulse" />
               {cfg.expIndex}
             </span>
-            <span className="truncate max-w-[80px] sm:max-w-[100px] text-offwhite-muted/60">
+            <span className="truncate max-w-[80px] sm:max-w-[100px] text-slate-400 dark:text-offwhite-muted/60">
               {roomTag}
             </span>
           </div>
 
           {/* Photograph Exposure Canvas */}
-          <div className="relative w-full h-[calc(100%-22px)] sm:h-[calc(100%-24px)] mt-1 rounded-xl overflow-hidden bg-black/60">
+          <div className="relative w-full h-[calc(100%-22px)] sm:h-[calc(100%-24px)] mt-1 rounded-xl overflow-hidden bg-stone-100 dark:bg-black/60">
             <Image
               src={item.image.url}
               alt={captionText}
@@ -363,14 +363,14 @@ function FloatingCard({
 
             {/* Hover Floating Details Pill */}
             <div
-              className={`absolute inset-x-2 bottom-2 p-2 rounded-lg bg-black/85 backdrop-blur-md border border-white/10 transition-all duration-300 pointer-events-none ${
+              className={`absolute inset-x-2 bottom-2 p-2 rounded-lg bg-white/95 dark:bg-black/85 backdrop-blur-md border border-stone-200 dark:border-white/10 shadow-lg transition-all duration-300 pointer-events-none ${
                 isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
               }`}
             >
-              <p className="font-body text-[10px] sm:text-[11px] text-offwhite font-medium line-clamp-1 leading-tight">
+              <p className="font-body text-[10px] sm:text-[11px] text-slate-900 dark:text-offwhite font-medium line-clamp-1 leading-tight">
                 {captionText}
               </p>
-              <p className="font-mono text-[8px] sm:text-[9px] text-amber/90 truncate mt-0.5">
+              <p className="font-mono text-[8px] sm:text-[9px] text-amber-700 dark:text-amber/90 truncate mt-0.5 font-semibold">
                 by {photographer}
               </p>
             </div>

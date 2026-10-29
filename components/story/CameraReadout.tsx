@@ -139,17 +139,17 @@ export function CameraReadout({
   return (
     <div
       className={cn(
-        'inline-flex flex-wrap items-center gap-2.5 px-3 py-1 rounded-xl bg-charcoal/85 border border-charcoal-border text-[11px] font-mono text-offwhite-muted select-none backdrop-blur-sm',
+        'inline-flex flex-wrap items-center gap-2.5 px-3.5 py-1.5 rounded-xl bg-white/95 dark:bg-charcoal/85 border border-stone-300 dark:border-charcoal-border text-[11px] font-mono text-slate-700 dark:text-offwhite-muted select-none backdrop-blur-md shadow-sm dark:shadow-none transition-colors duration-300',
         className
       )}
     >
-      <span className="text-amber font-bold tracking-wider">{displayMode}</span>
-      <span className="w-1 h-1 rounded-full bg-charcoal-border" />
-      <span className="tabular-nums">{displayShutter}</span>
-      <span className="w-1 h-1 rounded-full bg-charcoal-border" />
-      <span className="tabular-nums">{displayAperture}</span>
-      <span className="w-1 h-1 rounded-full bg-charcoal-border" />
-      <span className="text-offwhite tabular-nums">{displayIso}</span>
+      <span className="text-amber-700 dark:text-amber font-bold tracking-wider">{displayMode}</span>
+      <span className="w-1 h-1 rounded-full bg-stone-300 dark:bg-charcoal-border" />
+      <span className="tabular-nums font-semibold text-slate-800 dark:text-offwhite">{displayShutter}</span>
+      <span className="w-1 h-1 rounded-full bg-stone-300 dark:bg-charcoal-border" />
+      <span className="tabular-nums font-semibold text-slate-800 dark:text-offwhite">{displayAperture}</span>
+      <span className="w-1 h-1 rounded-full bg-stone-300 dark:bg-charcoal-border" />
+      <span className="tabular-nums font-semibold text-slate-900 dark:text-offwhite">{displayIso}</span>
     </div>
   );
 }

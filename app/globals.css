@@ -651,9 +651,9 @@ html.theme-daylight body {
   background-size: 24px 24px, 48px 48px, 48px 48px !important;
 }
 
-/* Hero Centered Soft Vignette for Daylight Canvas */
+/* Hero Centered Vignette: Clean & Airy in Daylight Canvas */
 html.theme-daylight .hero-center-vignette {
-  background: radial-gradient(ellipse 65% 60% at 50% 50%, transparent 0%, rgba(250, 249, 245, 0.72) 65%, rgba(250, 249, 245, 0.95) 100%) !important;
+  background: transparent !important;
 }
 
 /* Hero Floating Negatives: Physical Archival Prints in Loft Gallery */
