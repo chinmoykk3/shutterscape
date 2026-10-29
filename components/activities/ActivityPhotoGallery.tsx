@@ -31,6 +31,10 @@ export function ActivityPhotoGallery({
 }: ActivityPhotoGalleryProps) {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
+  // Touch Swipe navigation for mobile
+  const touchStartX = React.useRef<number | null>(null);
+  const touchEndX = React.useRef<number | null>(null);
+
   if (!photos || photos.length === 0) return null;
 
   const openLightbox = (index: number) => {
@@ -49,6 +53,26 @@ export function ActivityPhotoGallery({
   const prevPhoto = () => {
     if (activeIdx === null) return;
     setActiveIdx((activeIdx - 1 + photos.length) % photos.length);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const distance = touchStartX.current - touchEndX.current;
+    if (distance > 45) {
+      nextPhoto();
+    } else if (distance < -45) {
+      prevPhoto();
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
   };
 
   return (
@@ -153,33 +177,39 @@ export function ActivityPhotoGallery({
         </div>
       </div>
 
-      {/* Darkroom Lightbox Modal */}
+      {/* Darkroom Lightbox Modal with Touch Swipe */}
       {activeIdx !== null && (
         <div
           role="dialog"
           aria-modal="true"
           aria-label="Image inspection lightbox"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 sm:p-8 animate-in fade-in"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-3 sm:p-8 animate-in fade-in"
           onClick={closeLightbox}
         >
           {/* Top Bar Controls */}
           <div
-            className="absolute top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 flex items-center justify-between text-offwhite z-20"
+            className="absolute top-3 left-3 right-3 sm:top-6 sm:left-6 sm:right-6 flex items-center justify-between text-offwhite z-20"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <span className="px-3 py-1 rounded-full bg-amber text-black font-mono text-xs font-bold">
                 FRAME #{String(activeIdx + 1).padStart(2, '0')} of {photos.length}
               </span>
               <span className="font-mono text-xs text-offwhite-dim hidden sm:inline">
                 {eventTitle}
               </span>
+              <span className="sm:hidden font-mono text-[10px] text-amber">
+                SWIPE ← →
+              </span>
             </div>
 
             <button
               onClick={closeLightbox}
               aria-label="Close lightbox"
-              className="p-2.5 rounded-2xl bg-charcoal/90 border border-charcoal-border hover:border-amber text-offwhite-dim hover:text-offwhite transition-colors"
+              className="p-2 sm:p-2.5 rounded-2xl bg-charcoal/90 border border-charcoal-border hover:border-amber text-offwhite-dim hover:text-offwhite transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -193,15 +223,15 @@ export function ActivityPhotoGallery({
                 prevPhoto();
               }}
               aria-label="Previous negative"
-              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 p-3 rounded-2xl bg-charcoal/90 border border-charcoal-border hover:border-amber text-offwhite hover:text-amber transition-colors z-20 shadow-2xl"
+              className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-2xl bg-charcoal/90 border border-charcoal-border hover:border-amber text-offwhite hover:text-amber transition-colors z-20 shadow-2xl"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           )}
 
           {/* Main Focused Image Container */}
           <div
-            className="relative max-w-5xl max-h-[80vh] w-full h-[70vh] flex flex-col items-center justify-center z-10"
+            className="relative max-w-5xl h-[55vh] sm:h-[70vh] max-h-[80vh] w-full flex flex-col items-center justify-center z-10"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative w-full h-full rounded-2xl overflow-hidden border border-charcoal-border bg-black shadow-2xl">
@@ -216,8 +246,8 @@ export function ActivityPhotoGallery({
 
             {/* Lightbox Caption Pill */}
             {photos[activeIdx].caption && (
-              <div className="mt-4 px-5 py-2.5 rounded-2xl bg-charcoal/90 border border-charcoal-border text-center max-w-xl">
-                <p className="font-body text-sm text-offwhite">
+              <div className="mt-3 sm:mt-4 px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl bg-charcoal/90 border border-charcoal-border text-center max-w-xl max-h-[20vh] overflow-y-auto">
+                <p className="font-body text-xs sm:text-sm text-offwhite">
                   {photos[activeIdx].caption}
                 </p>
               </div>
@@ -232,9 +262,9 @@ export function ActivityPhotoGallery({
                 nextPhoto();
               }}
               aria-label="Next negative"
-              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 p-3 rounded-2xl bg-charcoal/90 border border-charcoal-border hover:border-amber text-offwhite hover:text-amber transition-colors z-20 shadow-2xl"
+              className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 p-2 sm:p-3 rounded-2xl bg-charcoal/90 border border-charcoal-border hover:border-amber text-offwhite hover:text-amber transition-colors z-20 shadow-2xl"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           )}
         </div>
@@ -242,3 +272,4 @@ export function ActivityPhotoGallery({
     </section>
   );
 }
+

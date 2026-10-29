@@ -269,6 +269,30 @@ export function GalleryLightTable({ initialItems }: GalleryLightTableProps) {
     setLightboxIndex(null);
   }, []);
 
+  // Touch Swipe navigation for mobile devices
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const distance = touchStartX.current - touchEndX.current;
+    if (distance > 45) {
+      handleNext();
+    } else if (distance < -45) {
+      handlePrev();
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   // Keyboard navigation & accessibility focus trap for lightbox
   useEffect(() => {
     if (lightboxIndex === null) return;
@@ -512,7 +536,7 @@ export function GalleryLightTable({ initialItems }: GalleryLightTableProps) {
       )}
 
       {/* =========================================================================
-          ACCESSIBLE LIGHTBOX MODAL WITH EXIF TELEMETRY
+          ACCESSIBLE LIGHTBOX MODAL WITH EXIF TELEMETRY & TOUCH SWIPE
           ========================================================================= */}
       {activeItem && lightboxIndex !== null && (
         <div
@@ -520,14 +544,17 @@ export function GalleryLightTable({ initialItems }: GalleryLightTableProps) {
           role="dialog"
           aria-modal="true"
           aria-label={activeItem.caption}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col justify-between overflow-hidden animate-in fade-in duration-200"
         >
           {/* Subtle Ambient Red Safelight Glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-safelight/10 blur-[180px] pointer-events-none" />
 
           {/* Top Control Bar */}
-          <div className="relative z-10 flex items-center justify-between p-4 sm:px-8 border-b border-charcoal-border/80 bg-black/80">
-            <div className="flex items-center gap-3">
+          <div className="relative z-10 flex items-center justify-between p-3.5 sm:px-8 border-b border-charcoal-border/80 bg-black/80">
+            <div className="flex items-center gap-2 sm:gap-3">
               <span className="w-2 h-2 rounded-full bg-amber animate-pulse" />
               <div className="font-mono text-xs text-offwhite-dim">
                 FRAME <strong className="text-amber">{String(lightboxIndex + 1).padStart(2, '0')}</strong> OF{' '}
@@ -536,6 +563,9 @@ export function GalleryLightTable({ initialItems }: GalleryLightTableProps) {
               <Badge variant="neutral" className="hidden sm:inline-flex text-[10px]">
                 {activeItem.room}
               </Badge>
+              <span className="sm:hidden text-[10px] text-amber/80 font-mono">
+                SWIPE ← →
+              </span>
             </div>
 
             <div className="flex items-center gap-2">
@@ -555,29 +585,29 @@ export function GalleryLightTable({ initialItems }: GalleryLightTableProps) {
           </div>
 
           {/* Central Image Stage with Nav Controls */}
-          <div className="relative z-10 flex-1 flex items-center justify-center p-4 sm:p-8 min-h-0">
+          <div className="relative z-10 flex-1 flex items-center justify-center p-2 sm:p-8 min-h-0">
             {/* Prev Arrow */}
             <button
               type="button"
               onClick={handlePrev}
-              className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/75 border border-charcoal-border text-offwhite hover:text-amber hover:border-amber transition-all backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber"
+              className="absolute left-2 sm:left-8 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 rounded-full bg-black/75 border border-charcoal-border text-offwhite hover:text-amber hover:border-amber transition-all backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber shadow-xl"
               aria-label="Previous exposure"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Next Arrow */}
             <button
               type="button"
               onClick={handleNext}
-              className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/75 border border-charcoal-border text-offwhite hover:text-amber hover:border-amber transition-all backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber"
+              className="absolute right-2 sm:right-8 top-1/2 -translate-y-1/2 z-20 p-2 sm:p-3 rounded-full bg-black/75 border border-charcoal-border text-offwhite hover:text-amber hover:border-amber transition-all backdrop-blur-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber shadow-xl"
               aria-label="Next exposure"
             >
-              <ChevronRight className="w-6 h-6" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Main Image Frame */}
-            <div className="relative max-w-5xl max-h-[70vh] w-full h-full flex items-center justify-center">
+            <div className="relative max-w-5xl h-[52vh] sm:h-[65vh] max-h-[70vh] w-full flex items-center justify-center">
               <div className="relative w-full h-full">
                 <Image
                   src={activeItem.image.url}

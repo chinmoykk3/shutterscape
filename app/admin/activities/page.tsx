@@ -570,8 +570,8 @@ export default function AdminActivitiesPage() {
 
       {/* Create / Edit Modal Form */}
       {isFormOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
-          <div className="my-8 w-full max-w-4xl rounded-3xl bg-charcoal border border-charcoal-border p-6 sm:p-8 shadow-2xl space-y-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/85 backdrop-blur-md overflow-y-auto">
+          <div className="my-4 sm:my-8 w-full max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl bg-charcoal border border-charcoal-border p-4 sm:p-8 shadow-2xl space-y-6">
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-4 border-b border-charcoal-border">
               <div className="space-y-1">

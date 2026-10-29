@@ -73,13 +73,13 @@ export function CameraDockBar({
   return (
     <nav
       aria-label="Floating Camera Dock"
-      className="fixed bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 select-none transition-all duration-300 max-w-[98vw]"
+      className="fixed bottom-2.5 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 select-none transition-all duration-300 max-w-[calc(100vw-1rem)] sm:max-w-fit mb-[env(safe-area-inset-bottom,0px)]"
     >
-      {/* Active Tooltip Readout */}
+      {/* Active Tooltip Readout (Desktop Only to prevent sticky tooltips on mobile tap) */}
       {hoveredIndex && (
         <div
           role="tooltip"
-          className="absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 rounded-lg bg-black/95 border border-charcoal-border text-[11px] font-mono text-offwhite backdrop-blur-md shadow-2xl pointer-events-none animate-in fade-in zoom-in-95 duration-150 flex items-center gap-2"
+          className="hidden md:flex absolute -top-11 left-1/2 -translate-x-1/2 whitespace-nowrap px-3 py-1 rounded-lg bg-black/95 border border-charcoal-border text-[11px] font-mono text-offwhite backdrop-blur-md shadow-2xl pointer-events-none animate-in fade-in zoom-in-95 duration-150 items-center gap-2"
         >
           <span
             className={`w-1.5 h-1.5 rounded-full ${
@@ -214,7 +214,7 @@ function DockButton({ item, pathname, isDarkroom, onHover }: DockButtonProps) {
       onMouseEnter={() => onHover(item.tooltip)}
       onMouseLeave={() => onHover(null)}
       className={cn(
-        'relative px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-full transition-all duration-300 flex items-center gap-1 sm:gap-1.5 text-xs font-mono tracking-wider focus:outline-none focus-visible:ring-2 focus-visible:ring-amber shrink-0',
+        'relative px-1.5 sm:px-3.5 py-1 sm:py-2 rounded-full transition-all duration-300 flex items-center gap-1 sm:gap-1.5 text-xs font-mono tracking-wider focus:outline-none focus-visible:ring-2 focus-visible:ring-amber shrink-0',
         isActive
           ? isDarkroom
             ? 'bg-safelight text-white font-semibold shadow-md shadow-safelight/40 ring-1 ring-safelight/60'

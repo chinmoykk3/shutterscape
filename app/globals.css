@@ -77,6 +77,16 @@ body {
   min-height: 100vh;
 }
 
+/* Touch and safe-area optimization for mobile devices */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
 /* 3% Persistent Film Grain Overlay */
 .film-grain {
   position: fixed;

@@ -405,8 +405,8 @@ export function Footer({ settings }: FooterProps) {
           </div>
         )}
 
-        {/* Bottom Bar: Copyright & Codénix Credit & Portal Links */}
-        <div className="pt-8 pb-8 sm:pb-4 border-t border-charcoal-border/60 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] font-mono text-offwhite-dim">
+        {/* Bottom Bar: Copyright & Codénix Credit & Portal Links (Padded for mobile floating dock) */}
+        <div className="pt-8 pb-28 sm:pb-12 border-t border-charcoal-border/60 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] font-mono text-offwhite-dim">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <span>© {new Date().getFullYear()} ShutterScape — GCU. All rights reserved.</span>
             <span className="text-charcoal-border hidden sm:inline">•</span>

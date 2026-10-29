@@ -50,11 +50,11 @@ const CARD_CONFIGS: CardConfig[] = [
   // 0: Top-Left (Foreground Hero) - scaled on mobile
   {
     id: 0,
-    posClass: 'top-[6%] left-[2%] sm:left-[4%] lg:left-[5%]',
-    sizeClass: 'w-24 h-32 xs:w-28 xs:h-38 sm:w-48 sm:h-64 lg:w-56 lg:h-72',
+    posClass: 'top-[4%] left-[1%] sm:left-[4%] lg:left-[5%]',
+    sizeClass: 'w-20 h-28 xs:w-24 xs:h-34 sm:w-48 sm:h-64 lg:w-56 lg:h-72',
     rotate: -6,
     depth: 1.4,
-    baseOpacity: 0.55,
+    baseOpacity: 0.5,
     floatDuration: 14,
     floatY: 14,
     floatX: 8,
@@ -64,11 +64,11 @@ const CARD_CONFIGS: CardConfig[] = [
   // 1: Top-Right (Foreground Hero) - scaled on mobile
   {
     id: 1,
-    posClass: 'top-[5%] right-[2%] sm:right-[4%] lg:right-[6%]',
-    sizeClass: 'w-24 h-32 xs:w-28 xs:h-38 sm:w-52 sm:h-68 lg:w-60 lg:h-80',
+    posClass: 'top-[4%] right-[1%] sm:right-[4%] lg:right-[6%]',
+    sizeClass: 'w-20 h-28 xs:w-24 xs:h-34 sm:w-52 sm:h-68 lg:w-60 lg:h-80',
     rotate: 5,
     depth: 1.6,
-    baseOpacity: 0.55,
+    baseOpacity: 0.5,
     floatDuration: 16,
     floatY: 16,
     floatX: -10,
@@ -279,7 +279,7 @@ function FloatingCard({
 
   return (
     <div
-      className={`absolute ${cfg.posClass} ${cfg.hideOnMobile ? 'hidden md:block' : ''} pointer-events-auto transition-transform duration-500 ease-out`}
+      className={`absolute ${cfg.posClass} ${cfg.hideOnMobile ? 'hidden md:block' : ''} pointer-events-none sm:pointer-events-auto transition-transform duration-500 ease-out`}
       style={{
         transform: `translate3d(${parallaxOffset.x}px, ${parallaxOffset.y}px, 0)`,
         zIndex: isHovered ? 30 : cfg.depth > 1.2 ? 12 : 5,

@@ -62,13 +62,22 @@ export function AdminSidebar({ children }: { children: React.ReactNode }) {
     <div className="flex flex-col h-full bg-charcoal border-r border-charcoal-border select-none">
       {/* Brand & Mode Header */}
       <div className="p-6 border-b border-charcoal-border/80 space-y-3">
-        <Link
-          href="/admin/dashboard"
-          onClick={() => setMobileOpen(false)}
-          className="inline-block"
-        >
-          <ShutterScapeLogo variant="combined" />
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link
+            href="/admin/dashboard"
+            onClick={() => setMobileOpen(false)}
+            className="inline-block"
+          >
+            <ShutterScapeLogo variant="combined" />
+          </Link>
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="md:hidden p-1.5 rounded-xl text-offwhite-dim hover:text-offwhite hover:bg-white/10 transition-colors"
+            aria-label="Close navigation drawer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
         <div className="flex items-center justify-between">
           <Badge variant="amber" pulse>
             THE EDITING ROOM
