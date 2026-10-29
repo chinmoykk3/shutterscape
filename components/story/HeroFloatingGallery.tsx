@@ -23,125 +23,115 @@ interface HeroFloatingGalleryProps {
 
 interface CardConfig {
   id: number;
-  // Position classes (responsive)
   posClass: string;
-  // Dimensions
   sizeClass: string;
-  // Rotation (degrees)
   rotate: number;
-  // Parallax depth multiplier (higher = closer, moves more)
   depth: number;
-  // Base opacity
   baseOpacity: number;
-  // Float animation duration (seconds)
   floatDuration: number;
-  // Float distance Y & X (px)
   floatY: number;
   floatX: number;
-  // Float delay (seconds)
   floatDelay: number;
-  // Film exp stamp
   expIndex: string;
-  // Hidden on mobile?
   hideOnMobile?: boolean;
 }
 
 const CARD_CONFIGS: CardConfig[] = [
-  // 0: Top-Left (Foreground Hero) - scaled on mobile
+  // 0: Upper-Left (Anchored safely below fixed header)
   {
     id: 0,
-    posClass: 'top-[4%] left-[1%] sm:left-[4%] lg:left-[5%]',
-    sizeClass: 'w-20 h-28 xs:w-24 xs:h-34 sm:w-48 sm:h-64 lg:w-56 lg:h-72',
-    rotate: -6,
+    posClass: 'top-[14%] sm:top-[15%] lg:top-[16%] left-[1.5%] sm:left-[3%] lg:left-[4%]',
+    sizeClass: 'w-24 h-32 sm:w-48 sm:h-64 lg:w-56 lg:h-72',
+    rotate: -5,
     depth: 1.4,
-    baseOpacity: 0.5,
+    baseOpacity: 0.55,
     floatDuration: 14,
-    floatY: 14,
+    floatY: 12,
     floatX: 8,
     floatDelay: 0,
     expIndex: 'EXP. 01/36',
   },
-  // 1: Top-Right (Foreground Hero) - scaled on mobile
+  // 1: Upper-Right (Anchored safely below fixed header controls)
   {
     id: 1,
-    posClass: 'top-[4%] right-[1%] sm:right-[4%] lg:right-[6%]',
-    sizeClass: 'w-20 h-28 xs:w-24 xs:h-34 sm:w-52 sm:h-68 lg:w-60 lg:h-80',
-    rotate: 5,
-    depth: 1.6,
-    baseOpacity: 0.5,
+    posClass: 'top-[14%] sm:top-[15%] lg:top-[16%] right-[1.5%] sm:right-[3%] lg:right-[4%]',
+    sizeClass: 'w-24 h-32 sm:w-50 sm:h-66 lg:w-58 lg:h-76',
+    rotate: 4,
+    depth: 1.5,
+    baseOpacity: 0.55,
     floatDuration: 16,
-    floatY: 16,
-    floatX: -10,
+    floatY: 14,
+    floatX: -9,
     floatDelay: 1.5,
     expIndex: 'EXP. 04/36',
   },
-  // 2: Mid-Left (Tablet & Desktop Anchor)
+  // 2: Mid-Left (Flanking Headline)
   {
     id: 2,
-    posClass: 'top-[44%] left-[1%] sm:left-[2%] lg:left-[3%]',
+    posClass: 'top-[50%] left-[1%] sm:left-[2%] lg:left-[2.5%]',
     sizeClass: 'w-32 h-44 sm:w-44 sm:h-60 lg:w-48 lg:h-64',
-    rotate: 4,
+    rotate: 3,
     depth: 0.9,
-    baseOpacity: 0.55,
+    baseOpacity: 0.6,
     floatDuration: 18,
-    floatY: 12,
+    floatY: 10,
     floatX: 6,
     floatDelay: 3,
     expIndex: 'EXP. 09/36',
     hideOnMobile: true,
   },
-  // 3: Mid-Right (Tablet & Desktop Anchor)
+  // 3: Mid-Right (Flanking Headline)
   {
     id: 3,
-    posClass: 'top-[46%] right-[1%] sm:right-[3%] lg:right-[4%]',
+    posClass: 'top-[52%] right-[1%] sm:right-[2%] lg:right-[2.5%]',
     sizeClass: 'w-32 h-44 sm:w-44 sm:h-60 lg:w-52 lg:h-68',
-    rotate: -5,
+    rotate: -4,
     depth: 1.1,
     baseOpacity: 0.6,
     floatDuration: 15,
-    floatY: 14,
-    floatX: -8,
+    floatY: 12,
+    floatX: -7,
     floatDelay: 2,
     expIndex: 'EXP. 14/36',
     hideOnMobile: true,
   },
-  // 4: Bottom-Left (Tablet & Desktop Print)
+  // 4: Lower-Left (Clear of floating dock)
   {
     id: 4,
-    posClass: 'bottom-[4%] left-[4%] sm:left-[8%] lg:left-[10%]',
-    sizeClass: 'w-36 h-48 sm:w-48 sm:h-64 lg:w-56 lg:h-72',
+    posClass: 'bottom-[6%] sm:bottom-[7%] left-[3%] sm:left-[5%] lg:left-[7%]',
+    sizeClass: 'w-36 h-48 sm:w-48 sm:h-64 lg:w-54 lg:h-70',
     rotate: -3,
     depth: 1.3,
-    baseOpacity: 0.6,
+    baseOpacity: 0.65,
     floatDuration: 17,
-    floatY: 15,
-    floatX: 7,
+    floatY: 14,
+    floatX: 6,
     floatDelay: 4,
     expIndex: 'EXP. 21/36',
     hideOnMobile: true,
   },
-  // 5: Bottom-Right (Tablet & Desktop Print)
+  // 5: Lower-Right (Clear of floating dock)
   {
     id: 5,
-    posClass: 'bottom-[5%] right-[3%] sm:right-[6%] lg:right-[8%]',
-    sizeClass: 'w-36 h-48 sm:w-52 sm:h-68 lg:w-56 lg:h-76',
-    rotate: 6,
-    depth: 1.5,
-    baseOpacity: 0.65,
+    posClass: 'bottom-[6%] sm:bottom-[7%] right-[3%] sm:right-[5%] lg:right-[7%]',
+    sizeClass: 'w-36 h-48 sm:w-50 sm:h-66 lg:w-56 lg:h-74',
+    rotate: 5,
+    depth: 1.4,
+    baseOpacity: 0.7,
     floatDuration: 19,
-    floatY: 18,
-    floatX: -9,
+    floatY: 16,
+    floatX: -8,
     floatDelay: 2.5,
     expIndex: 'EXP. 27/36',
     hideOnMobile: true,
   },
-  // 6: Far Deep Accent (Desktop Only)
+  // 6: Deep Accent Top-Center
   {
     id: 6,
-    posClass: 'top-[2%] left-[24%] sm:left-[22%] lg:left-[20%]',
+    posClass: 'top-[16%] left-[22%] sm:left-[20%] lg:left-[18%]',
     sizeClass: 'w-28 h-36 sm:w-36 sm:h-48 lg:w-40 lg:h-52',
     rotate: -2,
-    depth: 0.6,
+    depth: 0.5,
     baseOpacity: 0.4,
     floatDuration: 22,
     floatY: 8,
@@ -150,32 +140,118 @@ const CARD_CONFIGS: CardConfig[] = [
     expIndex: 'EXP. 31/36',
     hideOnMobile: true,
   },
-  // 7: Far Deep Accent (Desktop Only)
+  // 7: Deep Accent Bottom-Center
   {
     id: 7,
-    posClass: 'bottom-[1%] right-[22%] sm:right-[20%] lg:right-[18%]',
-    sizeClass: 'w-28 h-36 sm:w-36 sm:h-48 lg:w-44 lg:h-56',
+    posClass: 'bottom-[8%] right-[22%] sm:right-[20%] lg:right-[18%]',
+    sizeClass: 'w-28 h-36 sm:w-36 sm:h-48 lg:w-42 lg:h-54',
     rotate: 3,
-    depth: 0.7,
+    depth: 0.6,
     baseOpacity: 0.4,
     floatDuration: 20,
-    floatY: 10,
+    floatY: 9,
     floatX: -5,
     floatDelay: 3.5,
-    expIndex: 'EXP. 36/36',
+    expIndex: 'EXP. 35/36',
     hideOnMobile: true,
   },
 ];
+
+/**
+ * Optical Ground Glass Calibration Blueprint with Reactive Mouse Parallax
+ */
+function OpticalGroundGlassParallax({
+  smoothX,
+  smoothY,
+  prefersReduced,
+}: {
+  smoothX: ReturnType<typeof useSpring>;
+  smoothY: ReturnType<typeof useSpring>;
+  prefersReduced: boolean;
+}) {
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (prefersReduced) return;
+    const unsubX = smoothX.on('change', (val) => {
+      setOffset((prev) => ({ ...prev, x: val * 10 }));
+    });
+    const unsubY = smoothY.on('change', (val) => {
+      setOffset((prev) => ({ ...prev, y: val * 8 }));
+    });
+    return () => {
+      unsubX();
+      unsubY();
+    };
+  }, [smoothX, smoothY, prefersReduced]);
+
+  return (
+    <div
+      style={{
+        transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,
+      }}
+      className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden transition-transform duration-300 ease-out z-0"
+    >
+      {/* Outer Optical Calibration Reticle (960px) */}
+      <div className="relative w-[620px] h-[620px] sm:w-[940px] sm:h-[940px] rounded-full border border-amber-500/15 dark:border-amber/10 flex items-center justify-center">
+        {/* Cardinal Degree Markers */}
+        <div className="absolute top-2 left-1/2 -translate-x-1/2 font-mono text-[8px] sm:text-[9px] tracking-[0.25em] text-amber-700/60 dark:text-amber/40 uppercase">
+          00° // OPTICAL FIELD
+        </div>
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 font-mono text-[8px] sm:text-[9px] tracking-[0.25em] text-amber-700/60 dark:text-amber/40 uppercase">
+          180° // FOCAL PLANE
+        </div>
+        <div className="absolute left-2 top-1/2 -translate-y-1/2 -rotate-90 font-mono text-[8px] sm:text-[9px] tracking-[0.25em] text-stone-400 dark:text-offwhite-dim/40 uppercase">
+          270° • 35MM
+        </div>
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 rotate-90 font-mono text-[8px] sm:text-[9px] tracking-[0.25em] text-stone-400 dark:text-offwhite-dim/40 uppercase">
+          90° • GCU ARCHIVE
+        </div>
+
+        {/* Mid Helicoid Dashed Calibration Ring (700px) */}
+        <div className="w-[460px] h-[460px] sm:w-[700px] sm:h-[700px] rounded-full border border-stone-300/60 dark:border-white/5 border-dashed flex items-center justify-center">
+          {/* Inner Ground Glass Ring (460px) */}
+          <div className="w-[300px] h-[300px] sm:w-[480px] sm:h-[480px] rounded-full border border-stone-300/40 dark:border-white/5 flex items-center justify-center">
+            {/* Center Split-Image Rangefinder Prism Box (180px) */}
+            <div className="w-36 h-36 sm:w-48 sm:h-48 rounded-full border border-amber-500/20 dark:border-amber/20 relative">
+              {/* Rangefinder Optical Focus Marks */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-1 bg-amber-500/40" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-1 bg-amber-500/40" />
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-2 bg-amber-500/40" />
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-2 bg-amber-500/40" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Crosshair Alignment Axes */}
+      <div className="absolute w-[94%] max-w-7xl h-[1px] bg-gradient-to-r from-transparent via-stone-300/50 dark:via-white/10 to-transparent" />
+      <div className="absolute h-[85%] max-h-[760px] w-[1px] bg-gradient-to-b from-transparent via-stone-300/50 dark:via-white/10 to-transparent" />
+
+      {/* Sub-Axis Fine Metric Ruler Ticks on Horizontal Crosshair */}
+      <div className="absolute w-[80%] max-w-5xl h-2 flex justify-between items-center opacity-40 dark:opacity-20 pointer-events-none">
+        {Array.from({ length: 17 }).map((_, i) => (
+          <div
+            key={i}
+            className={`w-[1px] bg-stone-400 dark:bg-white ${
+              i % 4 === 0 ? 'h-3' : 'h-1.5'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function HeroFloatingGallery({ items }: HeroFloatingGalleryProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReduced = useReducedMotion();
 
-  // Mouse normalized coordinates: -1 to +1
+  // Mouse coordinate motion values for reactive parallax
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  // Ultra-smooth spring damping for mouse parallax
+  // Smooth physics springs for ultra-fluid response
   const smoothX = useSpring(mouseX, { stiffness: 45, damping: 25, mass: 0.5 });
   const smoothY = useSpring(mouseY, { stiffness: 45, damping: 25, mass: 0.5 });
 
@@ -183,7 +259,6 @@ export function HeroFloatingGallery({ items }: HeroFloatingGalleryProps) {
     const handleMouseMove = (e: MouseEvent) => {
       if (prefersReduced) return;
       const { innerWidth, innerHeight } = window;
-      // Normalize from -1 to 1
       const nx = (e.clientX / innerWidth) * 2 - 1;
       const ny = (e.clientY / innerHeight) * 2 - 1;
       mouseX.set(nx);
@@ -210,8 +285,12 @@ export function HeroFloatingGallery({ items }: HeroFloatingGalleryProps) {
       aria-hidden="true"
       className="absolute inset-0 pointer-events-none overflow-hidden select-none z-0"
     >
-      {/* Darkroom Center Safeguard Vignette: Keeps center headline ultra-sharp and 100% legible */}
-      <div className="hero-center-vignette absolute inset-0 bg-radial from-transparent via-transparent to-stone-100/50 dark:to-[#070708]/90 z-10 pointer-events-none transition-colors duration-500" />
+      {/* Interactive Optical Ground-Glass Lens Calibration Blueprint */}
+      <OpticalGroundGlassParallax
+        smoothX={smoothX}
+        smoothY={smoothY}
+        prefersReduced={Boolean(prefersReduced)}
+      />
 
       {/* Floating Photograph Constellation */}
       {cards.map(({ cfg, item }, idx) => {
@@ -250,7 +329,6 @@ function FloatingCard({
   const [isHovered, setIsHovered] = useState(false);
 
   // Parallax transform calculation based on depth
-  // When smoothX = 1, card moves cfg.depth * 22px
   const [parallaxOffset, setParallaxOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -317,7 +395,7 @@ function FloatingCard({
         viewport={{ once: true }}
         className={`relative ${cfg.sizeClass} group cursor-pointer transition-all duration-500`}
       >
-        {/* Analog Print Mount (Frame) */}
+        {/* Analog Print Mount (Exhibition Passe-Partout Frame) */}
         <div
           className={`hero-floating-card relative w-full h-full rounded-2xl p-1.5 sm:p-2 bg-white/95 dark:bg-[#0c0c0e]/90 border border-stone-200/90 dark:border-white/10 backdrop-blur-md overflow-hidden transition-all duration-500 ${
             isHovered
@@ -328,7 +406,7 @@ function FloatingCard({
           {/* Top Film Frame Stamp Header */}
           <div className="flex items-center justify-between px-1.5 pb-1 font-mono text-[8px] sm:text-[9px] text-slate-500 dark:text-offwhite-dim/70 tracking-wider uppercase border-b border-stone-100 dark:border-white/5">
             <span className="flex items-center gap-1 text-amber-700 dark:text-amber/80 font-bold">
-              <span className="w-1 h-1 rounded-full bg-amber animate-pulse" />
+              <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse" />
               {cfg.expIndex}
             </span>
             <span className="truncate max-w-[80px] sm:max-w-[100px] text-slate-400 dark:text-offwhite-muted/60">
@@ -346,20 +424,20 @@ function FloatingCard({
               className={`object-cover transition-all duration-700 ease-out ${
                 isHovered
                   ? 'scale-105 filter-none'
-                  : 'filter contrast-[1.05] brightness-[0.92] group-hover:brightness-100'
+                  : 'filter contrast-[1.02] brightness-[0.98] group-hover:brightness-100'
               }`}
               placeholder={item.image.blurDataURL ? 'blur' : 'empty'}
               blurDataURL={item.image.blurDataURL}
             />
 
-            {/* Subtle Vignette & Specular Light Sheen */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+            {/* Subtle Gradient & Specular Light Sheen */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
             {/* Optical Corner Registration Crosshairs */}
-            <div className="absolute top-1 left-1 w-2 h-2 border-t border-l border-amber/40 pointer-events-none" />
-            <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-amber/40 pointer-events-none" />
-            <div className="absolute bottom-1 left-1 w-2 h-2 border-b border-l border-amber/40 pointer-events-none" />
-            <div className="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-amber/40 pointer-events-none" />
+            <div className="absolute top-1 left-1 w-2 h-2 border-t border-l border-amber-500/60 dark:border-amber/40 pointer-events-none" />
+            <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-amber-500/60 dark:border-amber/40 pointer-events-none" />
+            <div className="absolute bottom-1 left-1 w-2 h-2 border-b border-l border-amber-500/60 dark:border-amber/40 pointer-events-none" />
+            <div className="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-amber-500/60 dark:border-amber/40 pointer-events-none" />
 
             {/* Hover Floating Details Pill */}
             <div
@@ -378,13 +456,8 @@ function FloatingCard({
         </div>
 
         {/* Ambient Warm Underglow */}
-        <div
-          className={`absolute -inset-3 rounded-3xl bg-amber/15 blur-xl -z-10 transition-opacity duration-500 pointer-events-none ${
-            isHovered ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
+        <div className="absolute -inset-1 rounded-2xl bg-amber-500/10 dark:bg-amber/5 blur-md -z-10 group-hover:bg-amber-500/20 dark:group-hover:bg-amber/15 transition-colors" />
       </motion.div>
     </div>
   );
 }
-

@@ -23,6 +23,7 @@ import { PhotoOfTheWeek } from '@/components/story/PhotoOfTheWeek';
 import { HomepageStoryEngine } from '@/components/story/HomepageStoryEngine';
 import { HeroFloatingGallery } from '@/components/story/HeroFloatingGallery';
 import { InstagramIcon } from '@/components/ui/InstagramIcon';
+import { Sparkles, Users } from 'lucide-react';
 
 export const revalidate = 60; // ISR cache every 60s
 
@@ -99,30 +100,8 @@ export default async function HomePage() {
           ========================================================================= */}
       <section className="relative min-h-[92vh] flex flex-col items-center justify-center pt-32 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-theme-canvas text-theme-ink transition-colors duration-300">
         {/* Warm Ambient Golden Hour & Safelight Gradients */}
-        <div className="absolute top-10 left-1/4 w-[600px] h-[500px] rounded-full bg-amber-400/15 dark:bg-amber-500/10 blur-[130px] pointer-events-none" />
+        <div className="absolute top-10 left-1/4 w-[600px] h-[500px] rounded-full bg-amber-400/15 dark:bg-amber-500/10 blur-[140px] pointer-events-none" />
         <div className="absolute top-1/3 right-10 w-[550px] h-[550px] rounded-full bg-rose-400/10 dark:bg-rose-600/15 blur-[150px] pointer-events-none" />
-
-        {/* Architectural Optical Ground-Glass Lens Calibration Rings */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-          {/* Outer Reticle Ring */}
-          <div className="w-[600px] h-[600px] sm:w-[920px] sm:h-[920px] rounded-full border border-amber-500/15 dark:border-amber/10 animate-pulse duration-1000" />
-          {/* Mid Dashed Helicoid Ring */}
-          <div className="absolute w-[440px] h-[440px] sm:w-[680px] sm:h-[680px] rounded-full border border-stone-300/50 dark:border-white/5 border-dashed" />
-          {/* Inner Ground-Glass Optical Ring */}
-          <div className="absolute w-[280px] h-[280px] sm:w-[460px] sm:h-[460px] rounded-full border border-stone-300/40 dark:border-white/5" />
-          
-          {/* Crosshair Rangefinder Axis Guides */}
-          <div className="absolute w-[92%] max-w-6xl h-[1px] bg-gradient-to-r from-transparent via-stone-300/50 dark:via-white/10 to-transparent" />
-          <div className="absolute h-[80%] max-h-[720px] w-[1px] bg-gradient-to-b from-transparent via-stone-300/50 dark:via-white/10 to-transparent" />
-
-          {/* Technical Telemetry Watermarks at Optical Poles */}
-          <div className="absolute top-[16%] font-mono text-[9px] tracking-[0.3em] uppercase text-stone-400 dark:text-offwhite-dim/40">
-            OPTICAL GROUND GLASS // 35MM ARCHIVAL FRAME
-          </div>
-          <div className="absolute bottom-[16%] font-mono text-[9px] tracking-[0.3em] uppercase text-amber-700/60 dark:text-amber/40">
-            AF-ACTIVE • 50MM F/1.4 GM • ∞
-          </div>
-        </div>
 
         {/* Viewfinder Perimeter Corner Reticles */}
         <div className="pointer-events-none absolute inset-6 sm:inset-12 hidden md:block select-none opacity-40 dark:opacity-30">
@@ -132,14 +111,15 @@ export default async function HomePage() {
           <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-amber-600 dark:border-amber" />
         </div>
 
-        {/* Ambient Floating 35mm Negatives Parallax Constellation */}
+        {/* Ambient Floating 35mm Negatives & Reactive Optical Ground-Glass Parallax */}
         <HeroFloatingGallery items={galleryItems} />
 
         <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center space-y-8">
-          {/* Top Camera Readout Meter */}
+          {/* Top Camera Readout Meter with Live Sensor Indicator */}
           <div className="flex flex-col items-center gap-3">
-            <Badge variant="amber">
-              {'● EXP. 01/36 // LIVE SENSOR'}
+            <Badge variant="amber" className="shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping mr-1" />
+              {'EXP. 01/36 // LIVE SENSOR ACTIVE'}
             </Badge>
             <CameraReadout
               aperture="f/1.4"
@@ -151,23 +131,29 @@ export default async function HomePage() {
 
           {/* Master Editorial Headline */}
           <div className="space-y-4 max-w-4xl px-2 sm:px-0">
-            <h1 className="font-title text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-slate-900 dark:text-offwhite tracking-tight leading-[1.1] sm:leading-[1.08]">
+            <h1 className="font-title text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 dark:text-offwhite tracking-tight leading-[1.08] sm:leading-[1.05] drop-shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
               {settings.heroTitle}
             </h1>
-            <p className="font-mono text-xs sm:text-sm md:text-base lg:text-lg text-amber-600 dark:text-amber tracking-[0.15em] sm:tracking-[0.2em] uppercase font-semibold">
-              {`// ${settings.heroSubtitle}`}
+            <p className="font-mono text-xs sm:text-sm md:text-base lg:text-lg text-amber-600 dark:text-amber tracking-[0.2em] uppercase font-bold">
+              {"// " + settings.heroSubtitle}
             </p>
           </div>
 
           {/* Editorial Hook */}
-          <p className="font-body text-sm sm:text-base md:text-lg text-slate-600 dark:text-offwhite-muted max-w-2xl leading-relaxed px-2 sm:px-0">
+          <p className="font-body text-sm sm:text-base md:text-lg text-slate-700 dark:text-offwhite-muted max-w-2xl leading-relaxed px-2 sm:px-0">
             The official visual arts and photography society of Girijananda Chowdhury University.
             Archiving campus history through 35mm film aesthetics, silver halide chemistry, and modern digital observation.
           </p>
 
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-2">
-            <Button href="#story-scenes" variant="primary" size="lg">
+            <Button
+              href="#story-scenes"
+              variant="primary"
+              size="lg"
+              className="gap-2 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/35 hover:scale-105 transition-all duration-300"
+            >
+              <Sparkles className="w-4 h-4" />
               Begin Story Journey
             </Button>
             <Button
@@ -175,7 +161,9 @@ export default async function HomePage() {
               variant="secondary"
               size="lg"
               isExternal
+              className="gap-2 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300"
             >
+              <Users className="w-4 h-4 text-amber-600 dark:text-amber" />
               Join Club Guild
             </Button>
           </div>

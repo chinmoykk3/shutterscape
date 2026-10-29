@@ -55,13 +55,20 @@ function InstagramIcon({ className }: { className?: string }) {
 }
 
 export default async function AboutPage() {
-  await connectDB();
-  const [settings, memberDocs] = await Promise.all([
-    getPublicSettings(),
-    Member.find({ status: 'active' }).sort({ order: 1 }).lean<IMember[]>(),
-  ]);
+  let settings = await getPublicSettings().catch(() => ({} as any));
+  let members: IMember[] = [];
 
-  const members: IMember[] = JSON.parse(JSON.stringify(memberDocs));
+  try {
+    await connectDB();
+    const [fetchedSettings, memberDocs] = await Promise.all([
+      getPublicSettings(),
+      Member.find({ status: 'active' }).sort({ order: 1 }).lean<IMember[]>(),
+    ]);
+    if (fetchedSettings) settings = fetchedSettings;
+    members = JSON.parse(JSON.stringify(memberDocs || []));
+  } catch (err) {
+    console.error('Failed to load about page members:', err);
+  }
 
   const facultyMembers = members.filter((m) => m.type === 'faculty');
   const coreMembers = members.filter((m) => m.type === 'core');
