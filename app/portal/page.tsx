@@ -223,14 +223,14 @@ export default function MemberPortalDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black text-offwhite flex items-center justify-center font-mono text-xs text-amber animate-pulse">
+      <div className="min-h-screen bg-theme-canvas text-theme-ink flex items-center justify-center font-mono text-xs text-amber animate-pulse">
         CALIBRATING MEMBER STUDIO & VIEWPORT...
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-offwhite pt-28 pb-24 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-theme-canvas text-theme-ink pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in">
         {/* Studio HUD Header */}
         <div className="p-6 sm:p-8 rounded-3xl bg-[#0c0c0e]/90 border border-charcoal-border shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 backdrop-blur-md">

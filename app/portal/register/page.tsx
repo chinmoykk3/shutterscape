@@ -69,7 +69,7 @@ export default function MemberRegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-offwhite flex flex-col justify-center items-center px-4 py-20 relative overflow-hidden">
+    <div className="min-h-screen bg-theme-canvas text-theme-ink flex flex-col justify-center items-center px-4 py-20 relative overflow-hidden transition-colors duration-300">
       {/* Background Ambience */}
       <div className="absolute top-1/4 right-1/3 w-[500px] h-[500px] rounded-full light-leak-amber blur-[150px] pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] rounded-full light-leak-safelight blur-[150px] pointer-events-none" />

@@ -892,7 +892,7 @@ export function HomepageStoryEngine({
       <div className="relative w-full">
         <div
           ref={pinnedSectionRef}
-          className="relative h-[100dvh] w-full overflow-hidden bg-black flex items-center justify-center select-none"
+          className="relative h-[100dvh] w-full overflow-hidden bg-theme-canvas text-theme-ink flex items-center justify-center select-none transition-colors duration-300"
         >
           {/* Atmospheric Silver Halide Particle & Bokeh Canvas */}
           <StoryAtmosphereCanvas activeChapter={activeChapter} />

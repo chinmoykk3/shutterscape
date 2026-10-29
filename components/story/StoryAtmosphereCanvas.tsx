@@ -64,6 +64,7 @@ export function StoryAtmosphereCanvas({ activeChapter }: StoryAtmosphereCanvasPr
       // 4: Darkroom (deep safelight ruby)
       // 5: Xenon Flash / Strobe
       const isSafelight = activeChapter === 4;
+      const isLightMode = typeof document !== 'undefined' && document.documentElement.classList.contains('light');
 
       for (let i = 0; i < particleCount; i++) {
         const p = particles[i];
@@ -82,6 +83,11 @@ export function StoryAtmosphereCanvas({ activeChapter }: StoryAtmosphereCanvasPr
           ctx.fillStyle = `hsla(355, 75%, 55%, ${p.opacity * 0.8})`;
           ctx.shadowColor = '#B3261E';
           ctx.shadowBlur = 6;
+        } else if (isLightMode) {
+          // Subtle warm sunlight dust motes in daylight mode
+          ctx.fillStyle = `hsla(38, 85%, 45%, ${p.opacity * 0.4})`;
+          ctx.shadowColor = 'rgba(217, 119, 6, 0.3)';
+          ctx.shadowBlur = 3;
         } else {
           ctx.fillStyle = `hsla(${p.hue}, 85%, 60%, ${p.opacity * 0.7})`;
           ctx.shadowColor = '#F59E0B';

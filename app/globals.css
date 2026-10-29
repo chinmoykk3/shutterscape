@@ -65,8 +65,12 @@ html.theme-daylight .bg-black {
 
 html.theme-daylight .bg-charcoal,
 html.theme-daylight .bg-\[\#070708\],
-html.theme-daylight .bg-\[\#121214\],
+html.theme-daylight .bg-\[\#08080a\],
+html.theme-daylight .bg-\[\#09090b\],
+html.theme-daylight .bg-\[\#0a0a0c\],
 html.theme-daylight .bg-\[\#0c0c0e\],
+html.theme-daylight .bg-\[\#0d0d0f\],
+html.theme-daylight .bg-\[\#121214\],
 html.theme-daylight .bg-\[\#141418\],
 html.theme-daylight .bg-\[\#16161a\],
 html.theme-daylight .bg-\[\#18181c\],
@@ -77,12 +81,14 @@ html.theme-daylight .bg-zinc-950 {
 }
 
 html.theme-daylight .bg-charcoal\/90,
+html.theme-daylight .bg-charcoal\/85,
 html.theme-daylight .bg-charcoal\/80,
 html.theme-daylight .bg-charcoal\/70,
 html.theme-daylight .bg-charcoal\/60,
 html.theme-daylight .bg-charcoal\/50,
-html.theme-daylight .bg-charcoal\/40 {
-  background-color: rgba(255, 255, 255, 0.92) !important;
+html.theme-daylight .bg-charcoal\/40,
+html.theme-daylight .bg-\[\#0c0c0e\]\/90 {
+  background-color: rgba(255, 255, 255, 0.94) !important;
   backdrop-filter: blur(16px);
 }
 
@@ -95,7 +101,7 @@ html.theme-daylight .bg-black\/70,
 html.theme-daylight .bg-black\/60,
 html.theme-daylight .bg-black\/50,
 html.theme-daylight .bg-black\/40 {
-  background-color: rgba(255, 255, 255, 0.88) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
   backdrop-filter: blur(16px);
 }
 
@@ -107,7 +113,9 @@ html.theme-daylight .bg-white\/10 {
 
 /* Borders */
 html.theme-daylight .border-charcoal-border,
+html.theme-daylight .border-charcoal-border\/40,
 html.theme-daylight .border-charcoal-border\/60,
+html.theme-daylight .border-charcoal-border\/70,
 html.theme-daylight .border-charcoal-border\/80,
 html.theme-daylight .border-charcoal-border\/90,
 html.theme-daylight .border-white\/5,
@@ -121,8 +129,7 @@ html.theme-daylight .border-zinc-700 {
 }
 
 /* Typography & Headings */
-html.theme-daylight .text-offwhite,
-html.theme-daylight .text-white {
+html.theme-daylight .text-offwhite {
   color: #0F172A !important;
 }
 
@@ -148,6 +155,48 @@ html.theme-daylight .text-amber\/70 {
 
 html.theme-daylight .chromatic-text {
   text-shadow: 1px 1px 0 rgba(217, 119, 6, 0.15), -1px -1px 0 rgba(14, 165, 233, 0.15) !important;
+}
+
+/* Exception 1: Full-Screen Photo Lightbox / Loupe Modal must remain an immersive dark theater */
+html.theme-daylight [role="dialog"],
+html.theme-daylight [role="dialog"] .bg-black\/95,
+html.theme-daylight [role="dialog"] .bg-black\/90 {
+  background-color: rgba(9, 9, 11, 0.97) !important;
+  color: #F8FAFC !important;
+}
+
+html.theme-daylight [role="dialog"] .text-offwhite,
+html.theme-daylight [role="dialog"] .text-white,
+html.theme-daylight [role="dialog"] h1,
+html.theme-daylight [role="dialog"] h2,
+html.theme-daylight [role="dialog"] h3,
+html.theme-daylight [role="dialog"] h4,
+html.theme-daylight [role="dialog"] p,
+html.theme-daylight [role="dialog"] span {
+  color: #F8FAFC !important;
+}
+
+html.theme-daylight [role="dialog"] .text-offwhite-dim,
+html.theme-daylight [role="dialog"] .text-offwhite-muted {
+  color: #94A3B8 !important;
+}
+
+html.theme-daylight [role="dialog"] .text-amber {
+  color: #F59E0B !important;
+}
+
+/* Exception 2: Text captions and titles sitting directly on dark image gradient overlays */
+html.theme-daylight [class*="bg-gradient-to-t"] .text-offwhite,
+html.theme-daylight [class*="bg-gradient-to-t"] h2,
+html.theme-daylight [class*="bg-gradient-to-t"] h3,
+html.theme-daylight [class*="bg-gradient-to-t"] h4 {
+  color: #FFFFFF !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.theme-daylight [class*="bg-gradient-to-t"] .text-offwhite-dim,
+html.theme-daylight [class*="bg-gradient-to-t"] .text-offwhite-muted {
+  color: #E2E8F0 !important;
 }
 
 /* Gradients */
@@ -194,9 +243,35 @@ html.theme-daylight textarea::placeholder {
   color: #94A3B8 !important;
 }
 
+/* Primary buttons in light mode keep bold black text on amber */
+html.theme-daylight button.bg-amber,
+html.theme-daylight a.bg-amber {
+  color: #000000 !important;
+}
+
+/* Secondary buttons in light mode */
+html.theme-daylight .bg-charcoal.text-offwhite.border {
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+/* Badges in light mode */
+html.theme-daylight .bg-amber\/15 {
+  background-color: #FEF3C7 !important;
+  border-color: #FCD34D !important;
+  color: #B45309 !important;
+}
+
+html.theme-daylight .bg-safelight\/20 {
+  background-color: #FFE4E6 !important;
+  border-color: #FDA4AF !important;
+  color: #BE123C !important;
+}
+
 /* Mobile Top bar translucent header gradient in daylight */
 html.theme-daylight header {
-  background: linear-gradient(to bottom, rgba(248, 249, 250, 0.85), rgba(248, 249, 250, 0.4), transparent) !important;
+  background: linear-gradient(to bottom, rgba(248, 249, 250, 0.88), rgba(248, 249, 250, 0.45), transparent) !important;
 }
 
 @media (min-width: 640px) {
@@ -207,17 +282,30 @@ html.theme-daylight header {
 
 /* Floating Camera Dock in Daylight Mode */
 html.theme-daylight nav[aria-label="Floating Camera Dock"] > div {
-  background-color: rgba(255, 255, 255, 0.94) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
   border-color: rgba(226, 232, 240, 0.95) !important;
-  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.12) !important;
 }
 
-html.theme-daylight nav[aria-label="Floating Camera Dock"] a {
+html.theme-daylight nav[aria-label="Floating Camera Dock"] a:not(.bg-amber):not(.bg-safelight) {
   color: #475569 !important;
 }
 
-html.theme-daylight nav[aria-label="Floating Camera Dock"] a:hover {
+html.theme-daylight nav[aria-label="Floating Camera Dock"] a:not(.bg-amber):not(.bg-safelight):hover {
   color: #D97706 !important;
+  background-color: #F1F5F9 !important;
+}
+
+html.theme-daylight nav[aria-label="Floating Camera Dock"] a.bg-amber {
+  background-color: #F59E0B !important;
+  color: #000000 !important;
+}
+
+html.theme-daylight nav[aria-label="Floating Camera Dock"] a[aria-label*="Return to Origin"] {
+  background: linear-gradient(135deg, #F59E0B, #D97706) !important;
+  color: #000000 !important;
+  border-color: #FCD34D !important;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35) !important;
 }
 
 /* Film strip and grain */
